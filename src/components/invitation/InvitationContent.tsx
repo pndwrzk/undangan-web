@@ -64,19 +64,9 @@ export default function InvitationContent({
   const footerYear = couple?.weddingDate ? new Date(couple.weddingDate).getFullYear() : "2026";
   const partnerName = guest?.partnerName;
 
-  const themeStyles = {
-    "--primary": couple?.primaryColor || "#BE185D",
-    "--secondary": couple?.secondaryColor || "#4338CA",
-    "--background": couple?.backgroundColor || "#FDFCF0",
-    "--card": couple?.cardColor || "#FFFFFF",
-    "--popover": couple?.cardColor || "#FFFFFF",
-    "--muted": couple?.mutedColor || "#F3F4F6",
-  } as React.CSSProperties;
-
   return (
     <div 
       className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-0 md:p-8 lg:p-12 selection:bg-primary/20"
-      style={themeStyles}
     >
       {/* Splash Screen */}
       <Splash onOpen={handleOpen} isOpen={isOpen} couple={couple} guestName={guestName} partnerName={partnerName} />
@@ -123,7 +113,7 @@ export default function InvitationContent({
         </button>
         <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-        <footer className="py-24 px-6 text-center text-muted-foreground text-sm border-t bg-muted/30">
+        <footer className="py-24 px-6 text-center text-muted-foreground text-sm border-t bg-muted/20">
           <p className="font-serif italic text-xl mb-4 text-primary">{coupleNames}</p>
           <p className="font-typewriter text-[10px] uppercase tracking-widest">&copy; {footerYear}. All rights reserved.</p>
           <p className="mt-4 text-xs font-serif italic">Created with Next.js</p>

@@ -28,11 +28,6 @@ model Couple {
   hashtag    String?  @default("#AlviaPandiwaMenyatu")
   heroImage  String?  @default("/hero.jpg")
   weddingDate DateTime?
-  primaryColor String? @default("#BE185D")
-  secondaryColor String? @default("#4338CA")
-  backgroundColor String? @default("#FDFCF0")
-  cardColor       String? @default("#FFFFFF")
-  mutedColor      String? @default("#F3F4F6")
   createdAt       DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

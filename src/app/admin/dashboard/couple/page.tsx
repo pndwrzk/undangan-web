@@ -20,12 +20,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useRef } from "react";
 
-const COLOR_PRESETS = [
-  { name: "Original", primary: "#BE185D", secondary: "#4338CA", background: "#FDFCF0", card: "#FFFFFF", muted: "#FDFCF0" },
-  { name: "Emerald", primary: "#065F46", secondary: "#10B981", background: "#F0FDF4", card: "#FFFFFF", muted: "#DCFCE7" },
-  { name: "Navy", primary: "#1E3A8A", secondary: "#3B82F6", background: "#EFF6FF", card: "#FFFFFF", muted: "#DBEAFE" },
-  { name: "Terracotta", primary: "#9A3412", secondary: "#EA580C", background: "#FFF7ED", card: "#FFFFFF", muted: "#FFEDD5" },
-];
  
 
 export default function CouplePage() {
@@ -35,11 +29,6 @@ export default function CouplePage() {
   const [loading, setLoading] = useState(true);
   const [savingCouple, setSavingCouple] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedPrimary, setSelectedPrimary] = useState("#BE185D");
-  const [selectedSecondary, setSelectedSecondary] = useState("#4338CA");
-  const [selectedBackground, setSelectedBackground] = useState("#FDFCF0");
-  const [selectedCard, setSelectedCard] = useState("#FFFFFF");
-  const [selectedMuted, setSelectedMuted] = useState("#F3F4F6");
  
  
   
@@ -55,11 +44,6 @@ export default function CouplePage() {
         .then(res => res.json())
         .then(data => {
           setCouple(data);
-          if (data?.primaryColor) setSelectedPrimary(data.primaryColor);
-          if (data?.secondaryColor) setSelectedSecondary(data.secondaryColor);
-          if (data?.backgroundColor) setSelectedBackground(data.backgroundColor);
-          if (data?.cardColor) setSelectedCard(data.cardColor);
-          if (data?.mutedColor) setSelectedMuted(data.mutedColor);
 
 
 
@@ -176,92 +160,6 @@ export default function CouplePage() {
                   <div className="md:col-span-2 space-y-6 pt-4">
                     <h3 className="text-sm font-typewriter uppercase tracking-widest text-muted-foreground border-b border-muted/20 pb-2">Global Settings & Theme</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-4 md:col-span-2">
-                        <Label className="text-[10px] uppercase tracking-widest font-typewriter">Theme Presets</Label>
-                        <div className="flex flex-wrap gap-3">
-                          {COLOR_PRESETS.map((preset) => (
-                            <button
-                              key={preset.name}
-                              type="button"
-                              onClick={() => {
-                                setSelectedPrimary(preset.primary);
-                                setSelectedSecondary(preset.secondary);
-                                setSelectedBackground(preset.background);
-                                setSelectedCard(preset.card);
-                                setSelectedMuted(preset.muted);
-                              }}
-                              className="px-3 py-2 rounded-xl border border-primary/10 text-[10px] uppercase tracking-wider hover:bg-primary/5 transition-all flex items-center gap-2 group"
-                            >
-                              <div className="flex -space-x-1">
-                                <div className="w-3 h-3 rounded-full border border-white" style={{ backgroundColor: preset.primary }} />
-                                <div className="w-3 h-3 rounded-full border border-white" style={{ backgroundColor: preset.secondary }} />
-                                <div className="w-3 h-3 rounded-full border border-white" style={{ backgroundColor: preset.background }} />
-                              </div>
-                              {preset.name}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label className="text-[10px] uppercase tracking-widest font-typewriter">Primary Theme Color</Label>
-                        <div className="flex gap-2">
-                          <Input 
-                            type="color" 
-                            name="primaryColor" 
-                            value={selectedPrimary} 
-                            onChange={(e) => setSelectedPrimary(e.target.value)}
-                            className="w-12 h-10 p-1 rounded-lg cursor-pointer" 
-                          />
-                          <Input 
-                            value={selectedPrimary} 
-                            onChange={(e) => setSelectedPrimary(e.target.value)}
-                            placeholder="#HEX"
-                            className="rounded-xl flex-1 font-mono uppercase"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label className="text-[10px] uppercase tracking-widest font-typewriter">Secondary Theme Color</Label>
-                        <div className="flex gap-2">
-                          <Input 
-                            type="color" 
-                            name="secondaryColor" 
-                            value={selectedSecondary} 
-                            onChange={(e) => setSelectedSecondary(e.target.value)}
-                            className="w-12 h-10 p-1 rounded-lg cursor-pointer" 
-                          />
-                          <Input 
-                            value={selectedSecondary} 
-                            onChange={(e) => setSelectedSecondary(e.target.value)}
-                            placeholder="#HEX"
-                            className="rounded-xl flex-1 font-mono uppercase"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-4 md:col-span-2">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-typewriter">Card Background</Label>
-                            <div className="flex gap-2">
-                              <Input type="color" name="cardColor" value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)} className="w-12 h-10 p-1 rounded-lg" />
-                              <Input value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)} className="rounded-xl flex-1 font-mono uppercase" />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-typewriter">Muted Background</Label>
-                            <div className="flex gap-2">
-                              <Input type="color" name="mutedColor" value={selectedMuted} onChange={(e) => setSelectedMuted(e.target.value)} className="w-12 h-10 p-1 rounded-lg" />
-                              <Input value={selectedMuted} onChange={(e) => setSelectedMuted(e.target.value)} className="rounded-xl flex-1 font-mono uppercase" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-
                       <div className="space-y-2">
                         <Label className="text-[10px] uppercase tracking-widest font-typewriter">Wedding Hashtag</Label>
                         <Input name="hashtag" defaultValue={couple?.hashtag || "#AlviaPandiwaMenyatu"} className="rounded-xl" />
@@ -347,21 +245,6 @@ export default function CouplePage() {
               </div>
             )}
 
-            <div className="md:col-span-2 bg-white p-8 rounded-[3rem] shadow-sm border border-primary/5 flex flex-col md:flex-row justify-center items-center gap-10">
-               <div className="flex items-center gap-4">
-                 <div className="w-10 h-10 rounded-xl border-2 border-white shadow-sm" style={{ backgroundColor: couple?.primaryColor || "#BE185D" }} title="Primary" />
-                 <div className="w-10 h-10 rounded-xl border-2 border-white shadow-sm" style={{ backgroundColor: couple?.secondaryColor || "#4338CA" }} title="Secondary" />
-                 <div className="w-10 h-10 rounded-xl border-2 border-white shadow-sm" style={{ backgroundColor: couple?.backgroundColor || "#FDFCF0" }} title="Background" />
-                 <div className="w-10 h-10 rounded-xl border-2 border-white shadow-sm" style={{ backgroundColor: couple?.cardColor || "#FFFFFF" }} title="Card" />
-                 <div className="w-10 h-10 rounded-xl border-2 border-white shadow-sm" style={{ backgroundColor: couple?.mutedColor || "#F3F4F6" }} title="Muted" />
-               </div>
-               <div className="text-center md:text-left">
-                 <p className="font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Theme Palette</p>
-                 <p className="text-[10px] font-mono uppercase text-slate-500">
-                   {couple?.primaryColor} / {couple?.secondaryColor} / {couple?.backgroundColor} / {couple?.cardColor} / {couple?.mutedColor}
-                 </p>
-               </div>
-            </div>
         </div>
       </section>
     </div>

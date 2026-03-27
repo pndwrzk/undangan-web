@@ -51,17 +51,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const themeStyles = {
-    "--primary": couple?.primaryColor || "#BE185D",
-    "--secondary": couple?.secondaryColor || "#4338CA",
-    "--background": couple?.backgroundColor || "#FDFCF0",
-    "--card": couple?.cardColor || "#FFFFFF",
-    "--popover": couple?.cardColor || "#FFFFFF",
-    "--muted": couple?.mutedColor || "#F3F4F6",
-  } as React.CSSProperties;
-
   return (
-    <div className="min-h-screen bg-muted/10 flex flex-col md:flex-row font-sans" style={themeStyles}>
+    <div className="min-h-screen bg-muted/10 flex flex-col md:flex-row font-sans">
       
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b sticky top-0 z-30 shadow-sm">
