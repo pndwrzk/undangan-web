@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
 
 export default function Hero({ couple }: { couple: any }) {
@@ -13,19 +14,28 @@ export default function Hero({ couple }: { couple: any }) {
   const month = wDate.toLocaleString('default', { month: 'long' });
   const year = wDate.getFullYear();
   const officialHashtag = couple?.hashtag || `#${groomName}${brideName}Journey`;
+  
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [0.4, 0]);
 
   return (
-    <section id="hero" className="relative min-h-[80vh] md:h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
+    <section ref={containerRef} id="hero" className="relative min-h-[80vh] md:h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
       {/* Background with texture/image bg */}
       <motion.div 
-        style={{ y: typeof window !== 'undefined' ? 0 : 0 }} // Simplified for now, real parallax used via framer hooks if needed
-        className="absolute inset-0 z-0 opacity-40"
+        style={{ y, opacity }}
+        className="absolute inset-0 z-0"
       >
         <Image
           src={couple?.heroImage || "/hero-bg.png"}
           alt="Wedding Background"
           fill
-          className="object-cover animate-slow-zoom"
+          className="object-cover"
           priority
         />
       </motion.div>
@@ -80,8 +90,18 @@ export default function Hero({ couple }: { couple: any }) {
         {/* Right Side: Sticky Note Date */}
         <motion.div
           initial={{ opacity: 0, rotate: 5, scale: 0.8 }}
-          animate={{ opacity: 1, rotate: -2, scale: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          animate={{ 
+            opacity: 1, 
+            rotate: [-2, 1, -2],
+            y: [0, -10, 0],
+            scale: 1 
+          }}
+          transition={{ 
+            opacity: { duration: 1, delay: 0.8 },
+            scale: { duration: 1, delay: 0.8 },
+            rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+          }}
           className="relative w-64 h-64 bg-[#FFF9C4] shadow-xl p-8 flex flex-col items-center justify-center transform hover:rotate-0 transition-transform duration-500"
         >
           {/* Tape effect */}

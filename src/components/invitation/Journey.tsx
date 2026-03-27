@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart, Calendar, Star, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
 import { Story as StoryType } from "@/types";
@@ -22,6 +22,14 @@ interface JourneyProps {
 
 export default function Journey({ stories }: JourneyProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
+  
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const textX = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   if (!stories || stories.length === 0) return null;
 
@@ -32,7 +40,7 @@ export default function Journey({ stories }: JourneyProps) {
   })) as (Omit<StoryType, 'icon'> & { icon: React.ReactNode; rotate: string })[];
 
   return (
-    <section className="py-16 px-6 bg-muted/5 relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 px-6 bg-muted/5 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,9 +138,12 @@ export default function Journey({ stories }: JourneyProps) {
       </div>
 
       {/* Background Decorative Text */}
-      <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif font-black opacity-[0.02] -rotate-90 select-none pointer-events-none">
+      <motion.div 
+        style={{ x: textX }}
+        className="absolute top-1/2 left-0 -translate-y-1/2 text-[15vw] font-serif font-black opacity-[0.02] -rotate-90 select-none pointer-events-none whitespace-nowrap"
+      >
         LOVE STORY
-      </div>
+      </motion.div>
     </section>
   );
 }

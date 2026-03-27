@@ -36,7 +36,12 @@ function SplashContent({
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background overflow-hidden"
         >
           {/* Background Image with Overlay */}
-          <div className="absolute inset-0 z-0">
+          <motion.div 
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            className="absolute inset-0 z-0"
+          >
             <Image
               src={couple?.heroImage || "/hero-bg.png"}
               alt="Background"
@@ -45,7 +50,7 @@ function SplashContent({
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
-          </div>
+          </motion.div>
 
           <div className="relative z-10 text-center px-6 max-w-lg w-full">
             <motion.div
@@ -104,8 +109,30 @@ function SplashContent({
             transition={{ delay: 1.5, duration: 2 }}
             className="absolute top-0 left-0 w-full h-full pointer-events-none"
           >
-            <div className="absolute top-10 left-10 w-40 h-40 border-[20px] border-primary/20 rounded-full -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-10 right-10 w-60 h-60 border-[2px] border-primary/20 rounded-full translate-x-1/3 translate-y-1/3" />
+            <motion.div 
+              animate={{ 
+                y: [0, -20, 0],
+                rotate: [0, 5, 0]
+              }}
+              transition={{ 
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-10 left-10 w-40 h-40 border-[20px] border-primary/20 rounded-full -translate-x-1/2 -translate-y-1/2" 
+            />
+            <motion.div 
+              animate={{ 
+                y: [0, 30, 0],
+                x: [0, 15, 0]
+              }}
+              transition={{ 
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute bottom-10 right-10 w-60 h-60 border-[2px] border-primary/20 rounded-full translate-x-1/3 translate-y-1/3" 
+            />
           </motion.div>
         </motion.div>
       )}

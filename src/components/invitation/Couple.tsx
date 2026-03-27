@@ -1,6 +1,9 @@
+"use client";
+
 import { Couple as CoupleType } from "@/types";
-import Image from "next/image"; // Assuming Image component is from next/image
-import { motion } from "framer-motion"; // Assuming motion component is from framer-motion
+import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 export default function Couple({ couple }: { couple: CoupleType | null }) {
   const brideName = couple?.brideName || "Alvia";
@@ -12,9 +15,18 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   const groomAlias = couple?.groomAlias || "Pandiwa";
   const groomBio = couple?.groomBio || "Son of Mr. Pandiwa Senior & Mrs. Pandiwa Senior";
   const groomImage = couple?.groomImage || "/groom.png";
+  
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   return (
-    <section className="py-32 px-6 bg-background relative overflow-hidden">
+    <section ref={sectionRef} className="py-32 px-6 bg-background relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -31,10 +43,11 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 items-center">
           {/* Bride */}
           <motion.div
+            style={{ y: y1 }}
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
             className="flex flex-col items-center md:items-end text-center md:text-right"
           >
             <div className="relative w-72 h-96 mb-8 transform -rotate-2 group">
@@ -61,10 +74,11 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
 
           {/* Groom */}
           <motion.div
+            style={{ y: y2 }}
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
             className="flex flex-col items-center md:items-start text-center md:text-left"
           >
             <div className="relative w-72 h-96 mb-8 transform rotate-3 group order-first md:order-none">

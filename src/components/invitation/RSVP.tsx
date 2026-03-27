@@ -119,9 +119,10 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           </motion.div>
         ) : (
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
           className="bg-white rounded-[4rem] p-8 md:p-12 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.12)] border border-primary/5 border-t-[20px] border-t-primary/20"
         >
           <Form {...form}>
@@ -154,12 +155,18 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 </div>
               </div>
 
-              <div className="pt-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="pt-6"
+              >
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-serif py-8 rounded-[2rem] shadow-2xl transition-all hover:translate-y-[-4px] active:translate-y-0 text-2xl group relative overflow-hidden">
                   <span className="relative z-10">Konfirmasi Sekarang</span>
                   <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
                 </Button>
-              </div>
+              </motion.div>
             </form>
           </Form>
         </motion.div>

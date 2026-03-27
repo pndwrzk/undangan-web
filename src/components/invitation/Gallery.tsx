@@ -82,8 +82,30 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
       </div>
       
       {/* Decorative Scrapbook Elements */}
-      <div className="absolute top-16 left-8 w-20 h-20 border-4 border-primary/10 rounded-full -rotate-12 hidden md:block" />
-      <div className="absolute bottom-16 right-8 w-28 h-28 bg-accent/5 rounded-[3rem] rotate-45 hidden md:block" />
+      <motion.div 
+        animate={{ 
+          y: [0, -15, 0],
+          rotate: [-12, -8, -12]
+        }}
+        transition={{ 
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-16 left-8 w-20 h-20 border-4 border-primary/10 rounded-full hidden md:block" 
+      />
+      <motion.div 
+        animate={{ 
+          y: [0, 20, 0],
+          rotate: [45, 50, 45]
+        }}
+        transition={{ 
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute bottom-16 right-8 w-28 h-28 bg-accent/5 rounded-[3rem] hidden md:block" 
+      />
     </section>
   );
 }
