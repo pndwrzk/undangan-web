@@ -42,8 +42,10 @@ export async function POST(req: Request) {
     await writeFile(path.join(galleryDir, filename), buffer);
     const imageUrl = `/uploads/gallery/${filename}`;
 
+    const order = parseInt(formData.get("order") as string) || 0;
+
     const galleryItem = await prisma.gallery.create({
-      data: { imageUrl, caption: title }
+      data: { imageUrl, caption: title, order }
     });
 
     return NextResponse.json(galleryItem);
@@ -82,6 +84,62 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const formData = await req.formData();
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string || "";
+    const order = parseInt(formData.get("order") as string) || 0;
+
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
+    const existingItem = await prisma.gallery.findUnique({
+      where: { id }
+    });
+
+    if (!existingItem) return NextResponse.json({ error: "Item not found" }, { status: 404 });
+
+    // Handle File Upload if provided
+    let imageUrl = existingItem.imageUrl;
+    const imageFile = formData.get("imageFile") as File;
+    
+    if (imageFile && imageFile.size > 0) {
+      const uploadDir = path.join(process.cwd(), "public/uploads/gallery");
+      await mkdir(uploadDir, { recursive: true });
+      
+      const bytes = await imageFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `gallery-${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+      await writeFile(path.join(uploadDir, filename), buffer);
+      
+      // Delete old file
+      try {
+        const oldFilePath = path.join(process.cwd(), "public", existingItem.imageUrl);
+        await import("fs/promises").then(fs => fs.unlink(oldFilePath)).catch(() => {});
+      } catch (e) {}
+      
+      imageUrl = `/uploads/gallery/${filename}`;
+    }
+
+    const updatedItem = await prisma.gallery.update({
+      where: { id },
+      data: {
+        imageUrl,
+        caption: title,
+        order
+      }
+    });
+
+    return NextResponse.json(updatedItem);
+  } catch (error) {
+    console.error("Gallery API PUT Error:", error);
+    return NextResponse.json({ error: "Failed to update gallery item" }, { status: 500 });
   }
 }
 

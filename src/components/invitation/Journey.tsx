@@ -104,6 +104,7 @@ export default function Journey({ stories }: JourneyProps) {
                         alt={item.title}
                         fill
                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                        unoptimized
                       />
                     </div>
                     {/* Tape Effect */}
@@ -126,6 +127,7 @@ export default function Journey({ stories }: JourneyProps) {
                   fill
                   className="object-contain"
                   priority
+                  unoptimized
                 />
               )}
             </div>

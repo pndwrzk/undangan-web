@@ -51,6 +51,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
                 alt={photo.caption || "Gallery Photo"}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                unoptimized
               />
               <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-4">
                 {photo.caption && (
@@ -74,6 +75,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
                   fill
                   className="object-contain"
                   priority
+                  unoptimized
                 />
               )}
             </div>

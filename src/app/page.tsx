@@ -19,7 +19,12 @@ export default async function Home({
     guestId ? prisma.guest.findUnique({ where: { id: guestId } }) as Promise<Guest | null> : null,
     prisma.event.findMany({ orderBy: { createdAt: 'asc' } }) as Promise<Event[]>,
     prisma.gift.findMany({ orderBy: { createdAt: 'asc' } }) as Promise<Gift[]>,
-    prisma.gallery.findMany({ orderBy: { createdAt: 'asc' } }) as Promise<Gallery[]>,
+    prisma.gallery.findMany({ 
+      orderBy: [
+        { order: 'asc' },
+        { createdAt: 'desc' }
+      ] 
+    }) as Promise<Gallery[]>,
     prisma.story.findMany({ orderBy: { order: 'asc' } }).catch((e: Error) => {
       console.error("Error fetching stories:", e);
       return [];
