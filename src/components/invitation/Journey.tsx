@@ -21,7 +21,7 @@ interface JourneyProps {
 }
 
 export default function Journey({ stories }: JourneyProps) {
-  const [selectedPhoto, setSelectedPhoto] = useState<StoryType | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
 
   if (!stories || stories.length === 0) return null;
 
