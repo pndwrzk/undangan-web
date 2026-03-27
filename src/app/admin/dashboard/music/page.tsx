@@ -123,7 +123,6 @@ export default function MusicPage() {
       if (formRef.current) {
         (formRef.current.elements.namedItem("title") as HTMLInputElement).value = s.title;
         (formRef.current.elements.namedItem("artist") as HTMLInputElement).value = s.artist || "";
-        (formRef.current.elements.namedItem("url") as HTMLInputElement).value = s.url;
         (formRef.current.elements.namedItem("isActive") as HTMLSelectElement).value = String(s.isActive);
       }
     }, 0);
@@ -181,15 +180,7 @@ export default function MusicPage() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="audioFile" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Upload MP3 File</Label>
-                    <Input id="audioFile" name="audioFile" type="file" accept="audio/mpeg,audio/mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20 file:bg-primary file:text-white file:rounded-lg file:border-0 file:text-xs file:px-3 file:py-1 cursor-pointer" />
-                  </div>
-                  <div className="relative py-2 text-center">
-                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground bg-white px-3 relative z-10">Or Use URL</span>
-                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-muted-foreground/10 z-0"></div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="url" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">MP3 URL</Label>
-                    <Input id="url" name="url" placeholder="https://example.com/music.mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
+                    <Input id="audioFile" name="audioFile" type="file" accept="audio/mpeg,audio/mp3" required={!editingId} className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20 file:bg-primary file:text-white file:rounded-lg file:border-0 file:text-xs file:px-3 file:py-1 cursor-pointer" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="isActive" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Status</Label>
