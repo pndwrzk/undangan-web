@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { MessageSquare } from "lucide-react";
-import { submitWish } from "@/lib/actions";
+import { MessageSquare, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
 
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
@@ -15,20 +15,41 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   const [newName, setNewName] = useState(guest?.name || "");
   const [newText, setNewText] = useState("");
   const [loading, setLoading] = useState(true);
+  const [likedMessages, setLikedMessages] = useState<string[]>([]);
+  
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    fetchWishes();
-  }, []);
+    fetchWishes(1);
+  }, [guest?.id]);
 
-  const fetchWishes = async () => {
+  const fetchWishes = async (page: number) => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/guestbook");
-      const data = await res.json();
-      setMessages(data);
+      const url = `/api/guestbook?page=${page}&limit=5${guest?.id ? `&guestId=${guest.id}` : ""}`;
+      const res = await fetch(url);
+      const result = await res.json();
+      
+      setMessages(result.data);
+      setTotalCount(result.total);
+      setTotalPages(result.pages);
+      setCurrentPage(result.currentPage);
+      if (result.likedByGuest) {
+        setLikedMessages(result.likedByGuest);
+      }
     } catch (error) {
       console.error("Failed to fetch wishes:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      fetchWishes(page);
     }
   };
 
@@ -41,11 +62,74 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
     });
 
     if (result.success) {
-      setMessages([result.data as any, ...messages]);
       setNewText("");
+      fetchWishes(1); // Go to first page to see the new message
     } else {
       alert("Failed to send wishes. Please try again.");
     }
+  };
+
+  const handleLike = async (messageId: string) => {
+    if (!guest?.id) return;
+
+    const isCurrentlyLiked = likedMessages.includes(messageId);
+    
+    // Optimistic update
+    setMessages(prev => prev.map(msg => 
+      msg.id === messageId 
+        ? { ...msg, likes: isCurrentlyLiked ? Math.max(0, (msg.likes || 1) - 1) : (msg.likes || 0) + 1 } 
+        : msg
+    ));
+    
+    const newLiked = isCurrentlyLiked 
+      ? likedMessages.filter(id => id !== messageId) 
+      : [...likedMessages, messageId];
+      
+    setLikedMessages(newLiked);
+
+    const result = await toggleLikeGuestbookMessage(messageId, guest.id);
+    if (!result.success) {
+      // Revert if failed
+      setMessages(prev => prev.map(msg => 
+        msg.id === messageId 
+          ? { ...msg, likes: isCurrentlyLiked ? (msg.likes || 0) + 1 : Math.max(0, (msg.likes || 1) - 1) } 
+          : msg
+      ));
+      const revertedLiked = isCurrentlyLiked 
+        ? [...likedMessages, messageId] 
+        : likedMessages.filter(id => id !== messageId);
+      setLikedMessages(revertedLiked);
+      alert("Failed to update like.");
+    }
+  };
+
+  // Helper for page numbers
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+    let start = Math.max(1, currentPage - 2);
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+        pages.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+              currentPage === i 
+                ? "bg-primary text-white shadow-md scale-110" 
+                : "bg-background hover:bg-muted text-muted-foreground"
+            } text-sm font-bold font-serif`}
+          >
+            {i}
+          </button>
+        );
+    }
+    return pages;
   };
 
   return (
@@ -59,7 +143,11 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
         >
           <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Wishes</span>
           <h2 className="text-5xl md:text-7xl font-serif mb-6">Guestbook</h2>
-          <div className="w-24 h-[1px] bg-primary/30 mx-auto" />
+          <div className="flex items-center justify-center gap-4 text-muted-foreground font-serif italic text-lg mb-8">
+             <div className="w-12 h-[1px] bg-primary/20" />
+             <span>Showing {totalCount} Heartfelt Wishes</span>
+             <div className="w-12 h-[1px] bg-primary/20" />
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -104,32 +192,89 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
           </div>
 
           {/* List */}
-          <div className="md:col-span-2 space-y-6 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
-            {loading ? (
-              <div className="text-center py-12 text-muted-foreground font-serif italic">Loading wishes...</div>
-            ) : (
-              <AnimatePresence>
-                {messages.map((msg) => (
+          <div className="md:col-span-2 flex flex-col gap-8">
+            <div className="space-y-6 min-h-[400px]">
+              {loading ? (
+                <div className="text-center py-12 text-muted-foreground font-serif italic">Loading wishes...</div>
+              ) : (
+                <AnimatePresence mode="wait">
                   <motion.div
-                    key={msg.id}
+                    key={currentPage}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-background p-6 rounded-2xl shadow-sm border border-primary/5 hover:border-primary/10 transition-all"
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-6"
                   >
-                    <div className="flex items-center gap-2 mb-2 text-primary">
-                      <MessageSquare size={14} />
-                      <span className="text-sm font-bold font-serif">{msg.name}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground italic mb-3 font-serif leading-relaxed">"{msg.message}"</p>
-                    <span className="font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground/50">
-                      {new Date(msg.createdAt).toLocaleString()}
-                    </span>
+                    {messages.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className="group bg-background p-6 rounded-2xl shadow-sm border border-primary/5 hover:border-primary/10 transition-all flex flex-col"
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-2 text-primary">
+                            <MessageSquare size={14} />
+                            <span className="text-sm font-bold font-serif">{msg.name}</span>
+                          </div>
+                          
+                          {guest?.id && (
+                            <button
+                              onClick={() => handleLike(msg.id)}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 ${
+                                likedMessages.includes(msg.id) 
+                                  ? "bg-red-50 text-red-500 border-red-100" 
+                                  : "bg-muted/30 text-muted-foreground hover:bg-red-50 hover:text-red-400 border-transparent"
+                              } border text-[10px] font-bold`}
+                            >
+                              <Heart 
+                                size={12} 
+                                className={`${likedMessages.includes(msg.id) ? "fill-current scale-110" : "scale-100"} transition-transform`} 
+                              />
+                              <span>{msg.likes || 0}</span>
+                            </button>
+                          )}
+                        </div>
+                        
+                        <p className="text-sm text-muted-foreground italic mb-4 font-serif leading-relaxed flex-1">"{msg.message}"</p>
+                        <span className="font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground/50">
+                          {new Date(msg.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                    ))}
+                    {messages.length === 0 && (
+                      <div className="text-center py-12 text-muted-foreground font-serif italic">No wishes yet. Be the first!</div>
+                    )}
                   </motion.div>
-                ))}
-                {messages.length === 0 && (
-                  <div className="text-center py-12 text-muted-foreground font-serif italic">No wishes yet. Be the first!</div>
-                )}
-              </AnimatePresence>
+                </AnimatePresence>
+              )}
+            </div>
+
+            {/* Classic Pagination UI */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1 || loading}
+                  className="rounded-full border-primary/10 text-primary"
+                >
+                  <ChevronLeft size={16} />
+                </Button>
+                
+                <div className="flex items-center gap-1">
+                  {renderPageNumbers()}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages || loading}
+                  className="rounded-full border-primary/10 text-primary"
+                >
+                  <ChevronRight size={16} />
+                </Button>
+              </div>
             )}
           </div>
         </div>

@@ -74,6 +74,7 @@ export interface Guestbook {
   status: number;
   guestId?: string | null;
   guest?: Guest | null;
+  likes: number;
   createdAt: Date | string;
 }
 

@@ -48,7 +48,19 @@ model Guestbook {
   status    Int      @default(1)
   guestId   String?
   guest     Guest?   @relation(fields: [guestId], references: [id], onDelete: SetNull)
+  likes     Int      @default(0)
+  likedBy   GuestLike[]
   createdAt DateTime @default(now())
+}
+
+model GuestLike {
+  id          String    @id @default(uuid())
+  guestId     String
+  guestbookId String
+  guestbook   Guestbook @relation(fields: [guestbookId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+
+  @@unique([guestId, guestbookId])
 }
 
 model Guest {
