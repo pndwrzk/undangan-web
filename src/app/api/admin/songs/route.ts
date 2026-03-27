@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir, unlink } from "fs/promises";
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
         isActive 
       }
     });
-
+    revalidatePath("/");
     return NextResponse.json(song);
   } catch (error) {
     console.error("Song API POST Error:", error);
@@ -126,6 +127,7 @@ export async function PUT(req: Request) {
       }
     });
 
+    revalidatePath("/");
     return NextResponse.json(song);
   } catch (error) {
     console.error("Song API PUT Error:", error);
@@ -158,6 +160,7 @@ export async function DELETE(req: Request) {
       where: { id }
     });
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);

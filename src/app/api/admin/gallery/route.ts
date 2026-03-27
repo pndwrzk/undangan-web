@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Image file is required" }, { status: 400 });
     }
 
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const uploadDir = path.join(process.cwd(), "uploads");
     const galleryDir = path.join(uploadDir, "gallery");
     await mkdir(galleryDir, { recursive: true });
 
@@ -72,7 +72,8 @@ export async function DELETE(req: Request) {
 
     if (item?.imageUrl) {
       try {
-        const filePath = path.join(process.cwd(), "public", item.imageUrl);
+        const pathSegments = item.imageUrl.startsWith('/') ? item.imageUrl.substring(1).split('/') : item.imageUrl.split('/');
+        const filePath = path.join(process.cwd(), ...pathSegments);
         await import("fs/promises").then(fs => fs.unlink(filePath)).catch(() => {});
       } catch (e) {
         console.error("Failed to delete image file:", e);
@@ -113,7 +114,7 @@ export async function PUT(req: Request) {
     const imageFile = formData.get("imageFile") as File;
     
     if (imageFile && imageFile.size > 0) {
-      const uploadDir = path.join(process.cwd(), "public/uploads/gallery");
+      const uploadDir = path.join(process.cwd(), "uploads/gallery");
       await mkdir(uploadDir, { recursive: true });
       
       const bytes = await imageFile.arrayBuffer();
@@ -123,7 +124,8 @@ export async function PUT(req: Request) {
       
       // Delete old file
       try {
-        const oldFilePath = path.join(process.cwd(), "public", existingItem.imageUrl);
+        const pathSegments = existingItem.imageUrl.startsWith('/') ? existingItem.imageUrl.substring(1).split('/') : existingItem.imageUrl.split('/');
+        const oldFilePath = path.join(process.cwd(), ...pathSegments);
         await import("fs/promises").then(fs => fs.unlink(oldFilePath)).catch(() => {});
       } catch (e) {}
       

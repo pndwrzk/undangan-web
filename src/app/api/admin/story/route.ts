@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir } from "fs/promises";
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
     const imageFile = formData.get("imageFile") as File;
     
     if (imageFile && imageFile.size > 0) {
-      const uploadDir = path.join(process.cwd(), "public/uploads/story");
+      const uploadDir = path.join(process.cwd(), "uploads/story");
       await mkdir(uploadDir, { recursive: true });
       
       const bytes = await imageFile.arrayBuffer();
@@ -58,6 +59,7 @@ export async function POST(req: Request) {
       }
     }) as StoryType;
 
+    revalidatePath("/");
     return NextResponse.json(story);
   } catch (error: any) {
     console.error("Story API POST Error:", error);
@@ -87,7 +89,7 @@ export async function PUT(req: Request) {
     const imageFile = formData.get("imageFile") as File;
     
     if (imageFile && imageFile.size > 0) {
-      const uploadDir = path.join(process.cwd(), "public/uploads/story");
+      const uploadDir = path.join(process.cwd(), "uploads/story");
       await mkdir(uploadDir, { recursive: true });
       
       const bytes = await imageFile.arrayBuffer();
@@ -98,7 +100,8 @@ export async function PUT(req: Request) {
 
       if (existingStory?.image) {
         try {
-          const oldFile = path.join(process.cwd(), "public", existingStory.image);
+          const pathSegments = existingStory.image.startsWith('/') ? existingStory.image.substring(1).split('/') : existingStory.image.split('/');
+          const oldFile = path.join(process.cwd(), ...pathSegments);
           await import("fs/promises").then(fs => fs.unlink(oldFile)).catch(() => {});
         } catch (e) {}
       }
@@ -118,6 +121,7 @@ export async function PUT(req: Request) {
       data: dataPayload
     }) as StoryType;
 
+    revalidatePath("/");
     return NextResponse.json(story);
   } catch (error: any) {
     console.error("Story API PUT Error:", error);
@@ -139,7 +143,8 @@ export async function DELETE(req: Request) {
 
     if (existingStory?.image) {
       try {
-        const filePath = path.join(process.cwd(), "public", existingStory.image);
+        const pathSegments = existingStory.image.startsWith('/') ? existingStory.image.substring(1).split('/') : existingStory.image.split('/');
+        const filePath = path.join(process.cwd(), ...pathSegments);
         await import("fs/promises").then(fs => fs.unlink(filePath)).catch(() => {});
       } catch (e) {}
     }
@@ -147,7 +152,7 @@ export async function DELETE(req: Request) {
     await prisma.story.delete({
       where: { id }
     });
-
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete story" }, { status: 500 });
@@ -173,7 +178,7 @@ export async function PATCH(req: Request) {
         })
       )
     );
-
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Story API PATCH Error:", error);

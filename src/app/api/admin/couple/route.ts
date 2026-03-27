@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir } from "fs/promises";
@@ -119,6 +120,7 @@ export async function POST(req: Request) {
       },
     });
 
+    revalidatePath("/");
     return NextResponse.json(couple);
   } catch (error) {
     console.error(error);
