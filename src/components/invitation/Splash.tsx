@@ -13,12 +13,14 @@ function SplashContent({
   onOpen,
   isOpen,
   couple,
-  guestName: propGuestName
+  guestName: propGuestName,
+  partnerName
 }: {
   onOpen: () => void;
   isOpen: boolean;
   couple: CoupleType | null;
   guestName?: string | null;
+  partnerName?: string | null;
 }) {
   const searchParams = useSearchParams();
   const guestName = propGuestName || searchParams.get("to") || "Tamu Undangan";
@@ -79,7 +81,13 @@ function SplashContent({
             >
               <p className="font-serif italic text-muted-foreground mb-4 text-sm">Kepada Bapak/Ibu/Saudara/i:</p>
               <div className="relative py-4">
-                <h2 className="text-3xl md:text-4xl font-serif text-foreground relative z-10">{guestName}</h2>
+                <h2 className="text-3xl md:text-4xl font-serif text-foreground relative z-10">
+                  {guestName}
+                  {partnerName && (
+                    <span className="text-primary italic mx-2">&</span>
+                  )}
+                  {partnerName}
+                </h2>
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-primary/5 -rotate-1" />
               </div>
             </motion.div>
@@ -140,7 +148,7 @@ function SplashContent({
   );
 }
 
-export default function Splash(props: { onOpen: () => void; isOpen: boolean; couple: CoupleType | null; guestName?: string | null }) {
+export default function Splash(props: { onOpen: () => void; isOpen: boolean; couple: CoupleType | null; guestName?: string | null; partnerName?: string | null }) {
   return (
     <Suspense fallback={<div className="fixed inset-0 z-[100] bg-background" />}>
       <SplashContent {...props} />

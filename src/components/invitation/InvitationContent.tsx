@@ -58,11 +58,12 @@ export default function InvitationContent({
   const coupleNames = couple ? `${couple.brideName} & ${couple.groomName}` : "Alvia & Pandiwa";
 
   const footerYear = couple?.weddingDate ? new Date(couple.weddingDate).getFullYear() : "2026";
+  const partnerName = guest?.partnerName;
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-0 md:p-8 lg:p-12 selection:bg-primary/20">
       {/* Splash Screen */}
-      <Splash onOpen={handleOpen} isOpen={isOpen} couple={couple} guestName={guestName} />
+      <Splash onOpen={handleOpen} isOpen={isOpen} couple={couple} guestName={guestName} partnerName={partnerName} />
 
 
       {/* Main Container */}
