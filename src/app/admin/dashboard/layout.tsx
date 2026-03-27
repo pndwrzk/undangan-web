@@ -4,7 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, LayoutDashboard, Heart, Shield, Calendar, Gift, Image, MessageSquare, History, Music, Menu, X } from "lucide-react";
+import { LogOut, Users, LayoutDashboard, Heart, Shield, Calendar, Gift, Image, MessageSquare, History, Music, Menu, X, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -52,9 +52,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {couple ? `${couple.brideName} & ${couple.groomName}` : "Dashboard"}
           </p>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:bg-primary/5 bg-transparent text-primary">
-          <Menu className="w-6 h-6" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={() => window.open('/', '_blank')} className="hover:bg-primary/5 text-primary">
+            <ExternalLink className="w-5 h-5" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:bg-primary/5 bg-transparent text-primary">
+            <Menu className="w-6 h-6" />
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Overlay */}
@@ -113,6 +118,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/admin/dashboard/users" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/users' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
             <Shield size={18} /> Manage Admins
           </Link>
+          <div className="pt-4 mt-4 border-t border-primary/5">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start gap-3 rounded-xl border-primary/20 text-primary hover:bg-primary/5"
+              onClick={() => window.open('/', '_blank')}
+            >
+              <ExternalLink size={18} /> View Invitation
+            </Button>
+          </div>
         </nav>
         <div className="p-4 border-t">
           <p className="text-xs text-muted-foreground mb-4 px-2">Signed in as <br/><strong className="text-foreground">{session?.user?.name}</strong></p>
