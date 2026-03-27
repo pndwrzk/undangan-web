@@ -14,8 +14,9 @@ const RSVP = dynamic(() => import("@/components/invitation/RSVP"), { ssr: false 
 const Gallery = dynamic(() => import("@/components/invitation/Gallery"), { ssr: false });
 const WeddingGift = dynamic(() => import("@/components/invitation/WeddingGift"), { ssr: false });
 const Guestbook = dynamic(() => import("@/components/invitation/Guestbook"), { ssr: false });
-
 import BottomNav from "@/components/invitation/BottomNav";
+import LoginModal from "@/components/auth/LoginModal";
+import { Lock } from "lucide-react";
 
 import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType, Song as SongType } from "@/types";
 
@@ -40,9 +41,10 @@ export default function InvitationContent({
   stories = [],
   song = null
 }: InvitationContentProps) {
-  const [isOpen, setIsOpen] = useState(false);
+   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -89,6 +91,17 @@ export default function InvitationContent({
           <Guestbook guest={guest} />
         
         {isOpen && <BottomNav />}
+        
+        {/* Peek Login Trigger */}
+        <button
+          onClick={() => setIsLoginOpen(true)}
+          className="fixed right-[-20px] top-1/2 -translate-y-1/2 z-[100] bg-primary/10 hover:bg-primary/20 hover:right-0 transition-all duration-300 p-3 rounded-l-2xl group border border-primary/5 shadow-sm"
+          title="Admin Login"
+        >
+          <Lock className="w-4 h-4 text-primary/40 group-hover:text-primary transition-colors" />
+        </button>
+
+        <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
         
         <footer className="py-24 px-6 text-center text-muted-foreground text-sm border-t bg-muted/30">
           <p className="font-serif italic text-xl mb-4 text-primary">{coupleNames}</p>

@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         group, 
         partnerName: body.partnerName || null,
         side: side !== undefined ? Number(side) : 0 
-      }
+      } as any
     }) as GuestType;
 
     return NextResponse.json(guest);
@@ -63,7 +63,7 @@ export async function PUT(req: Request) {
         group, 
         partnerName: body.partnerName || null,
         side: side !== undefined ? Number(side) : 0 
-      }
+      } as any
     }) as GuestType;
 
     return NextResponse.json(guest);
