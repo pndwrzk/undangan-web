@@ -4,6 +4,7 @@ import { Couple as CoupleType } from "@/types";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import TornEdge from "@/components/invitation/TornEdge";
 
 export default function Couple({ couple }: { couple: CoupleType | null }) {
   const brideName = couple?.brideName || "Alvia";
@@ -15,7 +16,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   const groomAlias = couple?.groomAlias || "Pandiwa";
   const groomBio = couple?.groomBio || "Son of Mr. Pandiwa Senior & Mrs. Pandiwa Senior";
   const groomImage = couple?.groomImage || "/groom.png";
-  
+
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -26,8 +27,9 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   return (
-    <section ref={sectionRef} className="py-32 px-6 bg-background relative overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <section id="couple" ref={sectionRef} className="py-32 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+      <TornEdge position="top" />
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -103,6 +105,11 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
             </p>
           </motion.div>
         </div>
+      </div>
+      
+      {/* Background Motif */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60vw] md:text-[40vw] font-serif italic opacity-[0.03] md:opacity-[0.02] pointer-events-none select-none z-0">
+        &
       </div>
     </section>
   );

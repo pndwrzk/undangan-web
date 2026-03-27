@@ -33,7 +33,7 @@ export default function Countdown({ couple }: { couple: any }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [couple?.weddingDate]);
 
   const TimerBox = ({ value, label }: { value: number; label: string }) => (
     <div className="flex flex-col items-center">

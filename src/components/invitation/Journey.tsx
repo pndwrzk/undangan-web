@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart, Calendar, Star, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
 import { Story as StoryType } from "@/types";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import TornEdge from "@/components/invitation/TornEdge";
 
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -40,8 +41,9 @@ export default function Journey({ stories }: JourneyProps) {
   })) as (Omit<StoryType, 'icon'> & { icon: React.ReactNode; rotate: string })[];
 
   return (
-    <section ref={sectionRef} className="py-16 px-6 bg-muted/5 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <section id="story" ref={sectionRef} className="py-16 px-6 bg-muted/5 relative overflow-hidden">
+      <TornEdge position="top" color="fill-background" />
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -140,7 +142,7 @@ export default function Journey({ stories }: JourneyProps) {
       {/* Background Decorative Text */}
       <motion.div 
         style={{ x: textX }}
-        className="absolute top-1/2 left-0 -translate-y-1/2 text-[15vw] font-serif font-black opacity-[0.02] -rotate-90 select-none pointer-events-none whitespace-nowrap"
+        className="absolute top-1/2 left-0 -translate-y-1/2 text-[25vw] md:text-[15vw] font-serif font-black opacity-[0.03] md:opacity-[0.02] -rotate-90 select-none pointer-events-none whitespace-nowrap"
       >
         LOVE STORY
       </motion.div>

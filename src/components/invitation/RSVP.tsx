@@ -26,6 +26,7 @@ import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 
 import { Couple as CoupleType, Guest as GuestType } from "@/types";
+import TornEdge from "@/components/invitation/TornEdge";
 
 const formSchema = z.object({
   attendance: z.string().min(1, { message: "Please select your attendance." }),
@@ -84,11 +85,13 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   }
 
   return (
-    <section className="py-20 px-6 bg-background relative overflow-hidden">
+    <section id="rsvp" className="py-20 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+      <TornEdge position="top" color="fill-background" />
       {/* Ornamental Background */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none select-none">
-        <div className="absolute top-10 left-10 text-[15vw] font-serif italic">RSVP</div>
-        <div className="absolute bottom-10 right-10 text-[15vw] font-serif italic">2026</div>
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.07] md:opacity-[0.05] pointer-events-none select-none overflow-hidden z-0">
+        <div className="absolute top-20 left-10 text-[15vw] md:text-[10vw] font-serif italic text-primary">RSVP</div>
+        <div className="absolute top-1/2 right-10 text-[15vw] md:text-[10vw] font-serif italic -rotate-90 translate-y-[-50%] text-primary/50">FOREVER</div>
+        <div className="absolute bottom-20 left-10 text-[15vw] md:text-[10vw] font-serif italic text-primary">2026</div>
       </div>
 
       <div className="max-w-3xl mx-auto relative z-10">

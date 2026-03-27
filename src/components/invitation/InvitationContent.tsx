@@ -1,17 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Splash from "@/components/invitation/Splash";
 import MusicPlayer from "@/components/invitation/MusicPlayer";
-import Hero from "@/components/invitation/Hero";
-import Couple from "@/components/invitation/Couple";
-import EventDetails from "@/components/invitation/EventDetails";
-import Gallery from "@/components/invitation/Gallery";
-import Journey from "@/components/invitation/Journey";
-import Countdown from "@/components/invitation/Countdown";
-import WeddingGift from "@/components/invitation/WeddingGift";
-import RSVP from "@/components/invitation/RSVP";
-import Guestbook from "@/components/invitation/Guestbook";
+import dynamic from "next/dynamic";
+
+const Hero = dynamic(() => import("@/components/invitation/Hero"), { ssr: false });
+const Couple = dynamic(() => import("@/components/invitation/Couple"), { ssr: false });
+const Journey = dynamic(() => import("@/components/invitation/Journey"), { ssr: false });
+const Countdown = dynamic(() => import("@/components/invitation/Countdown"), { ssr: false });
+const EventDetails = dynamic(() => import("@/components/invitation/EventDetails"), { ssr: false });
+const RSVP = dynamic(() => import("@/components/invitation/RSVP"), { ssr: false });
+const Gallery = dynamic(() => import("@/components/invitation/Gallery"), { ssr: false });
+const WeddingGift = dynamic(() => import("@/components/invitation/WeddingGift"), { ssr: false });
+const Guestbook = dynamic(() => import("@/components/invitation/Guestbook"), { ssr: false });
+
+const PetalsOverlay = dynamic(() => import("@/components/invitation/PetalsOverlay"), { ssr: false });
 import BottomNav from "@/components/invitation/BottomNav";
 
 import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType } from "@/types";
@@ -29,6 +33,11 @@ interface InvitationContentProps {
 export default function InvitationContent({ couple, guestName, guest, events, gifts, gallery, stories }: InvitationContentProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -44,29 +53,33 @@ export default function InvitationContent({ couple, guestName, guest, events, gi
       {/* Splash Screen */}
       <Splash onOpen={handleOpen} isOpen={isOpen} couple={couple} guestName={guestName} />
 
+      {/* Falling Petals Effect */}
+      {isOpen && <PetalsOverlay />}
+
       {/* Main Container */}
       <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all duration-1000 ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
+        {/* Paper Texture & Gradient Overlay */}
+        {mounted && (
+          <>
+            <div 
+              className="absolute inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-multiply" 
+              style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/natural-paper.png')" }}
+            />
+            <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-transparent via-background/40 to-muted/30" />
+          </>
+        )}
+        
         <MusicPlayer isPlaying={isPlaying} onToggle={() => setIsPlaying(!isPlaying)} />
         
         <Hero couple={couple} />
-        <div className="relative px-0">
-          <div id="couple">
-            <Couple couple={couple} />
-          </div>
-          <div id="story">
-            <Journey stories={stories} />
-          </div>
+        <Couple couple={couple} />
+        <Journey stories={stories} />
           <Countdown couple={couple} />
-          <div id="event">
-            <EventDetails events={events} />
-          </div>
+        <EventDetails events={events} />
           <Gallery gallery={gallery} />
           <WeddingGift gifts={gifts} />
-          <div id="rsvp">
-            <RSVP couple={couple} guest={guest} />
-          </div>
+        <RSVP couple={couple} guest={guest} />
           <Guestbook guest={guest} />
-        </div>
         
         {isOpen && <BottomNav />}
         

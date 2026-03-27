@@ -1,14 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, ExternalLink } from "lucide-react";
+import TornEdge from "@/components/invitation/TornEdge";
 
 export default function EventDetails({ events }: { events?: any[] }) {
   if (!events || events.length === 0) return null;
 
   return (
-    <section id="event" className="py-32 px-6 bg-muted/20 relative">
-      <div className="max-w-6xl mx-auto">
+    <section id="event" className="py-32 px-6 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+      <TornEdge position="top" color="fill-muted/5" />
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -71,6 +74,11 @@ export default function EventDetails({ events }: { events?: any[] }) {
             </motion.div>
           ))}
         </div>
+      </div>
+      
+      {/* Background Motif */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[20vw] md:text-[15vw] font-serif italic opacity-[0.03] md:opacity-[0.02] pointer-events-none select-none z-0 -rotate-90">
+        THE CELEBRATION
       </div>
     </section>
   );
