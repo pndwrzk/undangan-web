@@ -15,9 +15,12 @@ export default function Hero({ couple }: { couple: any }) {
   const officialHashtag = couple?.hashtag || `#${groomName}${brideName}Journey`;
 
   return (
-    <section className="relative min-h-[80vh] md:h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
+    <section id="hero" className="relative min-h-[80vh] md:h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
       {/* Background with texture/image bg */}
-      <div className="absolute inset-0 z-0 opacity-40">
+      <motion.div 
+        style={{ y: typeof window !== 'undefined' ? 0 : 0 }} // Simplified for now, real parallax used via framer hooks if needed
+        className="absolute inset-0 z-0 opacity-40"
+      >
         <Image
           src={couple?.heroImage || "/hero-bg.png"}
           alt="Wedding Background"
@@ -25,7 +28,7 @@ export default function Hero({ couple }: { couple: any }) {
           className="object-cover animate-slow-zoom"
           priority
         />
-      </div>
+      </motion.div>
 
       <div className="container relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 px-6">
         {/* Left Side: Names */}
@@ -40,13 +43,19 @@ export default function Hero({ couple }: { couple: any }) {
           </motion.p>
           
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: 0.3 }}
             className="text-7xl md:text-9xl font-serif text-foreground leading-none mb-8"
           >
             {brideName} <br />
-            <span className="text-primary italic">&</span> {groomName}
+            <motion.span 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 1 }}
+              className="text-primary italic"
+            >&</motion.span> {groomName}
           </motion.h1>
 
           {officialHashtag && (

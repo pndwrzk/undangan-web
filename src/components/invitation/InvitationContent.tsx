@@ -12,6 +12,7 @@ import Countdown from "@/components/invitation/Countdown";
 import WeddingGift from "@/components/invitation/WeddingGift";
 import RSVP from "@/components/invitation/RSVP";
 import Guestbook from "@/components/invitation/Guestbook";
+import BottomNav from "@/components/invitation/BottomNav";
 
 import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType } from "@/types";
 
@@ -49,15 +50,25 @@ export default function InvitationContent({ couple, guestName, guest, events, gi
         
         <Hero couple={couple} />
         <div className="relative px-0">
-          <Couple couple={couple} />
-          <Journey stories={stories} />
+          <div id="couple">
+            <Couple couple={couple} />
+          </div>
+          <div id="story">
+            <Journey stories={stories} />
+          </div>
           <Countdown couple={couple} />
-          <EventDetails events={events} />
+          <div id="event">
+            <EventDetails events={events} />
+          </div>
           <Gallery gallery={gallery} />
           <WeddingGift gifts={gifts} />
-          <RSVP couple={couple} guest={guest} />
+          <div id="rsvp">
+            <RSVP couple={couple} guest={guest} />
+          </div>
           <Guestbook guest={guest} />
         </div>
+        
+        {isOpen && <BottomNav />}
         
         <footer className="py-24 px-6 text-center text-muted-foreground text-sm border-t bg-muted/30">
           <p className="font-serif italic text-xl mb-4 text-primary">{coupleNames}</p>

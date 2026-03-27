@@ -52,10 +52,10 @@ export default function Journey({ stories }: JourneyProps) {
               <div key={index} className={`flex flex-col md:flex-row items-center gap-12 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                 {/* Content */}
                 <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
                   className="flex-1 text-center md:text-left"
                 >
                   <div className={`flex flex-col ${index % 2 === 0 ? 'md:items-end md:text-right' : 'md:items-start md:text-left'}`}>
@@ -74,10 +74,10 @@ export default function Journey({ stories }: JourneyProps) {
 
                 {/* Photo */}
                 <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
                   className="flex-1 flex justify-center"
                 >
                   <div className={`relative w-64 h-64 p-3 bg-white shadow-2xl transform ${item.rotate} hover:rotate-0 transition-transform duration-500`}>

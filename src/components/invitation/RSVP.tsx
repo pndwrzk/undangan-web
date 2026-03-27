@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { CheckCircle2, Heart } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 import { Couple as CoupleType, Guest as GuestType } from "@/types";
 
@@ -65,7 +65,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           className="max-w-xl mx-auto text-center"
         >
           <div className="bg-white p-12 md:p-20 rounded-[3rem] border-double border-8 border-primary/10 shadow-2xl relative">
-            <Heart className="w-12 h-12 text-primary mx-auto mb-8 fill-primary/10" />
+            <CheckCircle2 className="w-12 h-12 text-primary mx-auto mb-8" />
             <h2 className="text-4xl font-serif mb-6 italic">Terima Kasih</h2>
             <p className="text-muted-foreground font-serif text-lg leading-relaxed mb-10">
               Konfirmasi kehadiran Anda telah kami simpan. Kehadiran Anda adalah kado terindah bagi kami.
@@ -168,7 +168,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
         {/* Signatures decorative */}
         <div className="mt-20 flex justify-center items-center gap-12 opacity-30 select-none grayscale">
            <span className="font-serif text-5xl">{brideName}</span>
-           <Heart fill="currentColor" size={24} />
+           <span className="text-2xl font-serif text-primary">&</span>
            <span className="font-serif text-5xl">{groomName}</span>
         </div>
       </div>

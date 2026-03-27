@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Music, Pause } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { Music } from "lucide-react";
 
 interface MusicPlayerProps {
   isPlaying: boolean;
@@ -24,45 +23,36 @@ export default function MusicPlayer({ isPlaying, onToggle }: MusicPlayerProps) {
   }, [isPlaying]);
 
   return (
-    <div className="fixed bottom-6 left-6 z-[90] flex items-center justify-center">
+    <div className="fixed bottom-24 right-6 z-[90]">
+      <motion.button
+        animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+        transition={isPlaying ? { duration: 10, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}
+        onClick={onToggle}
+        className="w-14 h-14 bg-white/80 backdrop-blur-md rounded-full shadow-2xl flex items-center justify-center border border-primary/20 text-primary relative group focus:outline-none"
+      >
+        <Music className={`h-6 w-6 transition-transform ${isPlaying ? 'scale-110' : 'scale-90 opacity-50'}`} />
+        
+        {/* Pulsing effect when playing */}
+        {isPlaying && (
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0.5 }}
+            animate={{ scale: 1.5, opacity: 0 }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="absolute inset-0 rounded-full bg-primary/20"
+          />
+        )}
+        
+        {/* Tooltip for desktop */}
+        <div className="absolute right-full mr-4 bg-background px-4 py-2 rounded-xl text-[10px] font-typewriter uppercase tracking-widest text-primary border border-primary/5 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden md:block">
+          {isPlaying ? "Pause Music" : "Play Music"}
+        </div>
+      </motion.button>
+      
       <audio
         ref={audioRef}
         loop
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Placeholder audio
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       />
-      
-      <Button
-        onClick={onToggle}
-        variant="outline"
-        className={`w-14 h-14 rounded-full border-2 border-primary bg-background shadow-xl flex items-center justify-center p-0 overflow-hidden relative group transition-all duration-500 ${isPlaying ? 'scale-110' : 'scale-100 opacity-70'}`}
-      >
-        <div className={`absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors`} />
-        
-        <div className={`relative z-10 ${isPlaying ? 'animate-spin-slow' : ''}`}>
-          {isPlaying ? (
-            <Pause size={24} className="text-primary" />
-          ) : (
-            <Music size={24} className="text-primary" />
-          )}
-        </div>
-
-        {/* Vinyl Grooves effect */}
-        <div className="absolute inset-0 border-[8px] border-black/5 rounded-full pointer-events-none" />
-        <div className="absolute inset-2 border-[1px] border-black/5 rounded-full pointer-events-none" />
-      </Button>
-
-      <AnimatePresence>
-        {isPlaying && (
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="ml-4 bg-background/80 backdrop-blur-sm border border-primary/20 px-3 py-1 rounded-full shadow-sm"
-          >
-            <p className="text-[10px] uppercase font-serif tracking-widest text-primary">Playing Now</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

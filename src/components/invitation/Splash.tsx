@@ -31,8 +31,8 @@ function SplashContent({
       {!isOpen && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          exit={{ opacity: 0, scale: 1.15, filter: "blur(20px)" }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background overflow-hidden"
         >
           {/* Background Image with Overlay */}
@@ -49,16 +49,21 @@ function SplashContent({
 
           <div className="relative z-10 text-center px-6 max-w-lg w-full">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               className="mb-12"
             >
               <p className="font-typewriter text-[10px] uppercase tracking-[0.5em] text-primary mb-6">Wedding Invitation</p>
               <h1 className="text-6xl md:text-8xl font-serif text-foreground mb-4">
                 {brideName} <br/> <span className="italic text-primary">&</span> <br/> {groomName}
               </h1>
-              <div className="w-16 h-[1px] bg-primary/20 mx-auto mt-8" />
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: 64 }}
+                transition={{ delay: 1, duration: 1.5 }}
+                className="h-[1px] bg-primary/20 mx-auto mt-8" 
+              />
             </motion.div>
 
             <motion.div
