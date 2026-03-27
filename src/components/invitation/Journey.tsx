@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Heart, Calendar, Star, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
 import { Story as StoryType } from "@/types";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -19,6 +21,8 @@ interface JourneyProps {
 }
 
 export default function Journey({ stories }: JourneyProps) {
+  const [selectedPhoto, setSelectedPhoto] = useState<StoryType | null>(null);
+
   if (!stories || stories.length === 0) return null;
 
   const displayStories = stories.map((s, i) => ({
@@ -28,17 +32,17 @@ export default function Journey({ stories }: JourneyProps) {
   })) as (Omit<StoryType, 'icon'> & { icon: React.ReactNode; rotate: string })[];
 
   return (
-    <section className="py-24 px-6 bg-muted/5 relative overflow-hidden">
+    <section className="py-16 px-6 bg-muted/5 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Our Story</span>
-          <h2 className="text-5xl md:text-7xl font-serif mb-6">Journey of Love</h2>
+          <h2 className="text-5xl md:text-7xl font-serif mb-4">Journey of Love</h2>
           <div className="w-24 h-[1px] bg-primary/30 mx-auto" />
         </motion.div>
 
@@ -47,9 +51,9 @@ export default function Journey({ stories }: JourneyProps) {
           <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-primary/20 hidden md:block" />
 
           {/* Milestones */}
-          <div className="space-y-16 md:space-y-24">
+          <div className="space-y-12 md:space-y-16">
             {displayStories.map((item, index) => (
-              <div key={index} className={`flex flex-col md:flex-row items-center gap-12 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+              <div key={index} className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                 {/* Content */}
                 <motion.div
                   initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
@@ -80,13 +84,16 @@ export default function Journey({ stories }: JourneyProps) {
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="flex-1 flex justify-center"
                 >
-                  <div className={`relative w-64 h-64 p-3 bg-white shadow-2xl transform ${item.rotate} hover:rotate-0 transition-transform duration-500`}>
+                  <div 
+                    onClick={() => setSelectedPhoto(item)}
+                    className={`relative w-64 h-64 p-3 bg-white shadow-2xl transform ${item.rotate} hover:rotate-0 transition-transform duration-500 cursor-pointer group`}
+                  >
                     <div className="relative w-full h-full overflow-hidden">
                       <Image
                         src={item.image || "/hero-bg.png"}
                         alt={item.title}
                         fill
-                        className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                       />
                     </div>
                     {/* Tape Effect */}
@@ -97,6 +104,29 @@ export default function Journey({ stories }: JourneyProps) {
             ))}
           </div>
         </div>
+
+        {/* Lightbox */}
+        <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
+          <DialogContent className="max-w-[95vw] md:max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none ring-0">
+            <div className="relative w-full aspect-[4/5] md:aspect-video flex items-center justify-center">
+              {selectedPhoto && (
+                <Image
+                  src={selectedPhoto.image || "/hero-bg.png"}
+                  alt={selectedPhoto.title}
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              )}
+            </div>
+            {selectedPhoto && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full text-white text-center">
+                <p className="font-serif text-lg">{selectedPhoto.title}</p>
+                <p className="text-xs font-typewriter uppercase tracking-widest opacity-80">{selectedPhoto.date}</p>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Background Decorative Text */}

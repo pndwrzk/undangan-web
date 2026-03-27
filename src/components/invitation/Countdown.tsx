@@ -37,15 +37,15 @@ export default function Countdown({ couple }: { couple: any }) {
 
   const TimerBox = ({ value, label }: { value: number; label: string }) => (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 md:w-24 md:h-24 bg-background border border-primary/20 rounded-2xl flex items-center justify-center shadow-lg mb-2">
-        <span className="text-2xl md:text-4xl font-serif text-foreground">{value}</span>
+      <div className="w-14 h-14 md:w-20 md:h-20 bg-background border border-primary/20 rounded-2xl flex items-center justify-center shadow-lg mb-2">
+        <span className="text-xl md:text-3xl font-serif text-foreground">{value}</span>
       </div>
       <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-widest text-primary">{label}</span>
     </div>
   );
 
   return (
-    <section className="py-24 px-6 bg-background relative border-y border-primary/10">
+    <section className="py-16 px-6 bg-background relative border-y border-primary/10">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -53,7 +53,7 @@ export default function Countdown({ couple }: { couple: any }) {
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-3xl md:text-5xl font-serif mb-12 italic">Counting down to the big day</h2>
+          <h2 className="text-3xl md:text-5xl font-serif mb-8 italic">Counting down to the big day</h2>
           
           <div className="flex justify-center gap-4 md:gap-8">
             <TimerBox value={timeLeft.days} label="Days" />

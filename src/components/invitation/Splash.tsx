@@ -9,15 +9,15 @@ import { Suspense } from "react";
 
 import { Couple as CoupleType } from "@/types";
 
-function SplashContent({ 
-  onOpen, 
-  isOpen, 
-  couple, 
-  guestName: propGuestName 
-}: { 
-  onOpen: () => void; 
-  isOpen: boolean; 
-  couple: CoupleType | null; 
+function SplashContent({
+  onOpen,
+  isOpen,
+  couple,
+  guestName: propGuestName
+}: {
+  onOpen: () => void;
+  isOpen: boolean;
+  couple: CoupleType | null;
   guestName?: string | null;
 }) {
   const searchParams = useSearchParams();
@@ -52,17 +52,17 @@ function SplashContent({
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="mb-12"
+              className="mb-8"
             >
-              <p className="font-typewriter text-[10px] uppercase tracking-[0.5em] text-primary mb-6">Wedding Invitation</p>
+              <p className="font-typewriter text-[10px] uppercase tracking-[0.5em] text-primary mb-4">Wedding Invitation</p>
               <h1 className="text-6xl md:text-8xl font-serif text-foreground mb-4">
-                {brideName} <br/> <span className="italic text-primary">&</span> <br/> {groomName}
+                {brideName} <br /> <span className="italic text-primary">&</span> <br /> {groomName}
               </h1>
-              <motion.div 
+              <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: 64 }}
                 transition={{ delay: 1, duration: 1.5 }}
-                className="h-[1px] bg-primary/20 mx-auto mt-8" 
+                className="h-[1px] bg-primary/20 mx-auto mt-6"
               />
             </motion.div>
 
@@ -70,7 +70,7 @@ function SplashContent({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="mb-16"
+              className="mb-12"
             >
               <p className="font-serif italic text-muted-foreground mb-4 text-sm">Kepada Bapak/Ibu/Saudara/i:</p>
               <div className="relative py-4">
@@ -86,7 +86,7 @@ function SplashContent({
             >
               <Button
                 onClick={onOpen}
-                className="bg-primary hover:bg-primary/90 text-white px-12 py-8 rounded-full shadow-[0_15px_30px_-10px_rgba(var(--primary-rgb),0.5)] transition-all hover:scale-105 group text-lg font-serif tracking-widest uppercase overflow-hidden relative"
+                className="bg-primary hover:bg-primary/90 text-white px-8 py-6 rounded-full shadow-[0_15px_30px_-10px_rgba(var(--primary-rgb),0.5)] transition-all hover:scale-105 group text-lg font-serif tracking-widest uppercase overflow-hidden relative"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   <MailOpen className="h-6 w-6 group-hover:rotate-12 transition-transform" />
@@ -98,7 +98,7 @@ function SplashContent({
           </div>
 
           {/* Ornamental Elements */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.1 }}
             transition={{ delay: 1.5, duration: 2 }}

@@ -1,7 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 
 const classPattern = [
   "col-span-2 row-span-2",
@@ -13,21 +16,23 @@ const classPattern = [
 ];
 
 export default function Gallery({ gallery }: { gallery?: any[] }) {
+  const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
+
   if (!gallery || gallery.length === 0) return null;
 
   return (
-    <section className="py-32 px-6 bg-background relative">
+    <section className="py-12 px-6 bg-background relative">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="text-center mb-24"
+          className="text-center mb-12"
         >
           <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Moments</span>
           <h2 className="text-5xl md:text-7xl font-serif mb-6">Our Gallery</h2>
-          <div className="w-24 h-[1px] bg-primary/30 mx-auto" />
+          <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
@@ -38,7 +43,8 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden rounded-2xl shadow-lg group ${classPattern[index % classPattern.length]}`}
+              className={`relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer ${classPattern[index % classPattern.length]}`}
+              onClick={() => setSelectedPhoto(photo)}
             >
               <Image
                 src={photo.imageUrl}
@@ -56,11 +62,28 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
             </motion.div>
           ))}
         </div>
+
+        {/* Lightbox */}
+        <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
+          <DialogContent className="max-w-[95vw] md:max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none ring-0">
+            <div className="relative w-full aspect-[4/5] md:aspect-video flex items-center justify-center">
+              {selectedPhoto && (
+                <Image
+                  src={selectedPhoto.imageUrl}
+                  alt={selectedPhoto.caption || "Gallery Photo"}
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
       
       {/* Decorative Scrapbook Elements */}
-      <div className="absolute top-20 left-10 w-24 h-24 border-4 border-primary/10 rounded-full -rotate-12 hidden md:block" />
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-accent/5 rounded-[3rem] rotate-45 hidden md:block" />
+      <div className="absolute top-16 left-8 w-20 h-20 border-4 border-primary/10 rounded-full -rotate-12 hidden md:block" />
+      <div className="absolute bottom-16 right-8 w-28 h-28 bg-accent/5 rounded-[3rem] rotate-45 hidden md:block" />
     </section>
   );
 }
