@@ -33,6 +33,8 @@ interface InvitationContentProps {
   song?: SongType | null;
 }
 
+import { useMusic } from "@/components/providers/MusicProvider";
+
 export default function InvitationContent({
   couple,
   guestName,
@@ -46,17 +48,20 @@ export default function InvitationContent({
   const { status: authStatus } = useSession();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { isPlaying, togglePlay, setActiveSong } = useMusic();
   const [mounted, setMounted] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    if (song) {
+      setActiveSong(song);
+    }
+  }, [song, setActiveSong]);
 
   const handleOpen = () => {
     setIsOpen(true);
-    setIsPlaying(true);
+    togglePlay(true);
   };
 
   const coupleNames = couple ? `${couple.brideName} & ${couple.groomName}` : "Alvia & Pandiwa";
@@ -65,7 +70,7 @@ export default function InvitationContent({
   const partnerName = guest?.partnerName;
 
   return (
-    <div 
+    <div
       className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-0 md:p-8 lg:p-12 selection:bg-primary/20"
     >
       {/* Splash Screen */}
@@ -85,7 +90,7 @@ export default function InvitationContent({
           </>
         )}
 
-        {song && <MusicPlayer isPlaying={isPlaying} onToggle={() => setIsPlaying(!isPlaying)} song={song} />}
+        {song && <MusicPlayer song={song} />}
 
         <Hero couple={couple} />
         <Couple couple={couple} />

@@ -19,6 +19,7 @@ export async function GET(req: Request) {
 
     const [wishes, total] = await Promise.all([
       prisma.guestbook.findMany({
+        include: { guest: true },
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,

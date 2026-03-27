@@ -131,8 +131,13 @@ export default function WishesPage() {
                   <TableRow key={wish.id} className="border-b border-primary/5 hover:bg-primary/5 transition-colors group">
                     <TableCell className="px-6 py-5">
                       <div className="flex flex-col">
-                        <p className="font-bold text-slate-800 text-lg">{wish.name}</p>
-                        <p className="text-[10px] text-muted-foreground font-typewriter uppercase tracking-widest mt-0.5">Submitted Name</p>
+                        <p className="font-bold text-slate-800 text-lg">{wish.guest?.name || wish.name}</p>
+                        <p className="text-[10px] text-primary font-typewriter uppercase tracking-widest mt-0.5">Original Name</p>
+                        
+                        <div className="mt-3 pt-2 border-t border-primary/5">
+                          <p className="text-sm text-slate-600 font-medium">{wish.name}</p>
+                          <p className="text-[9px] text-muted-foreground font-typewriter uppercase tracking-widest">As Submitted</p>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell className="px-6 py-5 max-w-md">

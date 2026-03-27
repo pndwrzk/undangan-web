@@ -6,11 +6,23 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir, unlink } from "fs/promises";
 import path from "path";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const activeOnly = searchParams.get("active") === "true";
+  
   const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session && !activeOnly) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   try {
+    if (activeOnly) {
+      const song = await prisma.song.findFirst({
+        where: { isActive: true }
+      });
+      return NextResponse.json(song);
+    }
+
     const songs = await prisma.song.findMany({
       orderBy: { createdAt: 'desc' }
     });

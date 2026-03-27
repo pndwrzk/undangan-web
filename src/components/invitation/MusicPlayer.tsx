@@ -2,78 +2,46 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Music } from "lucide-react";
+import { Music, Pause } from "lucide-react";
+import { useMusic } from "@/components/providers/MusicProvider";
 
 import { Song } from "@/types";
 
 interface MusicPlayerProps {
-  isPlaying: boolean;
-  onToggle: () => void;
   song?: Song | null;
 }
 
-export default function MusicPlayer({ isPlaying, onToggle, song }: MusicPlayerProps) {
-  const audioUrl = song?.url || "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current?.play().catch(() => {
-        console.log("Audio play failed (waiting for user interaction)");
-      });
-    } else {
-      audioRef.current?.pause();
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        audioRef.current?.pause();
-      } else {
-        if (isPlaying) {
-          audioRef.current?.play().catch(() => {});
-        }
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [isPlaying]);
+export default function MusicPlayer({ song }: MusicPlayerProps) {
+  const { isPlaying, togglePlay } = useMusic();
+  
+  if (!song) return null;
 
   return (
-    <div className="fixed bottom-24 right-6 z-[90]">
-      <motion.button
-        animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
-        transition={isPlaying ? { duration: 10, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}
-        onClick={onToggle}
-        className="w-14 h-14 bg-white/80 backdrop-blur-md rounded-full shadow-2xl flex items-center justify-center border border-primary/20 text-primary relative group focus:outline-none"
-      >
-        <Music className={`h-6 w-6 transition-transform ${isPlaying ? 'scale-110' : 'scale-90 opacity-50'}`} />
-        
-        {/* Pulsing effect when playing */}
-        {isPlaying && (
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0.5 }}
-            animate={{ scale: 1.5, opacity: 0 }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="absolute inset-0 rounded-full bg-primary/20"
-          />
-        )}
-        
-        {/* Tooltip for desktop */}
-        <div className="absolute right-full mr-4 bg-background px-4 py-2 rounded-xl text-[10px] font-typewriter uppercase tracking-widest text-primary border border-primary/5 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden md:block">
-          {isPlaying ? "Pause Music" : "Play Music"}
-        </div>
-      </motion.button>
+    <div className="fixed bottom-24 right-6 z-50 flex flex-col items-center gap-2 group animate-in fade-in slide-in-from-right-10 duration-1000 delay-500">
+      <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100 whitespace-nowrap pointer-events-none">
+        <p className="font-typewriter text-[10px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
+        <p className="font-serif text-sm font-bold text-slate-800">{song.title}</p>
+        <p className="font-serif text-[10px] text-muted-foreground">{song.artist}</p>
+      </div>
       
-      <audio
-        ref={audioRef}
-        loop
-        src={audioUrl}
-      />
+      <button
+        onClick={() => togglePlay()}
+        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-700 shadow-lg ${
+          isPlaying 
+            ? "bg-primary text-white scale-110 shadow-primary/30 rotate-[360deg]" 
+            : "bg-white text-primary hover:bg-primary/5 shadow-black/5"
+        }`}
+      >
+        {isPlaying ? <Pause size={24} /> : <Music size={24} className="animate-pulse" />}
+      </button>
+      
+      {isPlaying && (
+        <div className="flex gap-1 h-3 items-end">
+          <div className="w-1 bg-primary/40 rounded-full animate-[music-bar_1.2s_ease-in-out_infinite]" />
+          <div className="w-1 bg-primary/60 rounded-full animate-[music-bar_0.8s_ease-in-out_infinite_0.2s]" />
+          <div className="w-1 bg-primary/40 rounded-full animate-[music-bar_1.0s_ease-in-out_infinite_0.4s]" />
+        </div>
+      )}
     </div>
   );
 }

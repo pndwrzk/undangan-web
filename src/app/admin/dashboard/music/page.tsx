@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Music, Play, CheckCircle2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Music, Play, CheckCircle2, Pause } from "lucide-react";
+import { useMusic } from "@/components/providers/MusicProvider";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +24,7 @@ import { Song } from "@/types";
 export default function MusicPage() {
   const { status } = useSession();
   const router = useRouter();
+  const { isPlaying, togglePlay, activeSong, setActiveSong } = useMusic();
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
   const [savingSong, setSavingSong] = useState(false);
@@ -242,10 +244,21 @@ export default function MusicPage() {
                     <Button 
                       variant="outline" 
                       size="icon" 
-                      onClick={() => window.open(s.url, '_blank')}
-                      className="rounded-full border-primary/10 hover:bg-primary/5 h-10 w-10"
+                      onClick={() => {
+                        if (activeSong?.id === s.id && isPlaying) {
+                          togglePlay(false);
+                        } else {
+                          setActiveSong(s);
+                          togglePlay(true);
+                        }
+                      }}
+                      className={`rounded-full border-primary/10 hover:bg-primary/5 h-10 w-10 transition-all ${activeSong?.id === s.id && isPlaying ? 'bg-primary/10 text-primary border-primary/20' : ''}`}
                     >
-                      <Play size={16} fill="currentColor" className="ml-0.5" />
+                      {activeSong?.id === s.id && isPlaying ? (
+                        <Pause size={16} fill="currentColor" />
+                      ) : (
+                        <Play size={16} fill="currentColor" className="ml-0.5" />
+                      )}
                     </Button>
                     <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                       <div className={`h-full bg-primary ${s.isActive ? 'w-1/2' : 'w-0'}`} />

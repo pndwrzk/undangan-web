@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   description: "You are cordially invited to celebrate the wedding of Alvia & Pandiwa.",
 };
 
+import { MusicProvider } from "@/components/providers/MusicProvider";
+import GlobalAudio from "@/components/audio/GlobalAudio";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +40,12 @@ export default function RootLayout({
       className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans bg-background text-foreground selection:bg-primary/30">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <MusicProvider>
+            <GlobalAudio />
+            {children}
+          </MusicProvider>
+        </AuthProvider>
       </body>
     </html>
   );
