@@ -51,12 +51,13 @@ model Guestbook {
 }
 
 model Guest {
-  id        String   @id @default(uuid())
-  name      String
-  phone     String?
-  group     String?
-  side      Int      @default(0)
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  name        String
+  phone       String?
+  group       String?
+  partnerName String?
+  side        Int      @default(0)
+  createdAt   DateTime @default(now())
 }
 
 model Event {

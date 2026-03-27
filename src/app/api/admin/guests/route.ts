@@ -31,6 +31,7 @@ export async function POST(req: Request) {
         name, 
         phone, 
         group, 
+        partnerName: body.partnerName || null,
         side: side !== undefined ? Number(side) : 0 
       }
     }) as GuestType;
@@ -60,6 +61,7 @@ export async function PUT(req: Request) {
         name, 
         phone, 
         group, 
+        partnerName: body.partnerName || null,
         side: side !== undefined ? Number(side) : 0 
       }
     }) as GuestType;

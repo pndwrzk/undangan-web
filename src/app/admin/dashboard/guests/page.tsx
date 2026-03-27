@@ -71,6 +71,7 @@ export default function GuestsPage() {
         form.name.value = guest.name;
         form.group.value = guest.group || "";
         form.phone.value = guest.phone || "";
+        form.partnerName.value = guest.partnerName || "";
         form.side.value = guest.side !== undefined ? String(guest.side) : "0";
       }
     }, 0);
@@ -83,6 +84,7 @@ export default function GuestsPage() {
     const name = formData.get("name");
     const group = formData.get("group");
     const phone = formData.get("phone");
+    const partnerName = formData.get("partnerName");
     const side = formData.get("side");
 
     try {
@@ -91,13 +93,13 @@ export default function GuestsPage() {
         res = await fetch(`/api/admin/guests?id=${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, group, phone, side }),
+          body: JSON.stringify({ name, group, phone, side, partnerName }),
         });
       } else {
         res = await fetch("/api/admin/guests", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, group, phone, side }),
+          body: JSON.stringify({ name, group, phone, side, partnerName }),
         });
       }
       
@@ -229,9 +231,14 @@ export default function GuestsPage() {
                   <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Group / Category</Label>
                   <Input name="group" placeholder="e.g. High School Friends" className="rounded-xl border-primary/10" />
                 </div>
-                 <div className="space-y-2">
+                <div className="space-y-2">
                   <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">WhatsApp Number</Label>
                   <Input name="phone" placeholder="e.g. 62812345678" className="rounded-xl border-primary/10" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Partner Name (Optional)</Label>
+                  <Input name="partnerName" placeholder="e.g. Jane Doe" className="rounded-xl border-primary/10" />
+                  <p className="text-[10px] text-muted-foreground font-typewriter ml-1 italic">Leave empty if invited alone</p>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Guest Side</Label>
@@ -287,7 +294,12 @@ export default function GuestsPage() {
                     <TableRow key={guest.id} className="border-b border-primary/5 last:border-0 hover:bg-primary/5 transition-colors group">
                       <TableCell className="px-6 py-5">
                         <p className="font-bold text-slate-800 text-lg">{guest.name}</p>
-                        <p className="text-xs text-muted-foreground font-typewriter tracking-tight">{guest.phone || 'No phone number'}</p>
+                        {guest.partnerName && (
+                          <p className="text-xs text-primary font-typewriter tracking-tight flex items-center gap-1">
+                            <span className="opacity-50">&</span> {guest.partnerName}
+                          </p>
+                        )}
+                        <p className="text-xs text-muted-foreground font-typewriter tracking-tight mt-1">{guest.phone || 'No phone number'}</p>
                       </TableCell>
                       <TableCell className="px-6 py-5">
                         <div className="flex flex-col gap-1 items-start">

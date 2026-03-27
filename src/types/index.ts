@@ -62,6 +62,7 @@ export interface Guest {
   name: string;
   phone?: string | null;
   group?: string | null;
+  partnerName?: string | null;
   side: number;
   createdAt: Date | string;
 }
