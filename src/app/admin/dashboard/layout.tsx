@@ -1,0 +1,134 @@
+"use client";
+
+import { useSession, signOut } from "next-auth/react";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { LogOut, Users, LayoutDashboard, Heart, Shield, Calendar, Gift, Image, MessageSquare, History, Music, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [couple, setCouple] = useState<any>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu when pathname changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/admin/login");
+    }
+    
+    if (status === "authenticated") {
+      fetch("/api/admin/couple")
+        .then(res => res.json())
+        .then(data => setCouple(data))
+        .catch(console.error);
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-muted/10 flex flex-col md:flex-row font-sans">
+      
+      {/* Mobile Top Header */}
+      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b sticky top-0 z-30 shadow-sm">
+        <div>
+          <h1 className="text-lg font-serif text-primary hover:opacity-80 transition-opacity" onClick={() => router.push("/admin/dashboard")}>Wedding Admin</h1>
+          <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mt-0.5">
+            {couple ? `${couple.brideName} & ${couple.groomName}` : "Dashboard"}
+          </p>
+        </div>
+        <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:bg-primary/5 bg-transparent text-primary">
+          <Menu className="w-6 h-6" />
+        </Button>
+      </div>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/40 z-40 md:hidden animate-in fade-in-0 duration-300"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside 
+        className={`fixed inset-y-0 left-0 bg-white border-r flex flex-col shadow-xl z-50 w-72 transform transition-transform duration-300 ease-in-out md:w-64 md:relative md:translate-x-0 md:h-screen md:sticky md:top-0 ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-6 border-b flex justify-between items-center">
+          <div>
+            <h1 className="text-xl font-serif text-primary">Wedding Admin</h1>
+            <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mt-1">
+              {couple ? `${couple.brideName} & ${couple.groomName}` : "Dashboard"}
+            </p>
+          </div>
+          <Button variant="ghost" size="icon" className="md:hidden text-muted-foreground hover:text-primary" onClick={() => setIsMobileMenuOpen(false)}>
+            <X className="w-5 h-5" />
+          </Button>
+        </div>
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto w-full pb-20 md:pb-4">
+          <Link href="/admin/dashboard" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <LayoutDashboard size={18} /> Overview
+          </Link>
+          <Link href="/admin/dashboard/couple" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/couple' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Heart size={18} /> Bride & Groom
+          </Link>
+          <Link href="/admin/dashboard/story" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/story' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <History size={18} /> Journey of Love
+          </Link>
+          <Link href="/admin/dashboard/events" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/events' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Calendar size={18} /> Events
+          </Link>
+          <Link href="/admin/dashboard/music" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/music' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Music size={18} /> Music
+          </Link>
+          <Link href="/admin/dashboard/gifts" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/gifts' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Gift size={18} /> Gifts
+          </Link>
+          <Link href="/admin/dashboard/gallery" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/gallery' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Image size={18} /> Gallery
+          </Link>
+          <Link href="/admin/dashboard/guests" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/guests' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Users size={18} /> Guest List
+          </Link>
+          <Link href="/admin/dashboard/wishes" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/wishes' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <MessageSquare size={18} /> Guest Wishes
+          </Link>
+          <Link href="/admin/dashboard/users" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/users' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <Shield size={18} /> Manage Admins
+          </Link>
+        </nav>
+        <div className="p-4 border-t">
+          <p className="text-xs text-muted-foreground mb-4 px-2">Signed in as <br/><strong className="text-foreground">{session?.user?.name}</strong></p>
+          <Button variant="ghost" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => signOut()}>
+            <LogOut size={16} className="mr-2" /> Logout
+          </Button>
+        </div>
+      </aside>
+
+      {/* Content Area */}
+      <main className="flex-1 p-6 md:p-10 overflow-y-auto md:h-screen">
+        <div className="max-w-6xl mx-auto">
+          {children}
+        </div>
+      </main>
+      <Toaster />
+    </div>
+  );
+}

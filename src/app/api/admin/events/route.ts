@@ -1,0 +1,78 @@
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import { Event as EventType } from "@/types";
+
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const events = await prisma.event.findMany({
+      orderBy: { createdAt: 'asc' }
+    }) as EventType[];
+    return NextResponse.json(events);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch events" }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const body = await req.json();
+    const { title, subtitle, time, date, location, address, mapUrl } = body;
+
+    const event = await prisma.event.create({
+      data: { title, subtitle: subtitle || "", time, date, location, address, mapUrl }
+    }) as EventType;
+
+    return NextResponse.json(event);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to create event" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const body = await req.json();
+    const { id, title, subtitle, time, date, location, address, mapUrl } = body;
+
+    if (!id) return NextResponse.json({ error: "Event ID required" }, { status: 400 });
+
+    const event = await prisma.event.update({
+      where: { id },
+      data: { title, subtitle: subtitle || "", time, date, location, address, mapUrl }
+    }) as EventType;
+
+    return NextResponse.json(event);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update event" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
+    await prisma.event.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete event" }, { status: 500 });
+  }
+}

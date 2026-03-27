@@ -1,0 +1,113 @@
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
+
+export async function GET() {
+  try {
+    const gallery = await prisma.gallery.findMany({
+      orderBy: [
+        { order: 'asc' },
+        { createdAt: 'desc' }
+      ]
+    });
+    return NextResponse.json(gallery);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch gallery" }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const formData = await req.formData();
+    const caption = formData.get("caption") as string || "";
+    const imageFile = formData.get("image") as File;
+
+    if (!imageFile || imageFile.size === 0) {
+      return NextResponse.json({ error: "Image file is required" }, { status: 400 });
+    }
+
+    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const galleryDir = path.join(uploadDir, "gallery");
+    await mkdir(galleryDir, { recursive: true }).catch(() => {});
+
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const filename = `gallery-${Date.now()}-${imageFile.name.replace(/\s+/g, '-')}`;
+    await writeFile(path.join(galleryDir, filename), buffer);
+    const imageUrl = `/uploads/gallery/${filename}`;
+
+    const galleryItem = await prisma.gallery.create({
+      data: { imageUrl, caption }
+    });
+
+    return NextResponse.json(galleryItem);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
+    const item = await prisma.gallery.findUnique({
+      where: { id }
+    });
+
+    if (item?.imageUrl) {
+      try {
+        const filePath = path.join(process.cwd(), "public", item.imageUrl);
+        await import("fs/promises").then(fs => fs.unlink(filePath)).catch(() => {});
+      } catch (e) {
+        console.error("Failed to delete image file:", e);
+      }
+    }
+
+    await prisma.gallery.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const items = await req.json();
+    
+    if (!Array.isArray(items)) {
+      return NextResponse.json({ error: "Invalid data format" }, { status: 400 });
+    }
+
+    await prisma.$transaction(
+      items.map((item: { id: string, order: number }) => 
+        prisma.gallery.update({
+          where: { id: item.id },
+          data: { order: item.order }
+        })
+      )
+    );
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Gallery API PATCH Error:", error);
+    return NextResponse.json({ error: "Failed to update order" }, { status: 500 });
+  }
+}
