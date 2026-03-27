@@ -4,12 +4,16 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Music } from "lucide-react";
 
+import { Song } from "@/types";
+
 interface MusicPlayerProps {
   isPlaying: boolean;
   onToggle: () => void;
+  song?: Song | null;
 }
 
-export default function MusicPlayer({ isPlaying, onToggle }: MusicPlayerProps) {
+export default function MusicPlayer({ isPlaying, onToggle, song }: MusicPlayerProps) {
+  const audioUrl = song?.url || "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export default function MusicPlayer({ isPlaying, onToggle }: MusicPlayerProps) {
       <audio
         ref={audioRef}
         loop
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        src={audioUrl}
       />
     </div>
   );

@@ -14,7 +14,7 @@ export default async function Home({
   const guestId = params.id as string | undefined;
   const to = params.to as string | undefined;
 
-  const [couple, guest, events, gifts, gallery, stories] = await Promise.all([
+  const [couple, guest, events, gifts, gallery, stories, song] = await Promise.all([
     prisma.couple.findFirst() as Promise<Couple | null>,
     guestId ? prisma.guest.findUnique({ where: { id: guestId } }) as Promise<Guest | null> : null,
     prisma.event.findMany({ orderBy: { createdAt: 'asc' } }) as Promise<Event[]>,
