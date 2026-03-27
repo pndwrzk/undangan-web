@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       await mkdir(heroDir, { recursive: true });
       const bytes = await heroImageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const filename = `hero-${Date.now()}-${heroImageFile.name.replace(/\s+/g, '-')}`;
+      const filename = `hero-${Date.now()}-${heroImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(heroDir, filename), buffer);
       heroImagePath = `/uploads/couple/hero/${filename}`;
       if (existingCouple?.heroImage) await unlinkOld(existingCouple.heroImage);
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       await mkdir(groomDir, { recursive: true });
       const bytes = await groomImageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const filename = `groom-${Date.now()}-${groomImageFile.name.replace(/\s+/g, '-')}`;
+      const filename = `groom-${Date.now()}-${groomImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(groomDir, filename), buffer);
       groomImagePath = `/uploads/couple/groom/${filename}`;
       if (existingCouple?.groomImage) await unlinkOld(existingCouple.groomImage);
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
       await mkdir(brideDir, { recursive: true });
       const bytes = await brideImageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const filename = `bride-${Date.now()}-${brideImageFile.name.replace(/\s+/g, '-')}`;
+      const filename = `bride-${Date.now()}-${brideImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(brideDir, filename), buffer);
       brideImagePath = `/uploads/couple/bride/${filename}`;
       if (existingCouple?.brideImage) await unlinkOld(existingCouple.brideImage);

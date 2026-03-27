@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const filename = `story-${Date.now()}-${imageFile.name.replace(/\s+/g, '-')}`;
+      const filename = `story-${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(uploadDir, filename), buffer);
       imageUrl = `/uploads/story/${filename}`;
     }
@@ -92,7 +92,7 @@ export async function PUT(req: Request) {
       
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const filename = `story-${Date.now()}-${imageFile.name.replace(/\s+/g, '-')}`;
+      const filename = `story-${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(uploadDir, filename), buffer);
       imageUrl = `/uploads/story/${filename}`;
 
