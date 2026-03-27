@@ -230,12 +230,12 @@ export default function GalleryPage() {
                             
                             <div 
                               {...provided.dragHandleProps}
-                              className="absolute top-2 left-2 bg-white/80 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-grab hover:bg-white text-muted-foreground hover:text-primary z-20"
+                              className="absolute top-2 left-2 bg-white/80 p-2 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity cursor-grab hover:bg-white text-muted-foreground hover:text-primary z-20 shadow-sm"
                             >
                               <GripHorizontal size={14} />
                             </div>
 
-                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                            <div className="absolute top-2 right-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-20">
                               <Dialog open={deleteConfirmId === img.id} onOpenChange={(open) => setDeleteConfirmId(open ? img.id : null)}>
                                 <DialogTrigger 
                                   render={

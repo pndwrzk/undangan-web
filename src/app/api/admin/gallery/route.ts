@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir } from "fs/promises";
@@ -48,6 +49,7 @@ export async function POST(req: Request) {
       data: { imageUrl, caption: title, order }
     });
 
+    revalidatePath("/");
     return NextResponse.json(galleryItem);
   } catch (error) {
     return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
@@ -81,6 +83,7 @@ export async function DELETE(req: Request) {
       where: { id }
     });
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
@@ -136,6 +139,7 @@ export async function PUT(req: Request) {
       }
     });
 
+    revalidatePath("/");
     return NextResponse.json(updatedItem);
   } catch (error) {
     console.error("Gallery API PUT Error:", error);
@@ -163,6 +167,7 @@ export async function PATCH(req: Request) {
       )
     );
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Gallery API PATCH Error:", error);
