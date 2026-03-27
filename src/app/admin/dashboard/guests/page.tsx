@@ -251,10 +251,16 @@ export default function GuestsPage() {
                     <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Group / Category</Label>
                     <Input name="group" placeholder="e.g. High School Friends" className="rounded-xl border-primary/10" />
                   </div>
-                  <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">WhatsApp Number</Label>
-                    <Input name="phone" placeholder="e.g. 62812345678" className="rounded-xl border-primary/10" />
-                  </div>
+                    <Input 
+                      name="phone" 
+                      placeholder="e.g. 62812345678" 
+                      className="rounded-xl border-primary/10" 
+                      pattern="628[0-9]*"
+                      title="Nomor WhatsApp harus diawali dengan 628"
+                      required
+                    />
+                    <p className="text-[10px] text-muted-foreground font-typewriter ml-1 italic">Wajib diawali 628 (contoh: 628123456789)</p>
                   <div className="space-y-2">
                     <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Partner Name (Optional)</Label>
                     <Input name="partnerName" placeholder="e.g. Jane Doe" className="rounded-xl border-primary/10" />
