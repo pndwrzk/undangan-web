@@ -49,6 +49,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
     const result = await submitRSVP({ 
       name: guest.name, 
       attendance: values.attendance,
+      guestId: guest.id,
     });
     if (result.success) {
       setIsSubmitted(true);
@@ -67,16 +68,16 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
         >
           <div className="bg-white p-10 md:p-14 rounded-[3rem] border-double border-8 border-primary/10 shadow-2xl relative">
             <CheckCircle2 className="w-12 h-12 text-primary mx-auto mb-8" />
-            <h2 className="text-4xl font-serif mb-6 italic">Terima Kasih</h2>
+            <h2 className="text-4xl font-serif mb-6 italic">Thank You</h2>
             <p className="text-muted-foreground font-serif text-lg leading-relaxed mb-10">
-              Konfirmasi kehadiran Anda telah kami simpan. Kehadiran Anda adalah kado terindah bagi kami.
+              Your response has been saved. We look forward to celebrating with you!
             </p>
             <Button 
               variant="outline" 
               onClick={() => setIsSubmitted(false)}
               className="rounded-full px-10 py-6 border-primary/20 text-primary hover:bg-primary/5 uppercase tracking-widest text-xs font-typewriter"
             >
-              Ubah Data
+              Update RSVP
             </Button>
           </div>
         </motion.div>
@@ -104,7 +105,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           <span className="font-typewriter text-xs uppercase tracking-[0.4em] text-primary mb-4 block">Reservation</span>
           <h2 className="text-5xl md:text-7xl font-serif mb-6">Confirm Attendance</h2>
           <p className="text-muted-foreground font-serif italic max-w-md mx-auto text-lg">
-            Mohon konfirmasikan kehadiran Anda sebelum tanggal 1 September 2026.
+            Please kindly confirm your attendance to help us prepare for our special day.
           </p>
         </motion.div>
 
@@ -143,12 +144,12 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="border-0 border-b-2 border-primary/5 rounded-none bg-transparent px-0 focus:ring-0 focus:border-primary transition-all pb-4 h-auto font-serif text-xl shadow-none">
-                              <SelectValue placeholder="Pilih Konfirmasi" />
+                              <SelectValue placeholder="Select Confirmation" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="rounded-2xl border-primary/10 bg-white/95 backdrop-blur-md">
-                            <SelectItem value="yes" className="py-4 focus:bg-primary/5">Berkenan Hadir</SelectItem>
-                            <SelectItem value="no" className="py-4 focus:bg-primary/5">Mohon Maaf, Berhalangan</SelectItem>
+                            <SelectItem value="yes" className="py-4 focus:bg-primary/5">Will Attend</SelectItem>
+                            <SelectItem value="no" className="py-4 focus:bg-primary/5">Regretfully Decline</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage className="font-typewriter text-[10px]" />
@@ -166,7 +167,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 className="pt-6"
               >
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-serif py-8 rounded-[2rem] shadow-2xl transition-all hover:translate-y-[-4px] active:translate-y-0 text-2xl group relative overflow-hidden">
-                  <span className="relative z-10">Konfirmasi Sekarang</span>
+                  <span className="relative z-10">Confirm Now</span>
                   <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
                 </Button>
               </motion.div>

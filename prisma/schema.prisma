@@ -37,6 +37,7 @@ model RSVP {
   name       String
   attendance String
   guests     String?
+  guestId    String?  @unique
   createdAt  DateTime @default(now())
 }
 
@@ -45,6 +46,7 @@ model Guestbook {
   name      String
   message   String   @db.Text
   status    Int      @default(1)
+  guestId   String?
   createdAt DateTime @default(now())
 }
 
@@ -98,6 +100,7 @@ model Story {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
 model Song {
   id        String   @id @default(uuid())
   title     String

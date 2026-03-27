@@ -148,12 +148,30 @@ export default function GuestsPage() {
     return `${baseUrl}/?id=${id}`;
   };
 
-  const copyInvitationLink = (id: string) => {
+  const copyInvitationLink = async (id: string) => {
     const link = generateLink(id);
-    navigator.clipboard.writeText(link);
-    setCopiedId(id);
-    toast.info("Link copied to clipboard!");
-    setTimeout(() => setCopiedId(null), 2000); // Reset copied state after 2 seconds
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(link);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = link;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      setCopiedId(id);
+      toast.success("Link copied to clipboard!");
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+      toast.error("Failed to copy link");
+    }
   };
 
   const sendWhatsApp = (name: string, id: string, phone: string) => {

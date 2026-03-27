@@ -15,7 +15,6 @@ const Gallery = dynamic(() => import("@/components/invitation/Gallery"), { ssr: 
 const WeddingGift = dynamic(() => import("@/components/invitation/WeddingGift"), { ssr: false });
 const Guestbook = dynamic(() => import("@/components/invitation/Guestbook"), { ssr: false });
 
-const PetalsOverlay = dynamic(() => import("@/components/invitation/PetalsOverlay"), { ssr: false });
 import BottomNav from "@/components/invitation/BottomNav";
 
 import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType, Song as SongType } from "@/types";
@@ -63,8 +62,6 @@ export default function InvitationContent({
       {/* Splash Screen */}
       <Splash onOpen={handleOpen} isOpen={isOpen} couple={couple} guestName={guestName} />
 
-      {/* Falling Petals Effect */}
-      {isOpen && <PetalsOverlay />}
 
       {/* Main Container */}
       <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all duration-1000 ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
@@ -79,7 +76,7 @@ export default function InvitationContent({
           </>
         )}
         
-        <MusicPlayer isPlaying={isPlaying} onToggle={() => setIsPlaying(!isPlaying)} song={song} />
+        {song && <MusicPlayer isPlaying={isPlaying} onToggle={() => setIsPlaying(!isPlaying)} song={song} />}
         
         <Hero couple={couple} />
         <Couple couple={couple} />

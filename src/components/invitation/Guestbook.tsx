@@ -12,6 +12,7 @@ import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
 export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   const [messages, setMessages] = useState<GuestbookType[]>([]);
+  const [newName, setNewName] = useState(guest?.name || "");
   const [newText, setNewText] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -33,9 +34,11 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guest || !newText) return;
-
-    const result = await submitWish({ name: guest.name, message: newText });
+    const result = await submitWish({ 
+      name: newName || "Anonymous", 
+      message: newText,
+      guestId: guest?.id 
+    });
 
     if (result.success) {
       setMessages([result.data as any, ...messages]);
@@ -71,16 +74,29 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 sticky top-8">
-                <div className="bg-background border-none shadow-sm rounded-xl py-6 px-4 text-muted-foreground font-serif italic text-sm text-center">
-                  Posting as <span className="font-bold text-primary not-italic">{guest.name}</span>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">Your Name</label>
+                  <Input
+                    placeholder="Your Name"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    className="bg-background border-none shadow-sm rounded-xl py-6"
+                  />
                 </div>
-                <Textarea
-                  placeholder="Give your wishes for the couple..."
-                  value={newText}
-                  onChange={(e) => setNewText(e.target.value)}
-                  className="bg-background border-none shadow-sm rounded-xl min-h-[150px] py-4"
-                />
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6 shadow-md">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">Message</label>
+                  <Textarea
+                    placeholder="Give your wishes for the couple..."
+                    value={newText}
+                    onChange={(e) => setNewText(e.target.value)}
+                    className="bg-background border-none shadow-sm rounded-xl min-h-[150px] py-4"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  disabled={!newText || !newName}
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6 shadow-md disabled:opacity-50"
+                >
                   Send Wishes
                 </Button>
               </form>
