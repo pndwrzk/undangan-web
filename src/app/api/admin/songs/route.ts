@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     // Handle file upload if provided
     if (audioFile && audioFile.size > 0) {
-      const uploadDir = path.join(process.cwd(), "public/uploads/songs");
+      const uploadDir = path.join(process.cwd(), "uploads/songs");
       await mkdir(uploadDir, { recursive: true });
 
       const bytes = await audioFile.arrayBuffer();
@@ -91,16 +91,15 @@ export async function PUT(req: Request) {
 
     // Handle new file upload
     if (audioFile && audioFile.size > 0) {
-      const uploadDir = path.join(process.cwd(), "public/uploads/songs");
+      const uploadDir = path.join(process.cwd(), "uploads/songs");
       await mkdir(uploadDir, { recursive: true });
 
       // Delete old file if it exists and was an upload
-      if (existingSong.url.startsWith('/uploads/songs/')) {
         try {
-          const oldFilePath = path.join(process.cwd(), "public", existingSong.url);
+          const pathSegments = existingSong.url.startsWith('/') ? existingSong.url.substring(1).split('/') : existingSong.url.split('/');
+          const oldFilePath = path.join(process.cwd(), ...pathSegments);
           await unlink(oldFilePath).catch(() => {});
         } catch (e) {}
-      }
 
       const bytes = await audioFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
@@ -149,7 +148,8 @@ export async function DELETE(req: Request) {
     // Delete physical file if it exists
     if (song?.url.startsWith('/uploads/songs/')) {
       try {
-        const filePath = path.join(process.cwd(), "public", song.url);
+        const pathSegments = song.url.startsWith('/') ? song.url.substring(1).split('/') : song.url.split('/');
+        const filePath = path.join(process.cwd(), ...pathSegments);
         await unlink(filePath).catch(() => {});
       } catch (e) {}
     }

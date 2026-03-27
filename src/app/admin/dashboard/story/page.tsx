@@ -304,11 +304,11 @@ export default function StoryPage() {
                       >
                         <div 
                           {...provided.dragHandleProps}
-                          className="absolute top-4 left-4 p-2 bg-white/80 shadow-sm text-muted-foreground rounded-full hover:bg-primary/10 hover:text-primary transition-all cursor-grab z-10 opacity-0 group-hover:opacity-100"
+                          className="absolute top-4 left-4 p-2 bg-white/80 shadow-sm text-muted-foreground rounded-full hover:bg-primary/10 hover:text-primary transition-all cursor-grab z-10 md:opacity-0 md:group-hover:opacity-100"
                         >
                           <GripHorizontal size={14} />
                         </div>
-                        <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                        <div className="absolute top-4 right-4 flex gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                           <button onClick={() => openEditModal(story)} className="p-2 bg-white/80 shadow-sm text-primary rounded-full hover:bg-primary hover:text-white transition-all">
                             <Edit2 size={14} />
                           </button>

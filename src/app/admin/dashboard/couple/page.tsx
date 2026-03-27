@@ -238,7 +238,7 @@ export default function CouplePage() {
               </div>
             {couple?.heroImage && (
               <div className="md:col-span-2 bg-white rounded-[3rem] shadow-sm border border-primary/5 overflow-hidden relative group">
-                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                   <p className="font-typewriter text-white uppercase tracking-widest text-sm">Hero Background Preview</p>
                 </div>
                 <img src={couple.heroImage} alt="Hero Background" className="w-full h-64 object-cover" />

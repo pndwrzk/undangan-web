@@ -202,7 +202,7 @@ export default function GiftsPage() {
                     <p className="text-xs font-typewriter text-muted-foreground uppercase tracking-widest">a/n {g.accountName}</p>
                   </div>
 
-                    <div className="relative z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="relative z-10 flex gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                       <Button variant="outline" size="sm" onClick={() => handleEdit(g)} className="flex-1 rounded-full border-primary/10 hover:bg-primary/5 gap-2 py-5 text-xs">
                         <Pencil size={14} />
                         Edit

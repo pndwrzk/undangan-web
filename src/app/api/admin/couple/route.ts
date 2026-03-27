@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     const existingCouple = await prisma.couple.findUnique({ where: { id } });
 
     // Handle File Uploads
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const uploadDir = path.join(process.cwd(), "uploads");
     await mkdir(uploadDir, { recursive: true }); // Ensure dir exists
     
     let groomImagePath: string | undefined = undefined;
@@ -48,7 +48,8 @@ export async function POST(req: Request) {
     const unlinkOld = async (imgPath: string) => {
       try {
         if (!imgPath.endsWith("groom.png") && !imgPath.endsWith("bride.png") && !imgPath.endsWith("hero.jpg")) {
-          const oldFile = path.join(process.cwd(), "public", imgPath);
+          const pathSegments = imgPath.startsWith('/') ? imgPath.substring(1).split('/') : imgPath.split('/');
+          const oldFile = path.join(process.cwd(), ...pathSegments);
           await import("fs/promises").then(fs => fs.unlink(oldFile)).catch(() => {});
         }
       } catch (e) {}

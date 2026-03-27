@@ -154,7 +154,7 @@ export default function WishesPage() {
                       </div>
                     </TableCell>
                     <TableCell className="px-6 py-5 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                         <Dialog open={deleteConfirmId === wish.id} onOpenChange={(open) => setDeleteConfirmId(open ? wish.id : null)}>
                           <DialogTrigger 
                             render={
