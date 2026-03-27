@@ -14,6 +14,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -161,37 +163,36 @@ export default function GalleryPage() {
                 </Button>
               }
             />
-            <DialogContent className="sm:max-w-[450px] rounded-[2rem] border-primary/10">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">Upload Photo</DialogTitle>
-                <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                  Choose a high-quality image for your wedding gallery.
-                </DialogDescription>
-              </DialogHeader>
-              <form ref={formRef} onSubmit={handleUploadImage} className="space-y-6 py-4">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Photo Title / Caption</Label>
-                    <Input name="title" placeholder="e.g. Pre-wedding session" className="rounded-xl border-primary/10" required />
+            <DialogContent className="sm:max-w-[450px] border-primary/10">
+              <form ref={formRef} onSubmit={handleUploadImage} className="flex flex-col max-h-[90vh]">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-serif">Upload Photo</DialogTitle>
+                  <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                    Choose a high-quality image for your wedding gallery.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <DialogBody className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Photo Title / Caption</Label>
+                      <Input name="title" placeholder="e.g. Pre-wedding session" className="rounded-xl border-primary/10" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Choose Image</Label>
+                      <Input type="file" name="imageFile" accept="image/*" className="rounded-xl border-primary/10 text-xs file:bg-primary/10 file:text-primary" required />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Order (Optional)</Label>
-                    <Input type="number" name="order" placeholder="0" className="rounded-xl border-primary/10" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Choose Image</Label>
-                    <Input type="file" name="imageFile" accept="image/*" className="rounded-xl border-primary/10 text-xs file:bg-primary/10 file:text-primary" required />
-                  </div>
-                </div>
+                </DialogBody>
 
-                <div className="flex gap-3 pt-2">
+                <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 rounded-full py-6">
                     Cancel
                   </Button>
                   <Button type="submit" disabled={savingGallery} className="flex-2 rounded-full py-6 px-10">
                     {savingGallery ? "Uploading..." : "Upload Now"}
                   </Button>
-                </div>
+                </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
@@ -244,28 +245,32 @@ export default function GalleryPage() {
                                     </Button>
                                   }
                                 />
-                                <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100 cursor-default">
+                                <DialogContent className="sm:max-w-[400px] border-red-100 cursor-default">
                                   <DialogHeader>
                                     <DialogTitle className="text-2xl font-serif text-red-600">Confirm Delete</DialogTitle>
                                     <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                                       Are you sure you want to delete this photo?
                                     </DialogDescription>
                                   </DialogHeader>
-                                  <div className="bg-muted/30 p-4 rounded-2xl mb-4 border border-primary/5">
-                                    <div className="aspect-video w-full rounded-xl overflow-hidden mb-3">
-                                      <img src={img.imageUrl} alt={img.caption || img.title} className="w-full h-full object-cover" />
+                                  
+                                  <DialogBody>
+                                    <div className="bg-muted/30 p-4 rounded-2xl border border-primary/5">
+                                      <div className="aspect-video w-full rounded-xl overflow-hidden mb-3">
+                                        <img src={img.imageUrl} alt={img.caption || img.title} className="w-full h-full object-cover" />
+                                      </div>
+                                      <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Photo to delete:</p>
+                                      <p className="font-serif text-lg truncate">{img.caption || img.title || "Untitled"}</p>
                                     </div>
-                                    <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Photo to delete:</p>
-                                    <p className="font-serif text-lg truncate">{img.caption || img.title || "Untitled"}</p>
-                                  </div>
-                                  <div className="flex gap-3 pt-2">
+                                  </DialogBody>
+                                  
+                                  <DialogFooter>
                                     <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6">
                                       Cancel
                                     </Button>
                                     <Button onClick={() => handleDeleteImage(img.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white">
                                       Delete Now
                                     </Button>
-                                  </div>
+                                  </DialogFooter>
                                 </DialogContent>
                               </Dialog>
                             </div>

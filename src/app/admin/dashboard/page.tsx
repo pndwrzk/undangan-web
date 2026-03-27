@@ -4,21 +4,12 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Users, MessageSquare, CheckCircle, XCircle, Heart } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Users, CheckCircle, XCircle } from "lucide-react";
 
 export default function OverviewPage() {
   const { status } = useSession();
   const router = useRouter();
   const [rsvps, setRsvps] = useState<any[]>([]);
-  const [wishes, setWishes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,13 +25,8 @@ export default function OverviewPage() {
   const fetchData = async () => {
     try {
       const rsvpRes = await fetch("/api/admin/rsvps");
-      const wishesRes = await fetch("/api/admin/wishes");
-      
       const rsvpData = await rsvpRes.json();
-      const wishesData = await wishesRes.json();
-      
       setRsvps(Array.isArray(rsvpData) ? rsvpData : []);
-      setWishes(Array.isArray(wishesData) ? wishesData : []);
     } catch (error) {
       console.error(error);
     } finally {
@@ -60,8 +46,12 @@ export default function OverviewPage() {
     total: rsvps.length,
     confirmed: rsvps.filter((r: any) => r.attendance === 'yes').length,
     declined: rsvps.filter((r: any) => r.attendance === 'no').length,
-    guests: rsvps.reduce((acc: any, r: any) => acc + (r.attendance === 'yes' ? parseInt(r.guests) : 0), 0)
+    guests: rsvps.reduce((acc: any, r: any) => acc + (r.attendance === 'yes' ? parseInt(r.guests || "1") : 0), 0)
   };
+
+  const totalResponded = stats.confirmed + stats.declined;
+  const confirmedPct = totalResponded > 0 ? (stats.confirmed / totalResponded) * 100 : 0;
+  const declinedPct = totalResponded > 0 ? (stats.declined / totalResponded) * 100 : 0;
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -87,80 +77,99 @@ export default function OverviewPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Recent RSVPs */}
-        <section>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-serif">Recent RSVPs</h2>
-            <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-typewriter">{rsvps.length} Total</span>
-          </div>
-          <div className="bg-white rounded-3xl shadow-sm border border-primary/5 overflow-hidden">
-            <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30 border-b font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground hover:bg-muted/30">
-                  <TableHead className="px-6 py-4">Guest Name</TableHead>
-                  <TableHead className="px-6 py-4">Attendance</TableHead>
-                  <TableHead className="px-6 py-4">Date</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rsvps.map((rsvp, idx) => (
-                  <TableRow key={idx} className="font-serif text-sm">
-                    <TableCell className="px-6 py-4 font-bold">{rsvp.name}</TableCell>
-                    <TableCell className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold ${rsvp.attendance === 'yes' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                        {rsvp.attendance === 'yes' ? 'Attending' : 'Declined'}
-                      </span>
-                    </TableCell>
-                    <TableCell className="px-6 py-4 text-muted-foreground text-xs">{new Date(rsvp.createdAt).toLocaleDateString()}</TableCell>
-                  </TableRow>
-                ))}
-                {rsvps.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={3} className="px-6 py-12 text-center text-muted-foreground font-serif italic">No RSVP responses yet.</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+      {/* Attendance Chart */}
+      <div className="bg-white p-8 rounded-[3rem] shadow-sm border border-primary/5 mb-12">
+        <div className="flex flex-col md:flex-row items-center gap-12">
+          <div className="relative w-64 h-64">
+            <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+              {/* Background Circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r="40"
+                fill="transparent"
+                stroke="#f1f5f9"
+                strokeWidth="12"
+              />
+              {/* Confirmed Segment */}
+              <motion.circle
+                cx="50"
+                cy="50"
+                r="40"
+                fill="transparent"
+                stroke="var(--primary)"
+                strokeWidth="12"
+                strokeDasharray="251.2"
+                initial={{ strokeDashoffset: 251.2 }}
+                animate={{ strokeDashoffset: 251.2 - (251.2 * confirmedPct) / 100 }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                strokeLinecap="round"
+              />
+              {/* Declined Segment */}
+              {declinedPct > 0 && (
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="transparent"
+                  stroke="#ef4444"
+                  strokeWidth="12"
+                  strokeDasharray="251.2"
+                  initial={{ strokeDashoffset: 251.2 }}
+                  animate={{ strokeDashoffset: 251.2 - (251.2 * declinedPct) / 100 }}
+                  style={{ rotate: (confirmedPct * 3.6) }}
+                  transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <p className="text-3xl font-serif font-bold">{totalResponded}</p>
+              <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground">Responses</p>
             </div>
           </div>
-        </section>
 
-        {/* Recent Wishes */}
-        <section>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-serif">Guest Wishes</h2>
-            <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-typewriter">{wishes.length} Total</span>
-          </div>
-          <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 scrollbar-hide">
-            {wishes.map((wish, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-primary/5"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-primary/5 rounded-full text-primary">
-                    <MessageSquare size={16} />
-                  </div>
-                  <div>
-                    <p className="font-serif font-bold mb-1">{wish.name}</p>
-                    <p className="text-sm font-serif italic text-muted-foreground leading-relaxed">&quot;{wish.message}&quot;</p>
-                    <p className="mt-3 text-[10px] font-typewriter text-muted-foreground/50 uppercase tracking-widest">{new Date(wish.createdAt).toLocaleString()}</p>
-                  </div>
+          <div className="flex-1 space-y-6">
+            <h3 className="text-2xl font-serif">Attendance Overview</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-primary" />
+                  <p className="text-sm font-typewriter uppercase tracking-widest">Attending</p>
                 </div>
-              </motion.div>
-            ))}
-            {wishes.length === 0 && (
-              <div className="bg-white p-12 text-center text-muted-foreground font-serif italic rounded-3xl border border-primary/5">
-                No wishes in the guestbook yet.
+                <p className="text-3xl font-serif font-bold">{stats.confirmed}</p>
+                <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${confirmedPct}%` }}
+                    className="h-full bg-primary" 
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground font-serif italic text-right">{confirmedPct.toFixed(1)}%</p>
               </div>
-            )}
+
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <p className="text-sm font-typewriter uppercase tracking-widest">Not Attending</p>
+                </div>
+                <p className="text-3xl font-serif font-bold">{stats.declined}</p>
+                <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${declinedPct}%` }}
+                    className="h-full bg-red-500" 
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground font-serif italic text-right">{declinedPct.toFixed(1)}%</p>
+              </div>
+            </div>
+            
+            <p className="text-sm text-muted-foreground font-serif italic pt-4 border-t border-primary/5">
+              Current attendance rate is <span className="text-primary font-bold">{confirmedPct.toFixed(1)}%</span> from {totalResponded} responses received.
+            </p>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

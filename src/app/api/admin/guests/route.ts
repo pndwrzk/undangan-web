@@ -4,16 +4,43 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { Guest as GuestType } from "@/types";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const guests = await prisma.guest.findMany({
-      orderBy: { createdAt: 'desc' }
-    }) as GuestType[];
-    return NextResponse.json(guests);
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const q = searchParams.get("q") || "";
+    const skip = (page - 1) * limit;
+
+    const where = q ? {
+      OR: [
+        { name: { contains: q } },
+        { group: { contains: q } },
+        { phone: { contains: q } },
+      ]
+    } : {};
+
+    const [guests, total] = await Promise.all([
+      prisma.guest.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.guest.count({ where })
+    ]);
+
+    return NextResponse.json({
+      data: guests,
+      total,
+      pages: Math.ceil(total / limit),
+      currentPage: page
+    });
   } catch (error) {
+    console.error("Failed to fetch guests:", error);
     return NextResponse.json({ error: "Failed to fetch guests" }, { status: 500 });
   }
 }

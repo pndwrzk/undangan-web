@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -137,34 +139,38 @@ export default function GiftsPage() {
                 </Button>
               }
             />
-            <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-primary/10">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Bank Account" : "Add Bank Account"}</DialogTitle>
-                <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                  Enter the details for the digital gift destination.
-                </DialogDescription>
-              </DialogHeader>
-              <form ref={formRef} onSubmit={handleSaveGift} className="space-y-6 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="bankName" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Bank Name</Label>
-                  <Input id="bankName" name="bankName" placeholder="e.g. BCA, Mandiri, DANA" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="accountNumber" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Account Number</Label>
-                  <Input id="accountNumber" name="accountNumber" placeholder="e.g. 1234567890" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="accountName" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Account Holder Name</Label>
-                  <Input id="accountName" name="accountName" placeholder="e.g. Alvia / Pandiwa" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
-                </div>
-                <div className="flex gap-3 pt-4">
+            <DialogContent className="sm:max-w-[425px] border-primary/10">
+              <form ref={formRef} onSubmit={handleSaveGift} className="flex flex-col max-h-[90vh]">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Bank Account" : "Add Bank Account"}</DialogTitle>
+                  <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                    Enter the details for the digital gift destination.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <DialogBody className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="bankName" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Bank Name</Label>
+                    <Input id="bankName" name="bankName" placeholder="e.g. BCA, Mandiri, DANA" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="accountNumber" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Account Number</Label>
+                    <Input id="accountNumber" name="accountNumber" placeholder="e.g. 1234567890" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="accountName" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Account Holder Name</Label>
+                    <Input id="accountName" name="accountName" placeholder="e.g. Alvia / Pandiwa" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
+                  </div>
+                </DialogBody>
+                
+                <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 rounded-full py-6 border-primary/10">
                     Cancel
                   </Button>
                   <Button type="submit" disabled={savingGift} className="flex-2 rounded-full py-6 px-10">
                     {savingGift ? "Saving..." : editingId ? "Update Account" : "Create Account"}
                   </Button>
-                </div>
+                </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
@@ -210,26 +216,30 @@ export default function GiftsPage() {
                             </Button>
                           }
                         />
-                        <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100">
+                        <DialogContent className="sm:max-w-[400px] border-red-100">
                           <DialogHeader>
                             <DialogTitle className="text-2xl font-serif text-red-600">Confirm Delete</DialogTitle>
                             <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                               Are you sure you want to delete this bank account? This action cannot be undone.
                             </DialogDescription>
                           </DialogHeader>
-                          <div className="bg-muted/30 p-4 rounded-2xl mb-4 border border-primary/5">
-                            <p className="text-xs font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Account to delete:</p>
-                            <p className="font-serif text-lg">{g.bankName} - {g.accountNumber}</p>
-                            <p className="text-xs font-medium uppercase tracking-tighter">a/n {g.accountName}</p>
-                          </div>
-                          <div className="flex gap-3 pt-2">
+                          
+                          <DialogBody>
+                            <div className="bg-muted/30 p-4 rounded-2xl border border-primary/5">
+                              <p className="text-xs font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Account to delete:</p>
+                              <p className="font-serif text-lg">{g.bankName} - {g.accountNumber}</p>
+                              <p className="text-xs font-medium uppercase tracking-tighter">a/n {g.accountName}</p>
+                            </div>
+                          </DialogBody>
+                          
+                          <DialogFooter>
                             <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6">
                               Cancel
                             </Button>
                             <Button onClick={() => handleDeleteGift(g.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-200">
                               Delete Now
                             </Button>
-                          </div>
+                          </DialogFooter>
                         </DialogContent>
                       </Dialog>
                     </div>

@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import {
   Table,
@@ -29,6 +31,10 @@ export default function WishesPage() {
   const [wishes, setWishes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     if (authStatus === "unauthenticated") {
@@ -38,14 +44,17 @@ export default function WishesPage() {
     if (authStatus === "authenticated") {
       fetchWishes();
     }
-  }, [authStatus, router]);
+  }, [authStatus, router, currentPage]);
 
   const fetchWishes = async () => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/admin/wishes");
+      const res = await fetch(`/api/admin/wishes?page=${currentPage}&limit=${itemsPerPage}`);
       if (res.ok) {
         const data = await res.json();
-        setWishes(data);
+        setWishes(data.data || []);
+        setTotalCount(data.total || 0);
+        setTotalPages(data.pages || 1);
       }
     } catch (error) {
       console.error(error);
@@ -65,8 +74,8 @@ export default function WishesPage() {
       });
 
       if (res.ok) {
-        setWishes(wishes.map(w => w.id === id ? { ...w, status: newStatus } : w));
         toast.success(`Wish ${newStatus === 1 ? 'published' : 'unpublished'} successfully!`);
+        fetchWishes();
       }
     } catch (error) {
       console.error(error);
@@ -78,9 +87,9 @@ export default function WishesPage() {
     try {
       const res = await fetch(`/api/admin/wishes?id=${id}`, { method: "DELETE" });
       if (res.ok) {
-        setWishes(wishes.filter(w => w.id !== id));
         toast.success("Wish deleted successfully!");
         setDeleteConfirmId(null);
+        fetchWishes();
       }
     } catch (error) {
       console.error(error);
@@ -102,7 +111,7 @@ export default function WishesPage() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-serif">Manage Guest Wishes</h2>
           <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-typewriter">
-            {wishes.length} Total
+            {totalCount} Total
           </span>
         </div>
 
@@ -121,8 +130,10 @@ export default function WishesPage() {
                 {wishes.map((wish) => (
                   <TableRow key={wish.id} className="border-b border-primary/5 hover:bg-primary/5 transition-colors group">
                     <TableCell className="px-6 py-5">
-                      <p className="font-bold text-slate-800">{wish.name}</p>
-                      <p className="text-[10px] text-muted-foreground font-typewriter uppercase tracking-tighter mt-1">Guest</p>
+                      <div className="flex flex-col">
+                        <p className="font-bold text-slate-800 text-lg">{wish.name}</p>
+                        <p className="text-[10px] text-muted-foreground font-typewriter uppercase tracking-widest mt-0.5">Submitted Name</p>
+                      </div>
                     </TableCell>
                     <TableCell className="px-6 py-5 max-w-md">
                       <p className="text-sm font-serif italic text-slate-700 leading-relaxed">"{wish.message}"</p>
@@ -132,13 +143,15 @@ export default function WishesPage() {
                       </p>
                     </TableCell>
                     <TableCell className="px-6 py-5">
-                      <button 
+                      <div 
                         onClick={() => toggleStatus(wish.id, wish.status)}
-                        className={`px-3 py-1 rounded-full text-[10px] uppercase font-typewriter tracking-widest flex items-center gap-1.5 transition-all ${wish.status === 1 ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-amber-100 text-amber-700 border border-amber-200'}`}
+                        className={`relative w-12 h-6 rounded-full cursor-pointer transition-all duration-300 ${wish.status === 1 ? 'bg-primary' : 'bg-slate-200'}`}
                       >
-                        {wish.status === 1 ? <CheckCircle size={10} /> : <XCircle size={10} />}
-                        {wish.status === 1 ? 'Published' : 'Hidden'}
-                      </button>
+                        <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 shadow-sm ${wish.status === 1 ? 'translate-x-6' : 'translate-x-0'}`} />
+                        <span className={`absolute -right-16 top-1/2 -translate-y-1/2 text-[10px] font-typewriter uppercase tracking-widest ${wish.status === 1 ? 'text-primary' : 'text-slate-400'}`}>
+                          {wish.status === 1 ? 'On' : 'Off'}
+                        </span>
+                      </div>
                     </TableCell>
                     <TableCell className="px-6 py-5 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -154,25 +167,29 @@ export default function WishesPage() {
                               </Button>
                             }
                           />
-                          <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100">
+                          <DialogContent className="sm:max-w-[400px] border-red-100">
                             <DialogHeader>
                               <DialogTitle className="text-2xl font-serif text-red-600">Delete Wish</DialogTitle>
                               <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                                 Are you sure you want to permanently delete this message?
                               </DialogDescription>
                             </DialogHeader>
-                            <div className="bg-muted/30 p-5 rounded-2xl mb-4 border border-primary/5">
-                              <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-2">Message from {wish.name}:</p>
-                              <p className="font-serif italic text-slate-700">"{wish.message}"</p>
-                            </div>
-                            <div className="flex gap-3 pt-2">
+                            
+                            <DialogBody>
+                              <div className="bg-muted/30 p-5 rounded-2xl border border-primary/5">
+                                <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-2">Message from {wish.name}:</p>
+                                <p className="font-serif italic text-slate-700">"{wish.message}"</p>
+                              </div>
+                            </DialogBody>
+                            
+                            <DialogFooter>
                               <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6 font-typewriter uppercase text-xs tracking-widest">
                                 Keep It
                               </Button>
                               <Button onClick={() => handleDelete(wish.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white font-typewriter uppercase text-xs tracking-widest">
                                 Delete Now
                               </Button>
-                            </div>
+                            </DialogFooter>
                           </DialogContent>
                         </Dialog>
                       </div>
@@ -188,6 +205,52 @@ export default function WishesPage() {
             </Table>
           </div>
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 px-2 font-typewriter uppercase tracking-widest text-[10px]">
+            <p className="text-muted-foreground">
+              Showing {Math.min(totalCount, (currentPage - 1) * itemsPerPage + 1)}-{Math.min(totalCount, currentPage * itemsPerPage)} of {totalCount} wishes
+            </p>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="rounded-full px-4 h-9 border-primary/10 hover:bg-primary/5 disabled:opacity-30"
+              >
+                Previous
+              </Button>
+              
+              <div className="flex items-center gap-1 mx-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                  .map((p, i, arr) => (
+                    <div key={p} className="flex items-center">
+                      {i > 0 && arr[i-1] !== p - 1 && <span className="mx-1 opacity-50">...</span>}
+                      <button
+                        onClick={() => setCurrentPage(p)}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${currentPage === p ? 'bg-primary text-white shadow-sm' : 'hover:bg-primary/5 text-muted-foreground'}`}
+                      >
+                        {p}
+                      </button>
+                    </div>
+                  ))
+                }
+              </div>
+
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="rounded-full px-4 h-9 border-primary/10 hover:bg-primary/5 disabled:opacity-30"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

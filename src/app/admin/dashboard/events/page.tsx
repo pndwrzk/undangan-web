@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -143,53 +145,56 @@ export default function EventsPage() {
                 </Button>
               }
             />
-            <DialogContent className="sm:max-w-[500px] rounded-[2rem] border-primary/10">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Event" : "Add New Event"}</DialogTitle>
-                <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                  Enter the details for the wedding event.
-                </DialogDescription>
-              </DialogHeader>
-              <form ref={formRef} onSubmit={handleSaveEvent} className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Event Title</Label>
-                  <Input name="title" placeholder="e.g. Akad Nikah" className="rounded-xl border-primary/10" required />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Subtitle / Description</Label>
-                  <Input name="subtitle" placeholder="e.g. The Wedding Ceremony" className="rounded-xl border-primary/10" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+            <DialogContent className="sm:max-w-[500px] border-primary/10">
+              <form ref={formRef} onSubmit={handleSaveEvent} className="flex flex-col max-h-[90vh]">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Event" : "Add New Event"}</DialogTitle>
+                  <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                    Enter the details for the wedding event.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <DialogBody className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Date</Label>
-                    <Input name="date" placeholder="Saturday, 12 Sept 2026" className="rounded-xl border-primary/10" required />
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Event Title</Label>
+                    <Input name="title" placeholder="e.g. Akad Nikah" className="rounded-xl border-primary/10" required />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Time</Label>
-                    <Input name="time" placeholder="09:00 AM - 11:00 AM" className="rounded-xl border-primary/10" required />
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Subtitle / Description</Label>
+                    <Input name="subtitle" placeholder="e.g. The Wedding Ceremony" className="rounded-xl border-primary/10" />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Location Title</Label>
-                  <Input name="location" placeholder="e.g. St. Mary's Cathedral" className="rounded-xl border-primary/10" required />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Full Address</Label>
-                  <textarea name="address" className="w-full p-3 rounded-xl border border-primary/10 bg-muted/10 focus:outline-primary min-h-[80px]" required />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Google Maps URL</Label>
-                  <Input name="mapUrl" type="url" placeholder="https://goo.gl/maps/..." className="rounded-xl border-primary/10" required />
-                </div>
-
-                <div className="flex gap-3 pt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Date</Label>
+                      <Input name="date" placeholder="Saturday, 12 Sept 2026" className="rounded-xl border-primary/10" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Time</Label>
+                      <Input name="time" placeholder="09:00 AM - 11:00 AM" className="rounded-xl border-primary/10" required />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Location Title</Label>
+                    <Input name="location" placeholder="e.g. St. Mary's Cathedral" className="rounded-xl border-primary/10" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Full Address</Label>
+                    <textarea name="address" className="w-full p-3 rounded-xl border border-primary/10 bg-muted/10 focus:outline-primary min-h-[80px]" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Google Maps URL</Label>
+                    <Input name="mapUrl" type="url" placeholder="https://goo.gl/maps/..." className="rounded-xl border-primary/10" required />
+                  </div>
+                </DialogBody>
+                
+                <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 rounded-full py-6">
                     Cancel
                   </Button>
                   <Button type="submit" disabled={savingEvent} className="flex-2 rounded-full py-6 px-10">
                     {savingEvent ? "Saving..." : editingId ? "Update Event" : "Create Event"}
                   </Button>
-                </div>
+                </DialogFooter>
               </form>
             </DialogContent>
         </Dialog>
@@ -248,26 +253,30 @@ export default function EventsPage() {
                             </Button>
                           }
                         />
-                        <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100">
+                        <DialogContent className="sm:max-w-[400px] border-red-100">
                           <DialogHeader>
                             <DialogTitle className="text-2xl font-serif text-red-600">Confirm Delete</DialogTitle>
                             <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                               Are you sure you want to delete this event? This action cannot be undone.
                             </DialogDescription>
                           </DialogHeader>
-                          <div className="bg-muted/30 p-4 rounded-2xl mb-4 border border-primary/5">
-                            <p className="text-xs font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Event to delete:</p>
-                            <p className="font-serif text-lg">{ev.title}</p>
-                            <p className="text-xs font-medium uppercase tracking-tighter">{ev.date} at {ev.time}</p>
-                          </div>
-                          <div className="flex gap-3 pt-2">
+                          
+                          <DialogBody>
+                            <div className="bg-muted/30 p-4 rounded-2xl border border-primary/5">
+                              <p className="text-xs font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Event to delete:</p>
+                              <p className="font-serif text-lg">{ev.title}</p>
+                              <p className="text-xs font-medium uppercase tracking-tighter">{ev.date} at {ev.time}</p>
+                            </div>
+                          </DialogBody>
+                          
+                          <DialogFooter>
                             <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6">
                               Cancel
                             </Button>
                             <Button onClick={() => handleDeleteEvent(ev.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white">
                               Delete Now
                             </Button>
-                          </div>
+                          </DialogFooter>
                         </DialogContent>
                       </Dialog>
                    </div>

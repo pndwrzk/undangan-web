@@ -7,6 +7,15 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Users, LayoutDashboard, Heart, Shield, Calendar, Gift, Image, MessageSquare, History, Music, Menu, X, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogBody,
+} from "@/components/ui/dialog";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -14,6 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [couple, setCouple] = useState<any>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
   // Close mobile menu when pathname changes
   useEffect(() => {
@@ -41,8 +51,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
+  const themeStyles = {
+    "--primary": couple?.primaryColor || "#BE185D",
+    "--secondary": couple?.secondaryColor || "#4338CA",
+    "--background": couple?.backgroundColor || "#FDFCF0",
+    "--card": couple?.cardColor || "#FFFFFF",
+    "--popover": couple?.cardColor || "#FFFFFF",
+    "--muted": couple?.mutedColor || "#F3F4F6",
+  } as React.CSSProperties;
+
   return (
-    <div className="min-h-screen bg-muted/10 flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-muted/10 flex flex-col md:flex-row font-sans" style={themeStyles}>
       
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b sticky top-0 z-30 shadow-sm">
@@ -130,7 +149,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
         <div className="p-4 border-t">
           <p className="text-xs text-muted-foreground mb-4 px-2">Signed in as <br/><strong className="text-foreground">{session?.user?.name}</strong></p>
-          <Button variant="ghost" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => signOut()}>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50" 
+            onClick={() => setIsLogoutDialogOpen(true)}
+          >
             <LogOut size={16} className="mr-2" /> Logout
           </Button>
         </div>
@@ -142,6 +165,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
         </div>
       </main>
+      
+      <Dialog open={isLogoutDialogOpen} onOpenChange={setIsLogoutDialogOpen}>
+        <DialogContent className="sm:max-w-[400px] border-red-100">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-serif text-red-600">Confirm Logout</DialogTitle>
+            <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+              Are you sure you want to end your session?
+            </DialogDescription>
+          </DialogHeader>
+          
+          <DialogBody>
+            <p className="text-sm font-serif text-muted-foreground text-center py-4">
+              You will need to log in again to manage your wedding invitation dashboard.
+            </p>
+          </DialogBody>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsLogoutDialogOpen(false)} className="flex-1 rounded-full py-6 font-typewriter uppercase text-xs tracking-widest">
+              Stay Logged In
+            </Button>
+            <Button onClick={() => signOut()} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white font-typewriter uppercase text-xs tracking-widest transition-all">
+              Yes, Logout
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Toaster />
     </div>
   );

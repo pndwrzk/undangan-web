@@ -11,6 +11,11 @@ export interface Couple {
   hashtag?: string | null;
   heroImage?: string | null;
   weddingDate?: Date | string | null;
+  primaryColor?: string | null;
+  secondaryColor?: string | null;
+  backgroundColor?: string | null;
+  cardColor?: string | null;
+  mutedColor?: string | null;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

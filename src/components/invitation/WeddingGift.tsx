@@ -11,10 +11,27 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
 
   if (!gifts || gifts.length === 0) return null;
 
-  const handleCopy = (num: string) => {
-    navigator.clipboard.writeText(num);
-    setCopied(num);
-    setTimeout(() => setCopied(null), 2000);
+  const handleCopy = async (num: string) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(num);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = num;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      setCopied(num);
+      setTimeout(() => setCopied(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
   };
 
   return (

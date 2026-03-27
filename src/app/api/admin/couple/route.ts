@@ -33,6 +33,11 @@ export async function POST(req: Request) {
     const brideBio = formData.get("brideBio") as string;
     const hashtag = formData.get("hashtag") as string;
     const weddingDate = formData.get("weddingDate") as string;
+    const primaryColor = formData.get("primaryColor") as string;
+    const secondaryColor = formData.get("secondaryColor") as string;
+    const backgroundColor = formData.get("backgroundColor") as string;
+    const cardColor = formData.get("cardColor") as string;
+    const mutedColor = formData.get("mutedColor") as string;
     const id = formData.get("id") as string || '00000000-0000-4000-8000-000000000000';
 
     const existingCouple = await prisma.couple.findUnique({ where: { id } });
@@ -99,7 +104,12 @@ export async function POST(req: Request) {
       brideAlias,
       brideBio,
       hashtag: hashtag || "#AlviaPandiwaMenyatu",
-      weddingDate: weddingDate ? new Date(weddingDate) : null
+      weddingDate: weddingDate ? new Date(weddingDate) : null,
+      primaryColor: primaryColor || "#BE185D",
+      secondaryColor: secondaryColor || "#4338CA",
+      backgroundColor: backgroundColor || "#FDFCF0",
+      cardColor: cardColor || "#FFFFFF",
+      mutedColor: mutedColor || "#F3F4F6"
     };
     if (groomImagePath) dataPayload.groomImage = groomImagePath;
     if (brideImagePath) dataPayload.brideImage = brideImagePath;

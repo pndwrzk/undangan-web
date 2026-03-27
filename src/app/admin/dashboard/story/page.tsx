@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Plus, Trash2, Edit2, History, Heart, Star, MapPin, Calendar, Clock, GripHorizontal } from "lucide-react";
+import { Plus, Trash2, Edit2, History, Heart, Star, MapPin, Calendar, Clock, GripHorizontal, Camera, Music, Utensils, Plane, Flag, Smile, Moon, Sun, Flame, Sparkles, Coffee, Gift, Wine } from "lucide-react";
 import { Story as StoryType } from "@/types";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import {
@@ -15,6 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -26,6 +28,19 @@ const ICON_OPTIONS = [
   { name: "MapPin", icon: <MapPin size={16} /> },
   { name: "Calendar", icon: <Calendar size={16} /> },
   { name: "Clock", icon: <Clock size={16} /> },
+  { name: "Camera", icon: <Camera size={16} /> },
+  { name: "Music", icon: <Music size={16} /> },
+  { name: "Utensils", icon: <Utensils size={16} /> },
+  { name: "Plane", icon: <Plane size={16} /> },
+  { name: "Flag", icon: <Flag size={16} /> },
+  { name: "Smile", icon: <Smile size={16} /> },
+  { name: "Moon", icon: <Moon size={16} /> },
+  { name: "Sun", icon: <Sun size={16} /> },
+  { name: "Flame", icon: <Flame size={16} /> },
+  { name: "Sparkles", icon: <Sparkles size={16} /> },
+  { name: "Coffee", icon: <Coffee size={16} /> },
+  { name: "Gift", icon: <Gift size={16} /> },
+  { name: "Wine", icon: <Wine size={16} /> },
 ];
 
 export default function StoryPage() {
@@ -37,6 +52,7 @@ export default function StoryPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState<string>("Heart");
   
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -153,18 +169,19 @@ export default function StoryPage() {
 
    const openAddModal = () => {
     setEditingStory(null);
+    setSelectedIcon("Heart");
     setIsDialogOpen(true);
     if (formRef.current) formRef.current.reset();
   };
 
   const openEditModal = (story: StoryType) => {
     setEditingStory(story);
+    setSelectedIcon(story.icon || "Heart");
     setIsDialogOpen(true);
     setTimeout(() => {
       const form = formRef.current;
       if (form) {
         (form.elements.namedItem("date") as HTMLInputElement).value = story.date;
-        (form.elements.namedItem("order") as HTMLInputElement).value = String(story.order);
         (form.elements.namedItem("title") as HTMLInputElement).value = story.title;
         (form.elements.namedItem("description") as HTMLTextAreaElement).value = story.description;
         // Icon and Image are handled by radio buttons and file input respectively, 
@@ -198,62 +215,70 @@ export default function StoryPage() {
               </Button>
             }
           />
-          <DialogContent className="sm:max-w-[500px] rounded-[2rem] border-primary/10 max-h-[90vh] overflow-y-auto pr-2 scrollbar-hide">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-serif">{editingStory ? "Edit Milestone" : "New Milestone"}</DialogTitle>
-              <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                Share a moment from your relationship.
-              </DialogDescription>
-            </DialogHeader>
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                 <div className="space-y-2">
+          <DialogContent className="sm:max-w-[500px] border-primary/10">
+            <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col max-h-[90vh]">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-serif">{editingStory ? "Edit Milestone" : "New Milestone"}</DialogTitle>
+                <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                  Share a moment from your relationship.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <DialogBody className="space-y-4">
+                <div className="space-y-2">
                   <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Date / Period</Label>
                   <Input name="date" defaultValue={editingStory?.date} placeholder="January 2022" className="rounded-xl" required />
                 </div>
+
                 <div className="space-y-2">
-                  <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Order</Label>
-                  <Input type="number" name="order" defaultValue={editingStory?.order || 0} className="rounded-xl" />
+                  <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Title</Label>
+                  <Input name="title" defaultValue={editingStory?.title} placeholder="The First Meet" className="rounded-xl" required />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Title</Label>
-                <Input name="title" defaultValue={editingStory?.title} placeholder="The First Meet" className="rounded-xl" required />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Description</Label>
-                <textarea name="description" defaultValue={editingStory?.description} placeholder="Describe the moment..." className="w-full p-3 rounded-xl border border-primary/10 bg-muted/10 focus:outline-primary min-h-[100px]" required />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Photo</Label>
-                <Input type="file" name="imageFile" accept="image/*" className="rounded-xl border-primary/10 text-xs file:bg-primary/10 file:text-primary" />
-                {editingStory?.image && (
-                  <p className="text-[10px] text-muted-foreground mt-1">Current: <span className="underline">{editingStory.image.split('/').pop()}</span></p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Icon</Label>
-                <div className="flex gap-2">
-                  {ICON_OPTIONS.map((option) => (
-                    <label key={option.name} className={`flex-1 p-2 rounded-xl border cursor-pointer transition-all flex flex-col items-center gap-1 ${editingStory?.icon === option.name || (!editingStory?.icon && option.name === 'Heart') ? 'bg-primary/10 border-primary text-primary shadow-sm' : 'bg-muted/10 border-transparent hover:bg-muted/20'}`}>
-                      <input type="radio" name="icon" value={option.name} defaultChecked={editingStory?.icon === option.name || (!editingStory?.icon && option.name === 'Heart')} className="hidden" />
-                      {option.icon}
-                      <span className="text-[9px] uppercase tracking-tighter">{option.name}</span>
-                    </label>
-                  ))}
+                <div className="space-y-2">
+                  <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Description</Label>
+                  <textarea name="description" defaultValue={editingStory?.description} placeholder="Describe the moment..." className="w-full p-3 rounded-xl border border-primary/10 bg-muted/10 focus:outline-primary min-h-[100px]" required />
                 </div>
-              </div>
 
-              <div className="flex gap-4 pt-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Photo</Label>
+                  <Input type="file" name="imageFile" accept="image/*" className="rounded-xl border-primary/10 text-xs file:bg-primary/10 file:text-primary" />
+                  {editingStory?.image && (
+                    <p className="text-[10px] text-muted-foreground mt-1">Current: <span className="underline">{editingStory.image.split('/').pop()}</span></p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Icon</Label>
+                  <div className="grid grid-cols-6 gap-2">
+                    {ICON_OPTIONS.map((option) => (
+                      <label 
+                        key={option.name} 
+                        className={`flex-1 p-2 rounded-xl border cursor-pointer transition-all flex flex-col items-center gap-1 ${selectedIcon === option.name ? 'bg-primary/10 border-primary text-primary shadow-sm' : 'bg-muted/10 border-transparent hover:bg-muted/20'}`}
+                        onClick={() => setSelectedIcon(option.name)}
+                      >
+                        <input 
+                          type="radio" 
+                          name="icon" 
+                          value={option.name} 
+                          checked={selectedIcon === option.name}
+                          onChange={() => setSelectedIcon(option.name)}
+                          className="hidden" 
+                        />
+                        {option.icon}
+                        <span className="text-[9px] uppercase tracking-tighter">{option.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </DialogBody>
+
+              <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 rounded-full py-6">Cancel</Button>
                 <Button type="submit" disabled={saving} className="flex-2 rounded-full py-6 px-10">
                   {saving ? "Saving..." : editingStory ? "Update Story" : "Create Story"}
                 </Button>
-              </div>
+              </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
@@ -296,26 +321,30 @@ export default function StoryPage() {
                                 </button>
                               }
                             />
-                            <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100 cursor-default">
+                            <DialogContent className="sm:max-w-[400px] border-red-100 cursor-default">
                               <DialogHeader>
                                 <DialogTitle className="text-2xl font-serif text-red-600">Confirm Delete</DialogTitle>
                                 <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                                   Are you sure you want to delete this story?
                                 </DialogDescription>
                               </DialogHeader>
-                              <div className="bg-muted/30 p-4 rounded-2xl mb-4 border border-primary/5">
-                                <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Moment to delete:</p>
-                                <p className="font-serif text-lg">{story.title}</p>
-                                <p className="text-[10px] font-medium uppercase tracking-tighter">{story.date}</p>
-                              </div>
-                              <div className="flex gap-3 pt-2">
+                              
+                              <DialogBody>
+                                <div className="bg-muted/30 p-4 rounded-2xl border border-primary/5">
+                                  <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Moment to delete:</p>
+                                  <p className="font-serif text-lg">{story.title}</p>
+                                  <p className="text-[10px] font-medium uppercase tracking-tighter">{story.date}</p>
+                                </div>
+                              </DialogBody>
+                              
+                              <DialogFooter>
                                 <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6">
                                   Cancel
                                 </Button>
                                 <Button onClick={() => handleDelete(story.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white">
                                   Delete Now
                                 </Button>
-                              </div>
+                              </DialogFooter>
                             </DialogContent>
                           </Dialog>
                         </div>

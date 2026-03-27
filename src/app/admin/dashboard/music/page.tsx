@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -159,49 +161,53 @@ export default function MusicPage() {
                 </Button>
               }
             />
-            <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-primary/10">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Song" : "Add Song"}</DialogTitle>
-                <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                  Enter the details for the background music.
-                </DialogDescription>
-              </DialogHeader>
-              <form ref={formRef} onSubmit={handleSaveSong} className="space-y-6 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Song Title</Label>
-                  <Input id="title" name="title" placeholder="e.g. Can't Help Falling In Love" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="artist" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Artist (Optional)</Label>
-                  <Input id="artist" name="artist" placeholder="e.g. Elvis Presley" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="audioFile" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Upload MP3 File</Label>
-                  <Input id="audioFile" name="audioFile" type="file" accept="audio/mpeg,audio/mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20 file:bg-primary file:text-white file:rounded-lg file:border-0 file:text-xs file:px-3 file:py-1 cursor-pointer" />
-                </div>
-                <div className="relative py-2 text-center">
-                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground bg-white px-3 relative z-10">Or Use URL</span>
-                  <div className="absolute top-1/2 left-0 w-full h-[1px] bg-muted-foreground/10 z-0"></div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="url" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">MP3 URL</Label>
-                  <Input id="url" name="url" placeholder="https://example.com/music.mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="isActive" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Status</Label>
-                  <select id="isActive" name="isActive" className="w-full p-3 rounded-xl border border-primary/10 bg-muted/20 focus:outline-primary text-sm">
-                    <option value="false">Inactive</option>
-                    <option value="true">Active (Play automatically)</option>
-                  </select>
-                </div>
-                <div className="flex gap-3 pt-4">
+            <DialogContent className="sm:max-w-[425px] border-primary/10">
+              <form ref={formRef} onSubmit={handleSaveSong} className="flex flex-col max-h-[90vh]">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Song" : "Add Song"}</DialogTitle>
+                  <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                    Enter the details for the background music.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <DialogBody className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="title" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Song Title</Label>
+                    <Input id="title" name="title" placeholder="e.g. Can't Help Falling In Love" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="artist" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Artist (Optional)</Label>
+                    <Input id="artist" name="artist" placeholder="e.g. Elvis Presley" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="audioFile" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Upload MP3 File</Label>
+                    <Input id="audioFile" name="audioFile" type="file" accept="audio/mpeg,audio/mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20 file:bg-primary file:text-white file:rounded-lg file:border-0 file:text-xs file:px-3 file:py-1 cursor-pointer" />
+                  </div>
+                  <div className="relative py-2 text-center">
+                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground bg-white px-3 relative z-10">Or Use URL</span>
+                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-muted-foreground/10 z-0"></div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="url" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">MP3 URL</Label>
+                    <Input id="url" name="url" placeholder="https://example.com/music.mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="isActive" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Status</Label>
+                    <select id="isActive" name="isActive" className="w-full p-3 rounded-xl border border-primary/10 bg-muted/20 focus:outline-primary text-sm">
+                      <option value="false">Inactive</option>
+                      <option value="true">Active (Play automatically)</option>
+                    </select>
+                  </div>
+                </DialogBody>
+                
+                <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 rounded-full py-6 border-primary/10">
                     Cancel
                   </Button>
                   <Button type="submit" disabled={savingSong} className="flex-2 rounded-full py-6 px-10">
                     {savingSong ? "Saving..." : editingId ? "Update Song" : "Create Song"}
                   </Button>
-                </div>
+                </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
@@ -275,26 +281,30 @@ export default function MusicPage() {
                           </Button>
                         }
                       />
-                      <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100">
+                      <DialogContent className="sm:max-w-[400px] border-red-100">
                         <DialogHeader>
                           <DialogTitle className="text-2xl font-serif text-red-600">Delete Song</DialogTitle>
                           <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                             Are you sure you want to delete this song?
                           </DialogDescription>
                         </DialogHeader>
-                        <div className="bg-muted/30 p-4 rounded-2xl mb-4 border border-primary/5">
-                          <p className="text-xs font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Song to delete:</p>
-                          <p className="font-serif text-lg">{s.title}</p>
-                          <p className="text-xs font-medium uppercase tracking-tighter">{s.artist}</p>
-                        </div>
-                        <div className="flex gap-3 pt-2">
+                        
+                        <DialogBody>
+                          <div className="bg-muted/30 p-4 rounded-2xl border border-primary/5">
+                            <p className="text-xs font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Song to delete:</p>
+                            <p className="font-serif text-lg">{s.title}</p>
+                            <p className="text-xs font-medium uppercase tracking-tighter">{s.artist}</p>
+                          </div>
+                        </DialogBody>
+                        
+                        <DialogFooter>
                           <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6">
                             Cancel
                           </Button>
                           <Button onClick={() => handleDeleteSong(s.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white">
                             Delete Now
                           </Button>
-                        </div>
+                        </DialogFooter>
                       </DialogContent>
                     </Dialog>
                   </div>

@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { Guestbook as GuestbookType } from "@/types";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
   
   if (!session) {
@@ -12,11 +12,28 @@ export async function GET() {
   }
 
   try {
-    const wishes = await prisma.guestbook.findMany({
-      orderBy: { createdAt: 'desc' }
-    }) as GuestbookType[];
-    return NextResponse.json(wishes);
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const skip = (page - 1) * limit;
+
+    const [wishes, total] = await Promise.all([
+      prisma.guestbook.findMany({
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.guestbook.count()
+    ]);
+
+    return NextResponse.json({
+      data: wishes,
+      total,
+      pages: Math.ceil(total / limit),
+      currentPage: page
+    });
   } catch (error) {
+    console.error("Failed to fetch wishes:", error);
     return NextResponse.json({ error: "Failed to fetch wishes" }, { status: 500 });
   }
 }

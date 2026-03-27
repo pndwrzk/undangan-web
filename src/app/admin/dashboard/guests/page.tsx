@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogBody,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -36,9 +38,22 @@ export default function GuestsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setCurrentPage(1); // Reset to first page on new search
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -46,13 +61,25 @@ export default function GuestsPage() {
     }
     
     if (status === "authenticated") {
-      fetch("/api/admin/guests")
-        .then(res => res.json())
-        .then(data => setGuests(Array.isArray(data) ? data : []))
-        .catch(console.error)
-        .finally(() => setLoading(false));
+      fetchData();
     }
-  }, [status, router]);
+  }, [status, router, currentPage, debouncedSearch]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/guests?page=${currentPage}&limit=${itemsPerPage}&q=${encodeURIComponent(debouncedSearch)}`);
+      const data = await res.json();
+      setGuests(data.data || []);
+      setTotalCount(data.total || 0);
+      setTotalPages(data.pages || 1);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch guests");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const openAddDialog = () => {
     setEditingId(null);
@@ -104,17 +131,11 @@ export default function GuestsPage() {
       }
       
       if (res.ok) {
-        const updatedGuest = await res.json();
-        if (editingId) {
-          setGuests(guests.map(g => (g.id === editingId ? updatedGuest : g)));
-          toast.success("Guest updated successfully!");
-        } else {
-          setGuests([updatedGuest, ...guests]);
-          toast.success("Guest added successfully!");
-        }
+        toast.success(editingId ? "Guest updated successfully!" : "Guest added successfully!");
         (e.target as HTMLFormElement).reset();
         setIsDialogOpen(false);
         setEditingId(null);
+        fetchData();
       } else {
         const errorData = await res.json();
         toast.error(errorData.message || "Failed to save guest");
@@ -131,9 +152,9 @@ export default function GuestsPage() {
     try {
       const res = await fetch(`/api/admin/guests?id=${id}`, { method: "DELETE" });
       if (res.ok) {
-        setGuests(guests.filter(g => g.id !== id));
         toast.success("Guest removed successfully!");
         setDeleteConfirmId(null);
+        fetchData();
       } else {
         const errorData = await res.json();
         toast.error(errorData.message || "Failed to delete guest");
@@ -183,11 +204,8 @@ export default function GuestsPage() {
     window.open(whatsappUrl, "_blank");
   };
 
-  const filteredGuests = guests.filter(guest =>
-    guest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    guest.group?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    guest.phone?.includes(searchTerm)
-  );
+  // Remove client-side filtering and pagination calculations
+  // They are now handled by fetchData and the API
 
   if (status === "loading" || loading) {
     return (
@@ -215,47 +233,50 @@ export default function GuestsPage() {
                 </Button>
               }
             />
-            <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-primary/10">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Guest" : "Add New Guest"}</DialogTitle>
-                <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                  Enter the details for the wedding guest.
-                </DialogDescription>
-              </DialogHeader>
-              <form ref={formRef} onSubmit={handleSaveGuest} className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Guest Name</Label>
-                  <Input name="name" placeholder="e.g. John Doe" className="rounded-xl border-primary/10" required />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Group / Category</Label>
-                  <Input name="group" placeholder="e.g. High School Friends" className="rounded-xl border-primary/10" />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">WhatsApp Number</Label>
-                  <Input name="phone" placeholder="e.g. 62812345678" className="rounded-xl border-primary/10" />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Partner Name (Optional)</Label>
-                  <Input name="partnerName" placeholder="e.g. Jane Doe" className="rounded-xl border-primary/10" />
-                  <p className="text-[10px] text-muted-foreground font-typewriter ml-1 italic">Leave empty if invited alone</p>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Guest Side</Label>
-                  <select name="side" className="w-full flex h-10 items-center justify-between rounded-xl border border-primary/10 bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                    <option value="0">Bride / Mempelai Wanita (0)</option>
-                    <option value="1">Groom / Mempelai Pria (1)</option>
-                  </select>
-                </div>
+            <DialogContent className="sm:max-w-[450px] border-primary/10">
+              <form ref={formRef} onSubmit={handleSaveGuest} className="flex flex-col max-h-[90vh]">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Guest" : "Add New Guest"}</DialogTitle>
+                  <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                    Enter the details for the wedding guest.
+                  </DialogDescription>
+                </DialogHeader>
                 
-                <div className="flex gap-3 pt-4">
+                <DialogBody className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Guest Name</Label>
+                    <Input name="name" placeholder="e.g. John Doe" className="rounded-xl border-primary/10" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Group / Category</Label>
+                    <Input name="group" placeholder="e.g. High School Friends" className="rounded-xl border-primary/10" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">WhatsApp Number</Label>
+                    <Input name="phone" placeholder="e.g. 62812345678" className="rounded-xl border-primary/10" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Partner Name (Optional)</Label>
+                    <Input name="partnerName" placeholder="e.g. Jane Doe" className="rounded-xl border-primary/10" />
+                    <p className="text-[10px] text-muted-foreground font-typewriter ml-1 italic">Leave empty if invited alone</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase tracking-widest font-typewriter ml-1">Guest Side</Label>
+                    <select name="side" className="w-full flex h-10 items-center justify-between rounded-xl border border-primary/10 bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                      <option value="0">Bride / Mempelai Wanita (0)</option>
+                      <option value="1">Groom / Mempelai Pria (1)</option>
+                    </select>
+                  </div>
+                </DialogBody>
+                
+                <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 rounded-full py-6">
                     Cancel
                   </Button>
                   <Button type="submit" disabled={savingGuest} className="flex-2 rounded-full py-6 px-10">
                     {savingGuest ? "Saving..." : editingId ? "Update Guest" : "Create Guest"}
                   </Button>
-                </div>
+                </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
@@ -275,7 +296,7 @@ export default function GuestsPage() {
             </div>
             <div className="flex items-center gap-2 text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground px-4 bg-white py-4 rounded-full border border-primary/5 shadow-sm">
               <Filter size={14} />
-              <span>{filteredGuests.length} Guests found</span>
+              <span>{totalCount} Guests found</span>
             </div>
           </div>
           
@@ -290,7 +311,7 @@ export default function GuestsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody className="font-serif">
-                  {filteredGuests.map((guest) => (
+                  {guests.map((guest) => (
                     <TableRow key={guest.id} className="border-b border-primary/5 last:border-0 hover:bg-primary/5 transition-colors group">
                       <TableCell className="px-6 py-5">
                         <p className="font-bold text-slate-800 text-lg">{guest.name}</p>
@@ -343,33 +364,37 @@ export default function GuestsPage() {
                                 <Trash2 size={16} />
                               </Button>
                             }/>
-                            <DialogContent className="sm:max-w-[400px] rounded-[2rem] border-red-100">
+                            <DialogContent className="sm:max-w-[400px] border-red-100">
                               <DialogHeader>
                                 <DialogTitle className="text-2xl font-serif text-red-600">Remove Guest</DialogTitle>
                                 <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                                   Are you sure you want to remove this guest?
                                 </DialogDescription>
                               </DialogHeader>
-                              <div className="bg-muted/30 p-5 rounded-2xl mb-4 border border-primary/5">
-                                <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Guest to remove:</p>
-                                <p className="font-serif text-xl">{guest.name}</p>
-                                <p className="text-xs text-muted-foreground mt-1">{guest.group || "Uncategorized"}</p>
-                              </div>
-                              <div className="flex gap-3 pt-2">
+                              
+                              <DialogBody>
+                                <div className="bg-muted/30 p-5 rounded-2xl border border-primary/5">
+                                  <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Guest to remove:</p>
+                                  <p className="font-serif text-xl">{guest.name}</p>
+                                  <p className="text-xs text-muted-foreground mt-1">{guest.group || "Uncategorized"}</p>
+                                </div>
+                              </DialogBody>
+                              
+                              <DialogFooter>
                                 <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 rounded-full py-6">
                                   Cancel
                                 </Button>
                                 <Button onClick={() => handleDeleteGuest(guest.id)} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white">
                                   Remove Now
                                 </Button>
-                              </div>
+                              </DialogFooter>
                             </DialogContent>
                           </Dialog>
                         </div>
                       </TableCell>
                     </TableRow>
                   ))}
-                  {filteredGuests.length === 0 && (
+                  {guests.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={3} className="px-6 py-16 text-center text-muted-foreground font-serif italic text-lg">
                         No guests found.
@@ -380,6 +405,52 @@ export default function GuestsPage() {
               </Table>
             </div>
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 px-2 font-typewriter uppercase tracking-widest text-[10px]">
+              <p className="text-muted-foreground">
+                Showing {Math.min(totalCount, (currentPage - 1) * itemsPerPage + 1)}-{Math.min(totalCount, currentPage * itemsPerPage)} of {totalCount} guests
+              </p>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="rounded-full px-4 h-9 border-primary/10 hover:bg-primary/5 disabled:opacity-30"
+                >
+                  Previous
+                </Button>
+                
+                <div className="flex items-center gap-1 mx-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                    .map((p, i, arr) => (
+                      <div key={p} className="flex items-center">
+                        {i > 0 && arr[i-1] !== p - 1 && <span className="mx-1 opacity-50">...</span>}
+                        <button
+                          onClick={() => setCurrentPage(p)}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${currentPage === p ? 'bg-primary text-white shadow-sm' : 'hover:bg-primary/5 text-muted-foreground'}`}
+                        >
+                          {p}
+                        </button>
+                      </div>
+                    ))
+                  }
+                </div>
+
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="rounded-full px-4 h-9 border-primary/10 hover:bg-primary/5 disabled:opacity-30"
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
