@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Plus, Trash2, Image as ImageIcon, X, GripHorizontal } from "lucide-react";
+import { Plus, Trash2, Image as ImageIcon, X, GripHorizontal, Pencil } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import {
   Dialog,
@@ -29,6 +29,8 @@ export default function GalleryPage() {
   const [savingGallery, setSavingGallery] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
   
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -45,6 +47,18 @@ export default function GalleryPage() {
         .finally(() => setLoading(false));
     }
   }, [status, router]);
+  
+  const openEditModal = (item: any) => {
+    setEditingId(item.id);
+    setSelectedItem(item);
+    setIsDialogOpen(true);
+    // Use timeout to ensure form is rendered
+    setTimeout(() => {
+      if (formRef.current) {
+        (formRef.current.elements.namedItem("title") as HTMLInputElement).value = item.caption || item.title || "";
+      }
+    }, 0);
+  };
 
   const handleUploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,25 +66,34 @@ export default function GalleryPage() {
     const formData = new FormData(e.currentTarget);
     const imageFile = formData.get("imageFile") as File;
 
-    if (!imageFile || imageFile.size === 0) {
+    if (!editingId && (!imageFile || imageFile.size === 0)) {
       toast.error("Please select an image to upload");
       setSavingGallery(false);
       return;
     }
 
+    if (editingId) formData.append("id", editingId);
+
     try {
       const res = await fetch("/api/admin/gallery", {
-        method: "POST",
-        body: formData, // Automatically sets correct multipart header
+        method: editingId ? "PUT" : "POST",
+        body: formData,
       });
       if (res.ok) {
-        const newImage = await res.json();
-        setImages([newImage, ...images]);
-        toast.success("Image uploaded successfully!");
+        const result = await res.json();
+        if (editingId) {
+          setImages(images.map(img => img.id === editingId ? result : img));
+          toast.success("Image updated successfully!");
+        } else {
+          setImages([result, ...images]);
+          toast.success("Image uploaded successfully!");
+        }
         setIsDialogOpen(false);
+        setEditingId(null);
+        setSelectedItem(null);
         (e.target as HTMLFormElement).reset();
       } else {
-        toast.error("Failed to upload image.");
+        toast.error(`Failed to ${editingId ? 'update' : 'upload'} image.`);
       }
     } catch (error) {
       console.error(error);
@@ -154,7 +177,13 @@ export default function GalleryPage() {
             <p className="text-muted-foreground font-typewriter text-sm uppercase tracking-wider">Upload and manage wedding photos</p>
           </div>
 
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <Dialog open={isDialogOpen} onOpenChange={(open) => {
+            setIsDialogOpen(open);
+            if (!open) {
+              setEditingId(null);
+              setSelectedItem(null);
+            }
+          }}>
             <DialogTrigger 
               render={
                 <Button className="rounded-full px-6 py-6 shadow-lg shadow-primary/20 hover:shadow-xl transition-all gap-2">
@@ -166,7 +195,7 @@ export default function GalleryPage() {
             <DialogContent className="sm:max-w-[450px] border-primary/10">
               <form ref={formRef} onSubmit={handleUploadImage} className="flex flex-col max-h-[90vh]">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl font-serif">Upload Photo</DialogTitle>
+                  <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Photo" : "Upload Photo"}</DialogTitle>
                   <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
                     Choose a high-quality image for your wedding gallery.
                   </DialogDescription>
@@ -175,12 +204,14 @@ export default function GalleryPage() {
                 <DialogBody className="space-y-6">
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Photo Title / Caption</Label>
-                      <Input name="title" placeholder="e.g. Pre-wedding session" className="rounded-xl border-primary/10" required />
+                      <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Photo Title / Caption (Optional)</Label>
+                      <Input name="title" placeholder="e.g. Pre-wedding session" className="rounded-xl border-primary/10" />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">Choose Image</Label>
-                      <Input type="file" name="imageFile" accept="image/*" className="rounded-xl border-primary/10 text-xs file:bg-primary/10 file:text-primary" required />
+                      <Label className="text-[10px] uppercase tracking-widest font-typewriter ml-1">
+                        {editingId ? "Replace Image (Optional)" : "Choose Image"}
+                      </Label>
+                      <Input type="file" name="imageFile" accept="image/*" className="rounded-xl border-primary/10 text-xs file:bg-primary/10 file:text-primary" required={!editingId} />
                     </div>
                   </div>
                 </DialogBody>
@@ -190,7 +221,7 @@ export default function GalleryPage() {
                     Cancel
                   </Button>
                   <Button type="submit" disabled={savingGallery} className="flex-2 rounded-full py-6 px-10">
-                    {savingGallery ? "Uploading..." : "Upload Now"}
+                    {savingGallery ? (editingId ? "Saving..." : "Uploading...") : (editingId ? "Save Changes" : "Upload Now")}
                   </Button>
                 </DialogFooter>
               </form>
@@ -236,7 +267,14 @@ export default function GalleryPage() {
                               <GripHorizontal size={14} />
                             </div>
 
-                            <div className="absolute top-2 right-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-20">
+                            <div className="absolute top-2 right-2 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-20">
+                              <Button 
+                                onClick={() => openEditModal(img)} 
+                                size="icon" 
+                                className="w-8 h-8 rounded-full shadow-lg bg-white/80 text-primary hover:bg-primary hover:text-white border-0 cursor-pointer"
+                              >
+                                <Pencil size={14} />
+                              </Button>
                               <Dialog open={deleteConfirmId === img.id} onOpenChange={(open) => setDeleteConfirmId(open ? img.id : null)}>
                                 <DialogTrigger 
                                   render={
