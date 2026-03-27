@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
     // Handle File Uploads
     const uploadDir = path.join(process.cwd(), "public/uploads");
-    await mkdir(uploadDir, { recursive: true }).catch(() => {}); // Ensure dir exists
+    await mkdir(uploadDir, { recursive: true }); // Ensure dir exists
     
     let groomImagePath: string | undefined = undefined;
     let brideImagePath: string | undefined = undefined;
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     const heroImageFile = formData.get("heroImageFile") as File;
     if (heroImageFile && heroImageFile.size > 0) {
       const heroDir = path.join(uploadDir, "couple/hero");
-      await mkdir(heroDir, { recursive: true }).catch(() => {});
+      await mkdir(heroDir, { recursive: true });
       const bytes = await heroImageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `hero-${Date.now()}-${heroImageFile.name.replace(/\s+/g, '-')}`;
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     const groomImageFile = formData.get("groomImageFile") as File;
     if (groomImageFile && groomImageFile.size > 0) {
       const groomDir = path.join(uploadDir, "couple/groom");
-      await mkdir(groomDir, { recursive: true }).catch(() => {});
+      await mkdir(groomDir, { recursive: true });
       const bytes = await groomImageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `groom-${Date.now()}-${groomImageFile.name.replace(/\s+/g, '-')}`;
@@ -81,7 +81,7 @@ export async function POST(req: Request) {
     const brideImageFile = formData.get("brideImageFile") as File;
     if (brideImageFile && brideImageFile.size > 0) {
       const brideDir = path.join(uploadDir, "couple/bride");
-      await mkdir(brideDir, { recursive: true }).catch(() => {});
+      await mkdir(brideDir, { recursive: true });
       const bytes = await brideImageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `bride-${Date.now()}-${brideImageFile.name.replace(/\s+/g, '-')}`;

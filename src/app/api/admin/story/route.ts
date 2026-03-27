@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     
     if (imageFile && imageFile.size > 0) {
       const uploadDir = path.join(process.cwd(), "public/uploads/story");
-      await mkdir(uploadDir, { recursive: true }).catch(() => {});
+      await mkdir(uploadDir, { recursive: true });
       
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
@@ -88,7 +88,7 @@ export async function PUT(req: Request) {
     
     if (imageFile && imageFile.size > 0) {
       const uploadDir = path.join(process.cwd(), "public/uploads/story");
-      await mkdir(uploadDir, { recursive: true }).catch(() => {});
+      await mkdir(uploadDir, { recursive: true });
       
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);

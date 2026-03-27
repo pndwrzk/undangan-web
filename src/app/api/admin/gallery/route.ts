@@ -25,8 +25,8 @@ export async function POST(req: Request) {
 
   try {
     const formData = await req.formData();
-    const caption = formData.get("caption") as string || "";
-    const imageFile = formData.get("image") as File;
+    const title = formData.get("title") as string || "";
+    const imageFile = formData.get("imageFile") as File;
 
     if (!imageFile || imageFile.size === 0) {
       return NextResponse.json({ error: "Image file is required" }, { status: 400 });
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     const uploadDir = path.join(process.cwd(), "public/uploads");
     const galleryDir = path.join(uploadDir, "gallery");
-    await mkdir(galleryDir, { recursive: true }).catch(() => {});
+    await mkdir(galleryDir, { recursive: true });
 
     const bytes = await imageFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     const imageUrl = `/uploads/gallery/${filename}`;
 
     const galleryItem = await prisma.gallery.create({
-      data: { imageUrl, caption }
+      data: { imageUrl, caption: title }
     });
 
     return NextResponse.json(galleryItem);
