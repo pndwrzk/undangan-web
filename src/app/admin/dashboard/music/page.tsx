@@ -57,21 +57,12 @@ export default function MusicPage() {
     e.preventDefault();
     setSavingSong(true);
     const formData = new FormData(e.currentTarget);
-    const payload = {
-      title: formData.get("title"),
-      artist: formData.get("artist"),
-      url: formData.get("url"),
-      isActive: formData.get("isActive") === "true",
-    };
-
-    const method = editingId ? "PUT" : "POST";
-    const body = editingId ? { ...payload, id: editingId } : payload;
+    if (editingId) formData.append("id", editingId);
 
     try {
       const res = await fetch("/api/admin/songs", {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        method: editingId ? "PUT" : "POST",
+        body: formData,
       });
       if (res.ok) {
         toast.success(editingId ? "Song updated successfully!" : "Song added successfully!");
@@ -105,10 +96,13 @@ export default function MusicPage() {
 
   const handleToggleActive = async (song: Song) => {
     try {
+      const formData = new FormData();
+      formData.append("id", song.id);
+      formData.append("isActive", String(!song.isActive));
+
       const res = await fetch("/api/admin/songs", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...song, isActive: !song.isActive }),
+        body: formData,
       });
       if (res.ok) {
         toast.success(song.isActive ? "Song deactivated" : "Song activated!");
@@ -182,8 +176,16 @@ export default function MusicPage() {
                   <Input id="artist" name="artist" placeholder="e.g. Elvis Presley" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="audioFile" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Upload MP3 File</Label>
+                  <Input id="audioFile" name="audioFile" type="file" accept="audio/mpeg,audio/mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20 file:bg-primary file:text-white file:rounded-lg file:border-0 file:text-xs file:px-3 file:py-1 cursor-pointer" />
+                </div>
+                <div className="relative py-2 text-center">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground bg-white px-3 relative z-10">Or Use URL</span>
+                  <div className="absolute top-1/2 left-0 w-full h-[1px] bg-muted-foreground/10 z-0"></div>
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="url" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">MP3 URL</Label>
-                  <Input id="url" name="url" placeholder="https://example.com/music.mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
+                  <Input id="url" name="url" placeholder="https://example.com/music.mp3" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="isActive" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Status</Label>

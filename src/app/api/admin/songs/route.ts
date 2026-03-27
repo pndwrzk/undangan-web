@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
+import { writeFile, mkdir, unlink } from "fs/promises";
+import path from "path";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -22,8 +24,28 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const body = await req.json();
-    const { title, artist, url, isActive } = body;
+    const formData = await req.formData();
+    const title = formData.get("title") as string;
+    const artist = formData.get("artist") as string || "";
+    const isActive = formData.get("isActive") === "true";
+    const audioFile = formData.get("audioFile") as File;
+    let url = formData.get("url") as string || "";
+
+    if (!title) return NextResponse.json({ error: "Title is required" }, { status: 400 });
+
+    // Handle file upload if provided
+    if (audioFile && audioFile.size > 0) {
+      const uploadDir = path.join(process.cwd(), "public/uploads/songs");
+      await mkdir(uploadDir, { recursive: true });
+
+      const bytes = await audioFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `song-${Date.now()}-${audioFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+      await writeFile(path.join(uploadDir, filename), buffer);
+      url = `/uploads/songs/${filename}`;
+    }
+
+    if (!url) return NextResponse.json({ error: "Audio file or URL is required" }, { status: 400 });
 
     // If this song is active, set all others to inactive
     if (isActive) {
@@ -36,15 +58,15 @@ export async function POST(req: Request) {
     const song = await prisma.song.create({
       data: { 
         title, 
-        artist: artist || "", 
+        artist, 
         url, 
-        isActive: !!isActive 
+        isActive 
       }
     });
 
     return NextResponse.json(song);
   } catch (error) {
-    console.error(error);
+    console.error("Song API POST Error:", error);
     return NextResponse.json({ error: "Failed to create song" }, { status: 500 });
   }
 }
@@ -54,10 +76,38 @@ export async function PUT(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const body = await req.json();
-    const { id, title, artist, url, isActive } = body;
+    const formData = await req.formData();
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const artist = formData.get("artist") as string || "";
+    const isActive = formData.get("isActive") === "true";
+    const audioFile = formData.get("audioFile") as File;
+    let url = formData.get("url") as string;
 
     if (!id) return NextResponse.json({ error: "Song ID required" }, { status: 400 });
+
+    const existingSong = await prisma.song.findUnique({ where: { id } });
+    if (!existingSong) return NextResponse.json({ error: "Song not found" }, { status: 404 });
+
+    // Handle new file upload
+    if (audioFile && audioFile.size > 0) {
+      const uploadDir = path.join(process.cwd(), "public/uploads/songs");
+      await mkdir(uploadDir, { recursive: true });
+
+      // Delete old file if it exists and was an upload
+      if (existingSong.url.startsWith('/uploads/songs/')) {
+        try {
+          const oldFilePath = path.join(process.cwd(), "public", existingSong.url);
+          await unlink(oldFilePath).catch(() => {});
+        } catch (e) {}
+      }
+
+      const bytes = await audioFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `song-${Date.now()}-${audioFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+      await writeFile(path.join(uploadDir, filename), buffer);
+      url = `/uploads/songs/${filename}`;
+    }
 
     // If this song is being set to active, set all others to inactive
     if (isActive) {
@@ -70,16 +120,16 @@ export async function PUT(req: Request) {
     const song = await prisma.song.update({
       where: { id },
       data: { 
-        title, 
-        artist: artist || "", 
-        url, 
-        isActive: !!isActive 
+        title: title || existingSong.title, 
+        artist: artist || existingSong.artist, 
+        url: url || existingSong.url, 
+        isActive 
       }
     });
 
     return NextResponse.json(song);
   } catch (error) {
-    console.error(error);
+    console.error("Song API PUT Error:", error);
     return NextResponse.json({ error: "Failed to update song" }, { status: 500 });
   }
 }
@@ -93,6 +143,16 @@ export async function DELETE(req: Request) {
     const id = searchParams.get("id");
 
     if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
+    const song = await prisma.song.findUnique({ where: { id } });
+    
+    // Delete physical file if it exists
+    if (song?.url.startsWith('/uploads/songs/')) {
+      try {
+        const filePath = path.join(process.cwd(), "public", song.url);
+        await unlink(filePath).catch(() => {});
+      } catch (e) {}
+    }
 
     await prisma.song.delete({
       where: { id }

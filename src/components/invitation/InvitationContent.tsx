@@ -18,7 +18,7 @@ const Guestbook = dynamic(() => import("@/components/invitation/Guestbook"), { s
 const PetalsOverlay = dynamic(() => import("@/components/invitation/PetalsOverlay"), { ssr: false });
 import BottomNav from "@/components/invitation/BottomNav";
 
-import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType } from "@/types";
+import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType, Song as SongType } from "@/types";
 
 interface InvitationContentProps {
   couple: CoupleType | null;
@@ -28,9 +28,19 @@ interface InvitationContentProps {
   gifts?: GiftType[];
   gallery?: GalleryType[];
   stories?: StoryType[];
+  song?: SongType | null;
 }
 
-export default function InvitationContent({ couple, guestName, guest, events, gifts, gallery, stories }: InvitationContentProps) {
+export default function InvitationContent({ 
+  couple, 
+  guestName, 
+  guest, 
+  events = [], 
+  gifts = [], 
+  gallery = [], 
+  stories = [],
+  song = null
+}: InvitationContentProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -69,7 +79,7 @@ export default function InvitationContent({ couple, guestName, guest, events, gi
           </>
         )}
         
-        <MusicPlayer isPlaying={isPlaying} onToggle={() => setIsPlaying(!isPlaying)} />
+        <MusicPlayer isPlaying={isPlaying} onToggle={() => setIsPlaying(!isPlaying)} song={song} />
         
         <Hero couple={couple} />
         <Couple couple={couple} />

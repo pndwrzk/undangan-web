@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import InvitationContent from "@/components/invitation/InvitationContent";
-import { Couple, Guest, Event, Gift, Gallery, Story } from "@/types";
+import { Couple, Guest, Event, Gift, Gallery, Story, Song } from "@/types";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -13,7 +13,7 @@ export default async function Home({
   const params = await searchParams;
   const guestId = params.id as string | undefined;
   const to = params.to as string | undefined;
-  
+
   const [couple, guest, events, gifts, gallery, stories] = await Promise.all([
     prisma.couple.findFirst() as Promise<Couple | null>,
     guestId ? prisma.guest.findUnique({ where: { id: guestId } }) as Promise<Guest | null> : null,
@@ -23,18 +23,20 @@ export default async function Home({
     prisma.story.findMany({ orderBy: { order: 'asc' } }).catch((e: Error) => {
       console.error("Error fetching stories:", e);
       return [];
-    }) as Promise<Story[]>
+    }) as Promise<Story[]>,
+    prisma.song.findFirst({ where: { isActive: true } }) as Promise<Song | null>
   ]);
 
   const guestName = guest ? guest.name : (to || null);
 
-  return <InvitationContent 
-    couple={couple} 
-    guestName={guestName} 
-    guest={guest} 
-    events={events} 
-    gifts={gifts} 
-    gallery={gallery} 
-    stories={stories} 
+  return <InvitationContent
+    couple={couple}
+    guestName={guestName}
+    guest={guest}
+    events={events}
+    gifts={gifts}
+    gallery={gallery}
+    stories={stories}
+    song={song}
   />;
 }
