@@ -14,7 +14,7 @@ import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   const { t, language } = useLanguage();
   const [messages, setMessages] = useState<GuestbookType[]>([]);
-  const [newName, setNewName] = useState(guest?.name || "");
+  const [newName, setNewName] = useState("");
   const [newText, setNewText] = useState("");
   const [loading, setLoading] = useState(true);
   const [likedMessages, setLikedMessages] = useState<string[]>([]);
@@ -171,12 +171,13 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
               <form onSubmit={handleSubmit} className="space-y-4 sticky top-8">
                 <div className="space-y-2">
                   <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.yourName}</label>
-                  <Input
-                    placeholder={t.guestbook.placeholderName}
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    className="bg-background border-none shadow-sm rounded-xl py-6"
-                  />
+                    <Input
+                      placeholder={t.guestbook.placeholderName}
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      required
+                      className="bg-background border-none shadow-sm rounded-xl py-6"
+                    />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.message}</label>
@@ -184,6 +185,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                     placeholder={t.guestbook.placeholderMessage}
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
+                    required
                     className="bg-background border-none shadow-sm rounded-xl min-h-[150px] py-4"
                   />
                 </div>
