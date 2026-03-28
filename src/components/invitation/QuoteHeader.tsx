@@ -31,7 +31,7 @@ export default function QuoteHeader({ couple }: QuoteHeaderProps) {
           viewport={{ once: true }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <p className="text-white font-serif text-lg md:text-xl lg:text-2xl leading-relaxed drop-shadow-2xl">
+          <p className="text-white font-serif text-base leading-relaxed drop-shadow-lg text-center mx-auto max-w-xl">
             {t.couple.intro}
           </p>
         </motion.div>

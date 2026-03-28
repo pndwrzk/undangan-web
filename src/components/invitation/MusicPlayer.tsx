@@ -1,8 +1,6 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Music, Pause } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Music, Pause, Play, ChevronDown } from "lucide-react";
 import { useMusic } from "@/components/providers/MusicProvider";
 
 import { Song } from "@/types";
@@ -13,6 +11,7 @@ interface MusicPlayerProps {
 
 export default function MusicPlayer({ song }: MusicPlayerProps) {
   const { isPlaying, togglePlay, currentTime, duration, seek } = useMusic();
+  const [isExpanded, setIsExpanded] = useState(false);
   
   if (!song) return null;
 
@@ -27,52 +26,100 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
   };
 
   return (
-    <div className="fixed bottom-32 right-6 z-50 flex flex-col items-end gap-3 group animate-in fade-in slide-in-from-right-10 duration-1000 delay-500">
-      {/* Information Tooltip */}
-      <div className="bg-white/90 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100 whitespace-nowrap pointer-events-none mb-1 origin-bottom-right">
-        <p className="font-typewriter text-[10px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
-        <p className="font-serif text-sm font-bold text-slate-800">{song.title}</p>
-        <p className="font-serif text-[10px] text-muted-foreground mb-3">{song.artist}</p>
-        
-        {/* Progress Bar in Tooltip */}
-        <div className="w-48 space-y-1 pointer-events-auto">
-          <input
-            type="range"
-            min="0"
-            max={duration || 0}
-            value={currentTime}
-            onChange={handleSeek}
-            className="w-full h-1 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-          />
-          <div className="flex justify-between text-[8px] font-typewriter text-muted-foreground uppercase tracking-tighter">
-            <span>{formatTime(currentTime)}</span>
-            <span>{formatTime(duration)}</span>
-          </div>
-        </div>
-      </div>
+    <div className="fixed bottom-32 right-6 z-50 flex flex-col items-end gap-3">
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9, originX: 1, originY: 1 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className="bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-primary/10 w-64 md:w-72 overflow-hidden"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex-1">
+                <p className="font-typewriter text-[9px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
+                <h4 className="font-serif text-base font-bold text-slate-800 leading-tight">{song.title}</h4>
+                <p className="font-serif text-xs text-muted-foreground">{song.artist}</p>
+              </div>
+              <button 
+                onClick={() => setIsExpanded(false)}
+                className="p-1 hover:bg-primary/5 rounded-full text-muted-foreground"
+              >
+                <ChevronDown size={18} />
+              </button>
+            </div>
+
+            {/* Seek Bar */}
+            <div className="space-y-2 mb-4">
+              <input
+                type="range"
+                min="0"
+                max={duration || 0}
+                value={currentTime}
+                onChange={handleSeek}
+                className="w-full h-1.5 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+              <div className="flex justify-between text-[10px] font-typewriter text-muted-foreground uppercase tracking-widest">
+                <span>{formatTime(currentTime)}</span>
+                <span>{formatTime(duration)}</span>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center justify-center">
+              <button
+                onClick={() => togglePlay()}
+                className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 active:scale-95 transition-transform"
+              >
+                {isPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} fill="currentColor" className="ml-1" />}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <div className="flex items-center gap-3">
-        {isPlaying && (
+        {isPlaying && !isExpanded && (
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex gap-1 h-4 items-end mb-1"
+            className="flex gap-1 h-3 items-end mb-1"
           >
-            <div className="w-1 bg-primary/40 rounded-full animate-[music-bar_1.2s_ease-in-out_infinite]" />
-            <div className="w-1 bg-primary/60 rounded-full animate-[music-bar_0.8s_ease-in-out_infinite_0.2s]" />
-            <div className="w-1 bg-primary/40 rounded-full animate-[music-bar_1.0s_ease-in-out_infinite_0.4s]" />
+            {[0.4, 0.6, 0.4].map((v, i) => (
+              <div 
+                key={i}
+                className="w-1 bg-primary/60 rounded-full animate-music-bar"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              />
+            ))}
           </motion.div>
         )}
         
         <button
-          onClick={() => togglePlay()}
-          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-700 shadow-lg ${
-            isPlaying 
-              ? "bg-primary text-white scale-110 shadow-primary/30 rotate-[360deg]" 
-              : "bg-white text-primary hover:bg-primary/5 shadow-black/5"
+          onClick={() => setIsExpanded(!isExpanded)}
+          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 shadow-xl relative overflow-hidden ${
+            isPlaying || isExpanded
+              ? "bg-primary text-white scale-110" 
+              : "bg-white text-primary"
           }`}
         >
-          {isPlaying ? <Pause size={24} /> : <Music size={24} className="animate-pulse" />}
+          {isPlaying ? (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            >
+              <Music size={22} />
+            </motion.div>
+          ) : (
+            <Music size={22} className={!isExpanded ? "animate-pulse" : ""} />
+          )}
+          
+          {/* Subtle indicator if expanded */}
+          {isExpanded && (
+            <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+               <ChevronDown size={24} className="opacity-80" />
+            </div>
+          )}
         </button>
       </div>
     </div>
