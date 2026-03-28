@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat, Special_Elite } from "next/font/google";
+import { Playfair_Display, Montserrat, Special_Elite, Amiri } from "next/font/google";
 import AuthProvider from "@/components/providers/AuthProvider";
 import "./globals.css";
 
@@ -7,6 +7,12 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-serif",
+});
+
+const amiri = Amiri({
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  variable: "--font-arabic",
 });
 
 const montserrat = Montserrat({
@@ -27,6 +33,7 @@ export const metadata: Metadata = {
 };
 
 import { MusicProvider } from "@/components/providers/MusicProvider";
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import GlobalAudio from "@/components/audio/GlobalAudio";
 
 export default function RootLayout({
@@ -37,15 +44,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} h-full antialiased`}
+      className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans bg-background text-foreground selection:bg-primary/30">
-        <AuthProvider>
-          <MusicProvider>
-            <GlobalAudio />
-            {children}
-          </MusicProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <MusicProvider>
+              <GlobalAudio />
+              {children}
+            </MusicProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

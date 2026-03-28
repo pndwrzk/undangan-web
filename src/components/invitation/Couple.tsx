@@ -5,16 +5,18 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import TornEdge from "@/components/invitation/TornEdge";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Couple({ couple }: { couple: CoupleType | null }) {
-  const brideName = couple?.brideName || "Alvia";
-  const brideAlias = couple?.brideAlias || "Alvia";
-  const brideBio = couple?.brideBio || "Daughter of Mr. Alvia Senior & Mrs. Alvia Senior";
+  const { t } = useLanguage();
+  const brideName = couple?.brideName || "Mempelai Wanita";
+  const brideAlias = couple?.brideAlias || couple?.brideName;
+  const brideBio = couple?.brideBio;
   const brideImage = couple?.brideImage || "/bride.png";
   
-  const groomName = couple?.groomName || "Pandiwa";
-  const groomAlias = couple?.groomAlias || "Pandiwa";
-  const groomBio = couple?.groomBio || "Son of Mr. Pandiwa Senior & Mrs. Pandiwa Senior";
+  const groomName = couple?.groomName || "Mempelai Pria";
+  const groomAlias = couple?.groomAlias || couple?.groomName;
+  const groomBio = couple?.groomBio;
   const groomImage = couple?.groomImage || "/groom.png";
 
   const sectionRef = useRef(null);
@@ -27,7 +29,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   return (
-    <section id="couple" ref={sectionRef} className="py-32 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+    <section id="couple" ref={sectionRef} className="pt-4 pb-32 md:pt-8 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
       <TornEdge position="top" />
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -35,11 +37,19 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="text-center mb-24"
+          className="text-center mb-24 max-w-2xl mx-auto"
         >
-          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Groom & Bride</span>
-          <h2 className="text-5xl md:text-7xl font-serif mb-6">Our Profiles</h2>
-          <div className="w-24 h-[1px] bg-primary/30 mx-auto mb-8" />
+          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.couple.title}</span>
+          
+          <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-6">
+            {t.couple.intro}
+          </p>
+          
+          <p className="text-muted-foreground font-serif italic text-base leading-relaxed mb-12">
+            {t.couple.requestRestu}
+          </p>
+
+          <div className="w-24 h-[1px] bg-primary/20 mx-auto" />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 items-center">
@@ -67,8 +77,8 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-black/5 opacity-50 rotate-1" />
             </div>
             
-            <h3 className="text-4xl font-serif mb-3">{brideAlias}</h3>
-            <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">The Bride</p>
+            <h3 className="text-2xl md:text-3xl font-serif mb-3">{brideName}</h3>
+            <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">{t.couple.brideLabel}</p>
             <p className="text-sm italic leading-relaxed text-muted-foreground max-w-xs whitespace-pre-wrap">
               {brideBio}
             </p>
@@ -98,8 +108,8 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-black/5 opacity-50 -rotate-2" />
             </div>
             
-            <h3 className="text-4xl font-serif mb-3">{groomAlias}</h3>
-            <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">The Groom</p>
+            <h3 className="text-2xl md:text-3xl font-serif mb-3">{groomName}</h3>
+            <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">{t.couple.groomLabel}</p>
             <p className="text-sm italic leading-relaxed text-muted-foreground max-w-xs whitespace-pre-wrap">
               {groomBio}
             </p>

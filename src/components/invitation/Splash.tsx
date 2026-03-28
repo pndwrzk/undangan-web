@@ -1,11 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MailOpen } from "lucide-react";
 import { Suspense } from "react";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 import { Couple as CoupleType } from "@/types";
 
@@ -22,11 +24,41 @@ function SplashContent({
   guestName?: string | null;
   partnerName?: string | null;
 }) {
+  const { t, language, toggleLanguage } = useLanguage();
   const searchParams = useSearchParams();
-  const guestName = propGuestName || searchParams.get("to") || "Tamu Undangan";
+  const isDefaultGuest = !propGuestName && !searchParams.get("id");
+  const [showSearch, setShowSearch] = useState(isDefaultGuest);
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const brideName = couple?.brideName || "Alvia";
-  const groomName = couple?.groomName || "Pandiwa";
+  const guestName = propGuestName || searchParams.get("to") || (language === "id" ? "Tamu Undangan" : "Valued Guest");
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phone || phone.length < 5) return;
+    
+    setLoading(true);
+    setError("");
+    
+    try {
+      const res = await fetch(`/api/guests/search?phone=${phone}`);
+      const data = await res.json();
+      
+      if (res.ok && data.id) {
+        window.location.href = `/?id=${data.id}`;
+      } else {
+        setError(t.splash.notFound);
+      }
+    } catch (err) {
+      setError(t.splash.notFound);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const brideName = couple?.brideAlias || couple?.brideName || "Mempelai Wanita";
+  const groomName = couple?.groomAlias || couple?.groomName || "Mempelai Pria";
 
   return (
     <AnimatePresence>
@@ -61,8 +93,8 @@ function SplashContent({
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="mb-8"
             >
-              <p className="font-typewriter text-[10px] uppercase tracking-[0.5em] text-primary mb-4">Wedding Invitation</p>
-              <h1 className="text-6xl md:text-8xl font-serif text-foreground mb-4">
+              <p className="font-typewriter text-[10px] uppercase tracking-[0.5em] text-primary mb-4">{t.splash.weddingInvitation}</p>
+              <h1 className="text-5xl md:text-7xl font-serif text-foreground mb-4">
                 {brideName} <br /> <span className="italic text-primary">&</span> <br /> {groomName}
               </h1>
               <motion.div
@@ -79,17 +111,86 @@ function SplashContent({
               transition={{ delay: 0.5, duration: 1 }}
               className="mb-12"
             >
-              <p className="font-serif italic text-muted-foreground mb-4 text-sm">Kepada Bapak/Ibu/Saudara/i:</p>
-              <div className="relative py-4">
-                <h2 className="text-3xl md:text-4xl font-serif text-foreground relative z-10">
-                  {guestName}
-                  {partnerName && (
-                    <span className="text-primary italic mx-2">&</span>
-                  )}
-                  {partnerName}
-                </h2>
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-primary/5 -rotate-1" />
-              </div>
+              <p className="font-serif italic text-muted-foreground mb-4 text-sm">
+                {language === "id" ? "Kepada Bapak/Ibu/Saudara/i:" : "To our Valued Guests:"}
+              </p>
+              
+              <AnimatePresence mode="wait">
+                {!showSearch ? (
+                  <motion.div
+                    key="guest-info"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="relative py-4"
+                  >
+                    <h2 className="text-2xl md:text-3xl font-serif text-foreground relative z-10 transition-all">
+                      {guestName}
+                      {partnerName && (
+                        <span className="text-primary italic mx-2">&</span>
+                      )}
+                      {partnerName}
+                    </h2>
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-primary/5 -rotate-1" />
+                    
+                    {isDefaultGuest && (
+                      <button
+                        onClick={() => setShowSearch(true)}
+                        className="mt-6 text-[10px] font-typewriter underline underline-offset-4 tracking-widest text-primary/60 hover:text-primary transition-colors block mx-auto"
+                      >
+                        {t.splash.findInvitation}
+                      </button>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="search-form"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="relative py-4 max-w-sm mx-auto"
+                  >
+                    <form onSubmit={handleSearch} className="flex flex-col gap-3">
+                      <div className="relative">
+                        <input
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder={t.splash.phonePlaceholder}
+                          className="w-full bg-background/50 border border-primary/20 rounded-full px-6 py-3 text-sm font-serif focus:outline-none focus:border-primary/50 transition-all text-center"
+                          autoFocus
+                        />
+                        {loading && (
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                            <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                          </div>
+                        )}
+                      </div>
+                      
+                      {error && (
+                        <p className="text-[10px] text-red-500 font-serif italic">{error}</p>
+                      )}
+                      
+                      <div className="flex gap-2 justify-center">
+                        <button
+                          type="submit"
+                          disabled={loading || phone.length < 5}
+                          className="bg-primary/10 hover:bg-primary/20 text-primary text-[10px] font-typewriter tracking-widest uppercase px-6 py-2 rounded-full transition-all disabled:opacity-50"
+                        >
+                          {t.splash.searchButton}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setShowSearch(false); setError(""); }}
+                          className="text-[10px] font-typewriter tracking-widest uppercase px-4 py-2 text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
 
             <motion.div
@@ -103,7 +204,7 @@ function SplashContent({
               >
                 <span className="relative z-10 flex items-center gap-3">
                   <MailOpen className="h-6 w-6 group-hover:rotate-12 transition-transform" />
-                  Buka Undangan
+                  {t.splash.openInvitation}
                 </span>
                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Button>
@@ -117,30 +218,22 @@ function SplashContent({
             transition={{ delay: 1.5, duration: 2 }}
             className="absolute top-0 left-0 w-full h-full pointer-events-none"
           >
-            <motion.div 
-              animate={{ 
-                y: [0, -20, 0],
-                rotate: [0, 5, 0]
-              }}
-              transition={{ 
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute top-10 left-10 w-40 h-40 border-[20px] border-primary/20 rounded-full -translate-x-1/2 -translate-y-1/2" 
-            />
-            <motion.div 
-              animate={{ 
-                y: [0, 30, 0],
-                x: [0, 15, 0]
-              }}
-              transition={{ 
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute bottom-10 right-10 w-60 h-60 border-[2px] border-primary/20 rounded-full translate-x-1/3 translate-y-1/3" 
-            />
+            {/* Lead to SplashContent div end */}
+          </motion.div>
+
+          {/* Language Switcher - Not Fixed, part of Splash */}
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="absolute top-8 right-8 z-[110]"
+          >
+            <button
+              onClick={toggleLanguage}
+              className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-primary/20 text-[10px] font-typewriter tracking-widest text-primary hover:bg-primary/20 transition-all active:scale-95"
+            >
+              {language === "id" ? "EN" : "ID"}
+            </button>
           </motion.div>
         </motion.div>
       )}

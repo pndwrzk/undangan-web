@@ -5,8 +5,10 @@ import { Gift, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Gift as GiftType } from "@/types";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState<string | null>(null);
 
   if (!gifts || gifts.length === 0) return null;
@@ -47,9 +49,9 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           <div className="p-4 bg-primary/10 w-fit mx-auto rounded-full text-primary mb-6">
             <Gift size={32} />
           </div>
-          <h2 className="text-4xl md:text-6xl font-serif mb-6">Wedding Gift</h2>
-          <p className="text-sm italic text-muted-foreground font-serif max-w-md mx-auto">
-            Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, a digital contribution would be very much appreciated.
+          <h2 className="text-3xl md:text-5xl font-serif mb-6">{t.gift.title}</h2>
+          <p className="text-base md:text-lg italic text-muted-foreground font-serif max-w-xl mx-auto leading-relaxed">
+            {t.gift.description}
           </p>
         </motion.div>
 
@@ -64,7 +66,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
               className="bg-background p-8 rounded-[2rem] shadow-lg border border-primary/5 hover:border-primary/20 transition-all flex flex-col items-center"
             >
               <p className="font-typewriter text-xs uppercase tracking-[0.2em] text-primary mb-4">{acc.bankName}</p>
-              <p className="text-2xl font-serif mb-2 tracking-widest">{acc.accountNumber}</p>
+              <p className="text-xl md:text-2xl font-serif mb-2 tracking-widest">{acc.accountNumber}</p>
               <p className="text-sm font-typewriter text-muted-foreground uppercase mb-8">a/n {acc.accountName}</p>
               
               <Button
@@ -75,18 +77,30 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                 {copied === acc.accountNumber ? (
                   <>
                     <Check size={16} className="text-green-600" />
-                    <span className="text-xs uppercase font-typewriter">Copied!</span>
+                    <span className="text-xs uppercase font-typewriter">{t.gift.accountCopied}</span>
                   </>
                 ) : (
                   <>
                     <Copy size={16} className="text-primary" />
-                    <span className="text-xs uppercase font-typewriter">Copy Number</span>
+                    <span className="text-xs uppercase font-typewriter">{t.gift.copyAccount}</span>
                   </>
                 )}
               </Button>
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 1, delay: 0.5 }}
+           className="mt-16 max-w-md mx-auto"
+        >
+           <p className="text-sm text-muted-foreground font-serif italic italic leading-relaxed">
+             {t.gift.warningNote}
+           </p>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import InvitationContent from "@/components/invitation/InvitationContent";
+import InvitationContent from "@/components/invitation/InvitationMain";
 import { Couple, Guest, Event, Gift, Gallery, Story, Song } from "@/types";
 
 export const dynamic = "force-dynamic";

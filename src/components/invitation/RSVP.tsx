@@ -16,18 +16,26 @@ import { Button } from "@/components/ui/button";
 import { submitRSVP } from "@/lib/actions";
 import { useState } from "react";
 import { CheckCircle2, UserCheck, UserMinus, Sparkles } from "lucide-react";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 import { Couple as CoupleType, Guest as GuestType } from "@/types";
 import TornEdge from "@/components/invitation/TornEdge";
 
 const formSchema = z.object({
-  attendance: z.string().min(1, { message: "Please select your attendance status." }),
+  attendance: z.string().min(1, { message: "Silakan pilih status kehadiran Anda." }),
 });
 
 export default function RSVP({ couple, guest }: { couple: CoupleType | null, guest?: GuestType | null }) {
+  const { t, language } = useLanguage();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const brideName = couple?.brideName || "Alvia";
-  const groomName = couple?.groomName || "Pandiwa";
+  const brideName = couple?.brideAlias || couple?.brideName || (language === "id" ? "Mempelai Wanita" : "The Bride");
+  const groomName = couple?.groomAlias || couple?.groomName || (language === "id" ? "Mempelai Pria" : "The Groom");
+
+  const formSchema = z.object({
+    attendance: z.string().min(1, { 
+      message: language === "id" ? "Silakan pilih status kehadiran Anda." : "Please select your attendance status." 
+    }),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +54,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
     if (result.success) {
       setIsSubmitted(true);
     } else {
-      alert("Something went wrong. Please try again.");
+      alert(t.rsvp.errorMessage);
     }
   }
 
@@ -63,16 +71,18 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-10">
               <CheckCircle2 className="w-10 h-10 text-primary" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif mb-6 italic text-primary">Thank You!</h2>
-            <p className="text-muted-foreground font-serif text-xl leading-relaxed mb-12">
-              Your confirmation has been received. We are so grateful to have you join us on our special journey.
+            <h2 className="text-3xl md:text-4xl font-serif mb-4 italic text-primary">
+              {language === "id" ? "Terima Kasih!" : "Thank You!"}
+            </h2>
+            <p className="text-muted-foreground font-serif text-lg leading-relaxed mb-8">
+              {t.rsvp.successMessage}
             </p>
             <Button 
               variant="link" 
               onClick={() => setIsSubmitted(false)}
               className="text-primary hover:text-primary/70 font-typewriter text-[10px] uppercase tracking-[0.3em]"
             >
-              Update Confirmation
+              {language === "id" ? "Perbarui Konfirmasi" : "Update RSVP"}
             </Button>
           </div>
         </motion.div>
@@ -97,11 +107,11 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
         >
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-primary/5 rounded-full mb-6">
             <Sparkles size={14} className="text-primary" />
-            <span className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary">Invitation RSVP</span>
+            <span className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
           </div>
-          <h2 className="text-6xl md:text-8xl font-serif mb-8 text-primary/90">Will You Attend?</h2>
-          <p className="text-muted-foreground font-serif italic max-w-lg mx-auto text-xl leading-relaxed">
-            Please kindly confirm your presence before the date to help us prepare a seat for you.
+          <h2 className="text-2xl md:text-4xl font-serif mb-6 text-primary/90">{t.rsvp.willYouAttend}</h2>
+          <p className="text-muted-foreground font-serif italic max-w-xl mx-auto text-base md:text-lg leading-relaxed">
+            {t.rsvp.subtitle}
           </p>
         </motion.div>
 
@@ -110,11 +120,16 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white p-16 rounded-[4rem] shadow-xl border border-primary/10 text-center"
+            className="bg-white p-8 md:p-16 rounded-[2rem] md:rounded-[4rem] shadow-xl border border-primary/10 text-center"
           >
-            <h3 className="text-3xl font-serif mb-6 text-primary italic">Personal Link Required</h3>
+            <h3 className="text-3xl font-serif mb-6 text-primary italic">
+              {language === "id" ? "Tautan Pribadi Diperlukan" : "Personal Link Required"}
+            </h3>
             <p className="text-lg text-muted-foreground font-serif leading-relaxed">
-              We couldn't identify you. Please use the unique link shared with you to access the RSVP portal.
+              {language === "id" 
+                ? "Kami tidak dapat mengenali Anda. Silakan gunakan tautan unik yang dibagikan kepada Anda untuk mengakses portal RSVP."
+                : "We are unable to recognize you. Please use your unique link to access the RSVP portal."
+              }
             </p>
           </motion.div>
         ) : (
@@ -123,7 +138,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="bg-white rounded-[5rem] p-10 md:p-20 shadow-[0_80px_150px_-30px_rgba(0,0,0,0.1)] border border-primary/5 relative"
+          className="bg-white rounded-[2rem] md:rounded-[4rem] p-6 sm:p-8 md:p-14 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.08)] border border-primary/5 relative"
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-[1px] bg-primary/20" />
           
@@ -135,8 +150,10 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 render={({ field }) => (
                   <FormItem className="space-y-10">
                     <div className="text-center">
-                      <FormLabel className="font-serif text-3xl italic text-primary/80">Select Your Attendance Status</FormLabel>
-                      <div className="w-16 h-[2px] bg-primary/20 mx-auto mt-4" />
+                      <FormLabel className="font-serif text-2xl italic text-primary/80">
+                        {language === "id" ? "Pilih Status Kehadiran Anda" : "Choose Your Attendance Status"}
+                      </FormLabel>
+                      <div className="w-12 h-[1px] bg-primary/20 mx-auto mt-3" />
                     </div>
                     
                     <FormControl>
@@ -144,9 +161,9 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                         <button
                           type="button"
                           onClick={() => field.onChange("yes")}
-                          className={`relative group p-8 rounded-[3rem] border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-4 ${
+                          className={`relative group p-6 rounded-[2.5rem] border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-3 ${
                             field.value === "yes" 
-                              ? "border-primary bg-primary/5 shadow-lg" 
+                              ? "border-primary bg-primary/5 shadow-md" 
                               : "border-muted-foreground/10 bg-transparent hover:border-primary/40 hover:bg-primary/[0.02]"
                           }`}
                         >
@@ -161,21 +178,25 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                               </motion.div>
                             )}
                           </AnimatePresence>
-                          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 ${field.value === "yes" ? "bg-primary text-white scale-110 shadow-lg" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                            <UserCheck size={28} />
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${field.value === "yes" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                            <UserCheck size={24} />
                           </div>
                           <div className="text-center">
-                            <span className={`block text-xl font-serif font-bold transition-colors ${field.value === "yes" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>Yes, I'll Be There</span>
-                            <span className="block text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-1">Confirmed Presence</span>
+                            <span className={`block text-lg font-serif font-bold transition-colors ${field.value === "yes" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
+                              {t.rsvp.yesAttend}
+                            </span>
+                            <span className="block text-[9px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-1">
+                              {language === "id" ? "Kehadiran Dikonfirmasi" : "Attendance Confirmed"}
+                            </span>
                           </div>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => field.onChange("no")}
-                          className={`relative group p-8 rounded-[3rem] border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-4 ${
+                          className={`relative group p-6 rounded-[2.5rem] border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-3 ${
                             field.value === "no" 
-                              ? "border-primary bg-primary/5 shadow-lg" 
+                              ? "border-primary bg-primary/5 shadow-md" 
                               : "border-muted-foreground/10 bg-transparent hover:border-primary/40 hover:bg-primary/[0.02]"
                           }`}
                         >
@@ -190,12 +211,16 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                               </motion.div>
                             )}
                           </AnimatePresence>
-                          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 ${field.value === "no" ? "bg-primary text-white scale-110 shadow-lg" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                            <UserMinus size={28} />
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${field.value === "no" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                            <UserMinus size={24} />
                           </div>
                           <div className="text-center">
-                            <span className={`block text-xl font-serif font-bold transition-colors ${field.value === "no" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>Regretfully Decline</span>
-                            <span className="block text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-1">Unable to Attend</span>
+                            <span className={`block text-lg font-serif font-bold transition-colors ${field.value === "no" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
+                              {t.rsvp.noAttend}
+                            </span>
+                            <span className="block text-[9px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-1">
+                              {language === "id" ? "Berhalangan Hadir" : "Regretfully Decline"}
+                            </span>
                           </div>
                         </button>
                       </div>
@@ -205,21 +230,14 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 )}
               />
 
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-serif py-10 rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(var(--primary-rgb),0.5)] transition-all hover:translate-y-[-4px] active:translate-y-0 text-3xl group relative overflow-hidden">
-                <span className="relative z-10">Send Confirmation</span>
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-serif py-6 rounded-2xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 text-xl group relative overflow-hidden">
+                <span className="relative z-10">{t.rsvp.sendRSVP}</span>
                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Button>
             </form>
           </Form>
         </motion.div>
         )}
-        
-        {/* Signatures decorative */}
-        <div className="mt-24 flex justify-center items-center gap-16 opacity-30 select-none grayscale">
-           <span className="font-serif text-5xl md:text-7xl">{brideName}</span>
-           <div className="w-16 h-[1px] bg-primary" />
-           <span className="font-serif text-5xl md:text-7xl">{groomName}</span>
-        </div>
       </div>
     </section>
   );

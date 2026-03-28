@@ -3,17 +3,19 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Hero({ couple }: { couple: any }) {
-  const brideName = couple?.brideName || "Alvia";
-  const groomName = couple?.groomName || "Pandiwa";
+  const { t, language, toggleLanguage } = useLanguage();
+  const brideName = couple?.brideAlias || couple?.brideName || (language === "id" ? "Mempelai Wanita" : "The Bride");
+  const groomName = couple?.groomAlias || couple?.groomName || (language === "id" ? "Mempelai Pria" : "The Groom");
   
   // Format wedding date
-  const wDate = couple?.weddingDate ? new Date(couple.weddingDate) : new Date("2026-09-12");
+  const wDate = couple?.weddingDate ? new Date(couple.weddingDate) : new Date();
   const day = wDate.getDate();
-  const month = wDate.toLocaleString('default', { month: 'long' });
+  const month = wDate.toLocaleString(language === "id" ? 'id-ID' : 'en-US', { month: 'long' });
   const year = wDate.getFullYear();
-  const officialHashtag = couple?.hashtag || `#${groomName}${brideName}Journey`;
+  const officialHashtag = couple?.hashtag;
   
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -25,7 +27,7 @@ export default function Hero({ couple }: { couple: any }) {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [0.4, 0]);
 
   return (
-    <section ref={containerRef} id="hero" className="relative min-h-[80vh] md:h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
+    <section ref={containerRef} id="hero" className="relative min-h-[70vh] md:min-h-[85vh] flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
       {/* Background with texture/image bg */}
       <motion.div 
         style={{ y, opacity }}
@@ -40,24 +42,26 @@ export default function Hero({ couple }: { couple: any }) {
         />
       </motion.div>
 
-      <div className="container relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 px-6">
-        {/* Left Side: Names */}
-        <div className="flex-1 text-center md:text-left">
-          <motion.p
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="text-primary font-serif italic text-xl mb-4"
-          >
-            The Wedding of
-          </motion.p>
+      {/* Language Switcher - Not Fixed, part of Hero */}
+      <div className="absolute top-8 right-8 z-20">
+        <button
+          onClick={toggleLanguage}
+          className="px-4 py-2 bg-white/60 backdrop-blur-md rounded-full border border-primary/20 text-[10px] font-typewriter tracking-widest text-primary hover:bg-primary/20 transition-all active:scale-95 shadow-sm"
+        >
+          {language === "id" ? "EN" : "ID"}
+        </button>
+      </div>
+
+      <div className="container relative z-10 flex flex-col items-center justify-center gap-12 px-6">
+        {/* Names */}
+        <div className="flex-1 text-center">
           
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1.2, delay: 0.3 }}
-            className="text-7xl md:text-9xl font-serif text-foreground leading-none mb-8"
+            className="text-6xl md:text-8xl font-serif text-foreground leading-tight mb-12 md:mb-16"
           >
             {brideName} <br />
             <motion.span 
@@ -87,35 +91,6 @@ export default function Hero({ couple }: { couple: any }) {
           />
         </div>
 
-        {/* Right Side: Sticky Note Date */}
-        <motion.div
-          initial={{ opacity: 0, rotate: 5, scale: 0.8 }}
-          animate={{ 
-            opacity: 1, 
-            rotate: [-2, 1, -2],
-            y: [0, -10, 0],
-            scale: 1 
-          }}
-          transition={{ 
-            opacity: { duration: 1, delay: 0.8 },
-            scale: { duration: 1, delay: 0.8 },
-            rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-            y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-          }}
-          className="relative w-64 h-64 bg-[#FFF9C4] shadow-xl p-8 flex flex-col items-center justify-center transform hover:rotate-0 transition-transform duration-500"
-        >
-          {/* Tape effect */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-white/40 backdrop-blur-sm -rotate-2" />
-          
-          <p className="font-typewriter text-xs uppercase tracking-widest text-muted-foreground mb-4">Save the Date</p>
-          <p className="font-serif text-5xl font-bold text-foreground">{day}</p>
-          <p className="font-serif text-xl uppercase tracking-[0.2em] text-primary">{month}</p>
-          <p className="font-serif text-2xl text-foreground mt-2">{year}</p>
-          
-          <div className="mt-4 w-full border-t border-black/5 pt-4 text-center">
-            <p className="font-typewriter text-[10px] text-muted-foreground italic">{officialHashtag}</p>
-          </div>
-        </motion.div>
       </div>
 
       {/* Decorative Pencil/Element */}

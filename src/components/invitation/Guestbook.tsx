@@ -7,10 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { MessageSquare, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
 export default function Guestbook({ guest }: { guest?: GuestType | null }) {
+  const { t, language } = useLanguage();
   const [messages, setMessages] = useState<GuestbookType[]>([]);
   const [newName, setNewName] = useState(guest?.name || "");
   const [newText, setNewText] = useState("");
@@ -141,40 +143,45 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Wishes</span>
-          <h2 className="text-5xl md:text-7xl font-serif mb-6">Guestbook</h2>
-          <div className="flex items-center justify-center gap-4 text-muted-foreground font-serif italic text-lg mb-8">
-             <div className="w-12 h-[1px] bg-primary/20" />
-             <span>Showing {totalCount} Heartfelt Wishes</span>
-             <div className="w-12 h-[1px] bg-primary/20" />
+          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block underline underline-offset-8 decoration-primary/20">{t.guestbook.sectionLabel}</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif mb-6">{t.guestbook.title}</h2>
+          <div className="flex flex-col items-center max-w-2xl mx-auto">
+            <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-8">
+              {t.guestbook.description}
+            </p>
+            <div className="flex items-center justify-center gap-4 text-primary/40 font-typewriter uppercase text-[10px] tracking-widest">
+               <div className="w-8 h-[1px] bg-primary/20" />
+               <span>{t.guestbook.showingWishes.replace("{count}", totalCount.toString())}</span>
+               <div className="w-8 h-[1px] bg-primary/20" />
+            </div>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* Form */}
           <div className="md:col-span-1">
             {!guest ? (
               <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-sm border border-primary/10 text-center sticky top-8">
-                <h3 className="text-xl font-serif mb-4 text-red-500">Access Restricted</h3>
+                <h3 className="text-xl font-serif mb-4 text-red-500">{t.guestbook.restrictedTitle}</h3>
                 <p className="text-sm text-muted-foreground font-serif">
-                  Please use your unique invitation link to send wishes to the couple.
+                  {t.guestbook.restrictedDesc}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 sticky top-8">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">Your Name</label>
+                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.yourName}</label>
                   <Input
-                    placeholder="Your Name"
+                    placeholder={t.guestbook.placeholderName}
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
                     className="bg-background border-none shadow-sm rounded-xl py-6"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">Message</label>
+                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.message}</label>
                   <Textarea
-                    placeholder="Give your wishes for the couple..."
+                    placeholder={t.guestbook.placeholderMessage}
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     className="bg-background border-none shadow-sm rounded-xl min-h-[150px] py-4"
@@ -185,7 +192,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                   disabled={!newText || !newName}
                   className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6 shadow-md disabled:opacity-50"
                 >
-                  Send Wishes
+                  {t.guestbook.sendButton}
                 </Button>
               </form>
             )}
@@ -195,7 +202,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
           <div className="md:col-span-2 flex flex-col gap-8">
             <div className="space-y-6 min-h-[400px]">
               {loading ? (
-                <div className="text-center py-12 text-muted-foreground font-serif italic">Loading wishes...</div>
+                <div className="text-center py-12 text-muted-foreground font-serif italic">{t.guestbook.loading}</div>
               ) : (
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -236,12 +243,12 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                         
                         <p className="text-sm text-muted-foreground italic mb-4 font-serif leading-relaxed flex-1">"{msg.message}"</p>
                         <span className="font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground/50">
-                          {new Date(msg.createdAt).toLocaleString()}
+                          {new Date(msg.createdAt).toLocaleString(language === "id" ? 'id-ID' : 'en-US')}
                         </span>
                       </div>
                     ))}
                     {messages.length === 0 && (
-                      <div className="text-center py-12 text-muted-foreground font-serif italic">No wishes yet. Be the first!</div>
+                      <div className="text-center py-12 text-muted-foreground font-serif italic">{t.guestbook.empty}</div>
                     )}
                   </motion.div>
                 </AnimatePresence>

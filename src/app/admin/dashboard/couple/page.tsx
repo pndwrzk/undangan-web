@@ -121,15 +121,15 @@ export default function CouplePage() {
                     <h3 className="text-sm font-typewriter uppercase tracking-widest text-primary border-b border-primary/10 pb-2">Groom (Laki-laki)</h3>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Full Name</Label>
-                      <Input name="groomName" defaultValue={couple?.groomName} className="rounded-xl border-primary/10" required />
+                      <Input name="groomName" defaultValue={couple?.groomName || ""} className="rounded-xl border-primary/10" required />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Alias Name</Label>
-                      <Input name="groomAlias" defaultValue={couple?.groomAlias} className="rounded-xl border-primary/10" />
+                      <Input name="groomAlias" defaultValue={couple?.groomAlias || ""} className="rounded-xl border-primary/10" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Bio / Parent Names</Label>
-                      <textarea name="groomBio" defaultValue={couple?.groomBio} className="w-full p-3 rounded-xl border border-primary/10 bg-muted/10 focus:outline-primary min-h-[100px]" />
+                      <textarea name="groomBio" defaultValue={couple?.groomBio || ""} className="w-full p-3 rounded-xl border border-primary/10 bg-muted/10 focus:outline-primary min-h-[100px]" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Photo</Label>
@@ -141,15 +141,15 @@ export default function CouplePage() {
                     <h3 className="text-sm font-typewriter uppercase tracking-widest text-secondary border-b border-secondary/10 pb-2">Bride (Wanita)</h3>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Full Name</Label>
-                      <Input name="brideName" defaultValue={couple?.brideName} className="rounded-xl border-secondary/10" required />
+                      <Input name="brideName" defaultValue={couple?.brideName || ""} className="rounded-xl border-secondary/10" required />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Alias Name</Label>
-                      <Input name="brideAlias" defaultValue={couple?.brideAlias} className="rounded-xl border-secondary/10" />
+                      <Input name="brideAlias" defaultValue={couple?.brideAlias || ""} className="rounded-xl border-secondary/10" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Bio / Parent Names</Label>
-                      <textarea name="brideBio" defaultValue={couple?.brideBio} className="w-full p-3 rounded-xl border border-secondary/10 bg-muted/10 focus:outline-secondary min-h-[100px]" />
+                      <textarea name="brideBio" defaultValue={couple?.brideBio || ""} className="w-full p-3 rounded-xl border border-secondary/10 bg-muted/10 focus:outline-secondary min-h-[100px]" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] uppercase tracking-widest font-typewriter">Photo</Label>

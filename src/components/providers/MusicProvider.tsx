@@ -16,19 +16,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSong, setActiveSong] = useState<Song | null>(null);
 
-  useEffect(() => {
-    // Fetch active song on mount if not already set
-    if (!activeSong) {
-      fetch("/api/admin/songs?active=true")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data && !data.error) {
-            setActiveSong(data);
-          }
-        })
-        .catch(console.error);
-    }
-  }, [activeSong]);
+  // Music context state holder. Active song is set by the page or component.
 
   const togglePlay = (value?: boolean) => {
     setIsPlaying((prev) => (value !== undefined ? value : !prev));

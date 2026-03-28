@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   const { status } = useSession();
@@ -48,8 +50,15 @@ export default function LoginPage() {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md bg-white p-12 rounded-[3rem] shadow-2xl border border-primary/5"
+        className="w-full max-w-md bg-white p-12 rounded-[3rem] shadow-2xl border border-primary/5 relative"
       >
+        <Link 
+          href="/" 
+          className="absolute -top-12 left-6 flex items-center gap-2 text-primary/60 hover:text-primary transition-colors font-serif italic text-sm group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          Back to Invitation
+        </Link>
         <div className="text-center mb-10">
           <h1 className="text-4xl font-serif mb-2">Admin Login</h1>
           <p className="text-muted-foreground font-serif italic text-sm">Alvia & Pandiwa Wedding Dashboard</p>

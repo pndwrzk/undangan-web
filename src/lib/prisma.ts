@@ -5,10 +5,6 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL!);
 
 // Force refresh cache to pick up new schema models
-if (process.env.NODE_ENV !== "production") {
-  delete (global as any).prisma;
-}
-
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 export const prisma =
