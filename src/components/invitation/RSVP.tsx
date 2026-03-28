@@ -60,7 +60,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
   if (isSubmitted) {
     return (
-      <section className="py-32 px-6 bg-background relative overflow-hidden">
+      <section className="py-20 md:py-32 px-6 bg-background relative overflow-hidden">
         {/* Background Decorative Text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60vw] md:text-[45vw] font-serif italic opacity-[0.03] md:opacity-[0.02] pointer-events-none select-none z-0">
           RSVP
@@ -105,7 +105,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   }
 
   return (
-    <section id="rsvp" className="py-32 px-6 bg-background relative overflow-hidden">
+    <section id="rsvp" className="py-20 md:py-32 px-6 bg-background relative overflow-hidden">
       
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -141,7 +141,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
         >
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-primary/5 rounded-full mb-6">
             <Sparkles size={14} className="text-primary" />
-            <span className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
+            <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
           </div>
           <h2 className="text-2xl md:text-4xl font-serif mb-6 text-primary/90">{t.rsvp.willYouAttend}</h2>
           <p className="text-muted-foreground font-serif italic max-w-xl mx-auto text-base md:text-lg leading-relaxed">

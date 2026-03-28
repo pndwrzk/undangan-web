@@ -42,6 +42,7 @@ export interface TranslationDict {
     errorMessage: string;
   };
   gift: {
+    sectionLabel: string;
     title: string;
     description: string;
     copyAccount: string;
@@ -115,7 +116,8 @@ export const translations: Record<Language, TranslationDict> = {
       errorMessage: "Gagal mengirim konfirmasi. Silakan coba lagi.",
     },
     gift: {
-      title: "Tanda Kasih",
+      sectionLabel: "Tanda Kasih",
+      title: "Wedding Gift",
       description: "Bagi yang ingin memberikan tanda kasih, dapat mengirimkan melalui fitur di bawah ini:",
       copyAccount: "Salin Rekening",
       accountCopied: "Rekening Berhasil Disalin!",
@@ -186,7 +188,8 @@ export const translations: Record<Language, TranslationDict> = {
       errorMessage: "Failed to send confirmation. Please try again.",
     },
     gift: {
-      title: "Wedding Gift",
+      sectionLabel: "Wedding Gift",
+      title: "Tanda Kasih",
       description: "For those who wish to send a wedding gift, you can use the features below:",
       copyAccount: "Copy Account",
       accountCopied: "Account Number Copied!",

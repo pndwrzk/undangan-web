@@ -136,7 +136,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   };
 
   return (
-    <section className="py-32 px-6 bg-muted/20 relative">
+    <section id="guestbook" className="py-20 md:py-32 px-6 bg-muted/20 relative">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -144,8 +144,8 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block underline underline-offset-8 decoration-primary/20">{t.guestbook.sectionLabel}</span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif mb-6">{t.guestbook.title}</h2>
+          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block underline underline-offset-8 decoration-primary/20">{t.guestbook.sectionLabel}</span>
+          <h2 className="text-3xl md:text-5xl font-serif mb-6">{t.guestbook.title}</h2>
           <div className="flex flex-col items-center max-w-2xl mx-auto">
             <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-8">
               {t.guestbook.description}

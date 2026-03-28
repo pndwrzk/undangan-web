@@ -11,7 +11,7 @@ export default function EventDetails({ events }: { events?: any[] }) {
   if (!events || events.length === 0) return null;
 
   return (
-    <section id="event" className="py-32 px-6 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+    <section id="event" className="py-20 md:py-32 px-6 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
       <TornEdge position="top" color="fill-muted/5" />
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -21,12 +21,12 @@ export default function EventDetails({ events }: { events?: any[] }) {
           transition={{ duration: 1 }}
           className="text-center mb-16 md:mb-24"
         >
-          <span className="font-arabic text-xl sm:text-2xl md:text-3xl text-primary mb-8 md:mb-10 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
+          <span className="font-arabic text-2xl md:text-3xl text-primary mb-8 md:mb-10 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
             {t.event.sectionLabel}
           </span>
-          <h2 className="text-sm sm:text-base md:text-lg font-serif mb-8 text-muted-foreground italic leading-relaxed max-w-4xl mx-auto px-6 opacity-90">
+          <h2 className="text-base md:text-lg font-serif mb-8 text-muted-foreground italic leading-relaxed max-w-4xl mx-auto px-6 opacity-90">
             "{t.event.title.split(' (')[0]}"
-            <span className="block text-[8px] md:text-[9px] font-typewriter uppercase tracking-[0.3em] mt-4 md:mt-6 not-italic opacity-40">
+            <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-4 md:mt-6 not-italic opacity-40">
               {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}
             </span>
           </h2>

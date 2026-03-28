@@ -27,7 +27,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
   };
 
   return (
-    <div className="fixed bottom-24 right-6 z-50 flex flex-col items-end gap-3 group animate-in fade-in slide-in-from-right-10 duration-1000 delay-500">
+    <div className="fixed bottom-32 right-6 z-50 flex flex-col items-end gap-3 group animate-in fade-in slide-in-from-right-10 duration-1000 delay-500">
       {/* Information Tooltip */}
       <div className="bg-white/90 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100 whitespace-nowrap pointer-events-none mb-1 origin-bottom-right">
         <p className="font-typewriter text-[10px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
@@ -66,7 +66,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
         
         <button
           onClick={() => togglePlay()}
-          className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-700 shadow-lg ${
+          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-700 shadow-lg ${
             isPlaying 
               ? "bg-primary text-white scale-110 shadow-primary/30 rotate-[360deg]" 
               : "bg-white text-primary hover:bg-primary/5 shadow-black/5"

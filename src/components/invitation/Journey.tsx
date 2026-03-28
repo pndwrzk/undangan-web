@@ -42,7 +42,7 @@ export default function Journey({ stories }: JourneyProps) {
   })) as (Omit<StoryType, 'icon'> & { icon: React.ReactNode; rotate: string })[];
 
   return (
-    <section id="story" ref={sectionRef} className="py-16 px-6 bg-muted/5 relative overflow-hidden">
+    <section id="story" ref={sectionRef} className="py-20 md:py-32 px-6 bg-muted/5 relative overflow-hidden">
       <TornEdge position="top" color="fill-background" />
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -52,7 +52,7 @@ export default function Journey({ stories }: JourneyProps) {
           transition={{ duration: 1 }}
           className="text-center mb-16 max-w-2xl mx-auto"
         >
-          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.story.title}</span>
+          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.story.title}</span>
           
           <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-6">
             {t.story.intro}

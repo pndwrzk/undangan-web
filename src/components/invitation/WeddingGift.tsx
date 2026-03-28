@@ -37,7 +37,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   };
 
   return (
-    <section className="py-32 px-6 bg-muted/10 relative">
+    <section id="gift" className="py-20 md:py-32 px-6 bg-muted/10 relative">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,9 +46,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           transition={{ duration: 1 }}
           className="mb-16"
         >
-          <div className="p-4 bg-primary/10 w-fit mx-auto rounded-full text-primary mb-6">
-            <Gift size={32} />
-          </div>
+          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
           <h2 className="text-3xl md:text-5xl font-serif mb-6">{t.gift.title}</h2>
           <p className="text-base md:text-lg italic text-muted-foreground font-serif max-w-xl mx-auto leading-relaxed">
             {t.gift.description}

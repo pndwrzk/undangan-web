@@ -127,7 +127,7 @@ export default function InvitationMain({
 
           <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-          <footer className="py-24 px-6 text-center bg-muted/20 relative">
+          <footer className="py-24 px-6 text-center bg-background relative">
             <div className="max-w-2xl mx-auto">
               <p className="text-muted-foreground font-serif italic text-sm leading-relaxed mb-6">
                 {t.footer.closing}
