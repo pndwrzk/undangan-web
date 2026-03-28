@@ -38,56 +38,67 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
     <div className="fixed bottom-32 right-6 z-50 flex flex-col items-end gap-3">
       <AnimatePresence>
         {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9, originX: 1, originY: 1 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-primary/10 w-64 md:w-72 overflow-hidden"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex-1">
-                <p className="font-typewriter text-[9px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
-                <h4 className="font-serif text-base font-bold text-slate-800 leading-tight">{song.title}</h4>
-                <p className="font-serif text-xs text-muted-foreground">{song.artist}</p>
+          <>
+            {/* Click Outside Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsExpanded(false)}
+              className="fixed inset-0 z-[-1] cursor-default"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.9, originX: 1, originY: 1 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.9 }}
+              className="bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-primary/10 w-64 md:w-72 overflow-hidden"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex-1">
+                  <p className="font-typewriter text-[9px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
+                  <h4 className="font-serif text-base font-bold text-slate-800 leading-tight">{song.title}</h4>
+                  <p className="font-serif text-xs text-muted-foreground">{song.artist}</p>
+                </div>
+                <button 
+                  onClick={() => setIsExpanded(false)}
+                  className="p-1 hover:bg-primary/5 rounded-full text-muted-foreground"
+                >
+                  <ChevronDown size={18} />
+                </button>
               </div>
-              <button 
-                onClick={() => setIsExpanded(false)}
-                className="p-1 hover:bg-primary/5 rounded-full text-muted-foreground"
-              >
-                <ChevronDown size={18} />
-              </button>
-            </div>
 
-            {/* Seek Bar */}
-            <div className="space-y-2 mb-4">
-              <input
-                type="range"
-                min="0"
-                max={duration && !isNaN(duration) && isFinite(duration) ? duration : 0}
-                value={currentTime}
-                onInput={handleInput}
-                onChange={handleSeek}
-                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-primary"
-                style={{
-                  background: `linear-gradient(to right, var(--color-primary) ${progress}%, color-mix(in srgb, var(--color-primary), transparent 90%) ${progress}%)`
-                }}
-              />
-              <div className="flex justify-between text-[10px] font-typewriter text-muted-foreground uppercase tracking-widest">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
+              {/* Seek Bar */}
+              <div className="space-y-2 mb-4">
+                <input
+                  type="range"
+                  min="0"
+                  max={duration && !isNaN(duration) && isFinite(duration) ? duration : 0}
+                  value={currentTime}
+                  onInput={handleInput}
+                  onChange={handleSeek}
+                  className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-primary"
+                  style={{
+                    background: `linear-gradient(to right, var(--color-primary) ${progress}%, color-mix(in srgb, var(--color-primary), transparent 90%) ${progress}%)`
+                  }}
+                />
+                <div className="flex justify-between text-[10px] font-typewriter text-muted-foreground uppercase tracking-widest">
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
               </div>
-            </div>
 
-            {/* Controls */}
-            <div className="flex items-center justify-center">
-              <button
-                onClick={() => togglePlay()}
-                className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 active:scale-95 transition-transform"
-              >
-                {isPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} fill="currentColor" className="ml-1" />}
-              </button>
-            </div>
-          </motion.div>
+              {/* Controls */}
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={() => togglePlay()}
+                  className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 active:scale-95 transition-transform"
+                >
+                  {isPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} fill="currentColor" className="ml-1" />}
+                </button>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
       
