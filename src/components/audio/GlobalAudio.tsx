@@ -7,6 +7,14 @@ export default function GlobalAudio() {
   const { isPlaying, activeSong, togglePlay, setCurrentTime, duration, setDuration, seekTime, isSeeking, setIsSeeking, setSeekTime } = useMusic();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const getAudioUrl = (url: string) => {
+    if (url.startsWith("/uploads/songs/")) {
+      const filename = url.split("/").pop();
+      return `/api/music/serve/${filename}`;
+    }
+    return url;
+  };
+
   useEffect(() => {
     if (!audioRef.current) return;
 
@@ -69,7 +77,7 @@ export default function GlobalAudio() {
   return (
     <audio
       ref={audioRef}
-      src={activeSong.url}
+      src={getAudioUrl(activeSong.url)}
       loop
       preload="auto"
       onEnded={() => togglePlay(false)}
