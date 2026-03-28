@@ -47,7 +47,6 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           className="mb-16"
         >
           <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
-          <h2 className="text-3xl md:text-5xl font-serif mb-6">{t.gift.title}</h2>
           <p className="text-base md:text-lg italic text-muted-foreground font-serif max-w-xl mx-auto leading-relaxed">
             {t.gift.description}
           </p>

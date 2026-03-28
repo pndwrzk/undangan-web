@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { X } from "lucide-react";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 const classPattern = [
   "col-span-2 row-span-2",
@@ -16,12 +16,13 @@ const classPattern = [
 ];
 
 export default function Gallery({ gallery }: { gallery?: any[] }) {
+  const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
 
   if (!gallery || gallery.length === 0) return null;
 
   return (
-    <section className="py-12 px-6 bg-background relative">
+    <section className="py-20 md:py-32 px-6 bg-background relative">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,8 +31,10 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
           transition={{ duration: 1 }}
           className="text-center mb-12"
         >
-          <span className="font-typewriter text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Moments</span>
-          <h2 className="text-5xl md:text-7xl font-serif mb-6">Our Gallery</h2>
+          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gallery.title}</span>
+          <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-6">
+            {t.gallery.description}
+          </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
         </motion.div>
 

@@ -72,6 +72,10 @@ export interface TranslationDict {
     title: string;
     intro: string;
   };
+  gallery: {
+    title: string;
+    description: string;
+  };
 }
 
 export const translations: Record<Language, TranslationDict> = {
@@ -90,7 +94,7 @@ export const translations: Record<Language, TranslationDict> = {
     },
     couple: {
       title: "Profil Kami",
-      intro: "\"Dari setiap langkah yang membawa kami ke berbagai arah, kami menemukan satu sama lain sebagai tempat untuk pulang.\"",
+      intro: "Dari setiap langkah yang membawa kami ke berbagai arah, kami menemukan satu sama lain sebagai tempat untuk pulang.",
       requestRestu: "Dengan mengharap ridho Allah SWT, kami memohon restu dan kehadiran Anda pada hari bahagia kami:",
       groomLabel: "Mempelai Pria",
       brideLabel: "Mempelai Wanita",
@@ -106,7 +110,7 @@ export const translations: Record<Language, TranslationDict> = {
     },
     rsvp: {
       title: "Konfirmasi Kehadiran",
-      subtitle: "Mohon konfirmasi kehadiran Anda melalui formulir di bawah ini:",
+      subtitle: "Mohon konfirmasi kehadiran Anda melalui formulir di bawah ini",
       willYouAttend: "Apakah Anda akan hadir?",
       yesAttend: "Ya, Saya Datang",
       noAttend: "Maaf, Tidak Bisa",
@@ -138,6 +142,10 @@ export const translations: Record<Language, TranslationDict> = {
       restrictedTitle: "Tautan Terbatas",
       restrictedDesc: "Silakan gunakan tautan undangan unik Anda untuk dapat mengirimkan ucapan doa.",
     },
+    gallery: {
+      title: "Momen Bahagia",
+      description: "Momen-momen berharga yang berhasil kami abadikan dalam bidikan kamera.",
+    },
     footer: {
       closing: "Akan menjadi kebahagiaan bagi kami apabila Anda berkenan hadir di hari pernikahan kami. Terima kasih atas doa, ucapan baik, dan perhatian yang diberikan.",
       seeYou: "Sampai jumpa di hari bahagia kami.",
@@ -162,8 +170,8 @@ export const translations: Record<Language, TranslationDict> = {
     },
     couple: {
       title: "Our Profiles",
-      intro: "\"From every step that lead us to different directions, we found each other as a place to call home.\"",
-      requestRestu: "With the blessing of God, we request your presence and prayers on our special day:",
+      intro: "From every step that lead us to different directions, we found each other as a place to call home.",
+      requestRestu: "With the blessing of God, we request your presence and prayers on our special day",
       groomLabel: "The Groom",
       brideLabel: "The Bride",
     },
@@ -209,6 +217,10 @@ export const translations: Record<Language, TranslationDict> = {
       empty: "No wishes yet. Be the first!",
       restrictedTitle: "Access Restricted",
       restrictedDesc: "Please use your unique invitation link to send wishes to the couple.",
+    },
+    gallery: {
+      title: "Captured Moments",
+      description: "Precious moments we've captured through the lens of our camera.",
     },
     footer: {
       closing: "It would be an absolute joy for us if you could be present on our wedding day. Thank you for the prayers, kind words, and the attention given.",

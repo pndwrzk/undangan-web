@@ -145,7 +145,6 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
           className="text-center mb-16"
         >
           <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block underline underline-offset-8 decoration-primary/20">{t.guestbook.sectionLabel}</span>
-          <h2 className="text-3xl md:text-5xl font-serif mb-6">{t.guestbook.title}</h2>
           <div className="flex flex-col items-center max-w-2xl mx-auto">
             <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-8">
               {t.guestbook.description}

@@ -30,25 +30,18 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
 
   return (
     <section id="couple" ref={sectionRef} className="py-20 md:py-32 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
-      <TornEdge position="top" />
+      {/* <TornEdge position="top" /> */}
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="text-center mb-24 max-w-2xl mx-auto"
+          className="text-center mb-16 md:mb-32 max-w-2xl mx-auto"
         >
-          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.couple.title}</span>
-          
-          <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-6">
-            {t.couple.intro}
-          </p>
-          
-          <p className="text-muted-foreground font-serif italic text-base leading-relaxed mb-12">
+          <p className="text-muted-foreground font-serif text-base leading-relaxed mb-12">
             {t.couple.requestRestu}
           </p>
-
           <div className="w-24 h-[1px] bg-primary/20 mx-auto" />
         </motion.div>
 

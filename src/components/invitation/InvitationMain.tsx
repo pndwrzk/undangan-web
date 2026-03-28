@@ -15,6 +15,8 @@ const Journey = dynamic(() => import("@/components/invitation/Journey"), { ssr: 
 const Countdown = dynamic(() => import("@/components/invitation/Countdown"), { ssr: false });
 const EventDetails = dynamic(() => import("@/components/invitation/EventDetails"), { ssr: false });
 const RSVP = dynamic(() => import("@/components/invitation/RSVP"), { ssr: false });
+import type { QuoteHeaderProps } from "@/components/invitation/QuoteHeader";
+const QuoteHeader = dynamic<QuoteHeaderProps>(() => import("@/components/invitation/QuoteHeader"), { ssr: false });
 const Gallery = dynamic(() => import("@/components/invitation/Gallery"), { ssr: false });
 const WeddingGift = dynamic(() => import("@/components/invitation/WeddingGift"), { ssr: false });
 const Guestbook = dynamic(() => import("@/components/invitation/Guestbook"), { ssr: false });
@@ -97,6 +99,7 @@ export default function InvitationMain({
           {song && <MusicPlayer song={song} />}
 
           <Hero couple={couple} />
+          <QuoteHeader couple={couple} />
           <Couple couple={couple} />
           <Journey stories={stories} />
           {/* <Countdown couple={couple} /> */}
@@ -139,11 +142,9 @@ export default function InvitationMain({
               <h2 className="text-3xl md:text-4xl font-serif text-primary/80 mb-4 italic select-none">
                 {coupleNames}
               </h2>
-              {couple?.hashtag && (
-                <p className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary/60 mb-10">
-                  {couple.hashtag}
-                </p>
-              )}
+              <p className="font-typewriter text-[10px]  tracking-[0.3em] text-primary/60 mb-10">
+                #ALLPathsLeadToPandiwa
+              </p>
 
               <div className="w-24 h-[1px] bg-primary/20 mx-auto mb-12" />
 

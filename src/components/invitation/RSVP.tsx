@@ -143,7 +143,6 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <Sparkles size={14} className="text-primary" />
             <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
           </div>
-          <h2 className="text-2xl md:text-4xl font-serif mb-6 text-primary/90">{t.rsvp.willYouAttend}</h2>
           <p className="text-muted-foreground font-serif italic max-w-xl mx-auto text-base md:text-lg leading-relaxed">
             {t.rsvp.subtitle}
           </p>
