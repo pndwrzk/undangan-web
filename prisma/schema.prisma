@@ -27,6 +27,7 @@ model Couple {
   brideImage String?  @default("/bride.png")
   hashtag    String?  @default("#AlviaPandiwaMenyatu")
   heroImage  String?  @default("/hero.jpg")
+  quoteImage String?  @default("/quote-bg.png")
   weddingDate DateTime?
   createdAt       DateTime @default(now())
   updatedAt  DateTime @updatedAt

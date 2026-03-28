@@ -295,7 +295,7 @@ export default function GuestsPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
               <input 
                 type="text" 
-                placeholder="Search guest name or group..." 
+                placeholder="Search name, phone, or code..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 rounded-full border border-primary/10 bg-white focus:outline-primary shadow-sm font-serif"
@@ -321,12 +321,15 @@ export default function GuestsPage() {
                   {guests.map((guest) => (
                     <TableRow key={guest.id} className="border-b border-primary/5 last:border-0 hover:bg-primary/5 transition-colors group">
                       <TableCell className="px-6 py-5">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="font-bold text-slate-800 text-lg">{guest.name}</p>
+                        <div className="flex flex-col gap-1.5 mb-1">
+                          <p className="font-bold text-slate-900 text-xl leading-tight">{guest.name}</p>
                           {guest.code && (
-                            <span className="px-2 py-0.5 bg-primary/5 text-primary border border-primary/10 rounded text-[10px] font-mono font-bold tracking-wider">
-                              {guest.code}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className="px-2.5 py-1 bg-primary text-white rounded text-xs font-mono font-black tracking-widest shadow-sm">
+                                {guest.code}
+                              </span>
+                              <span className="text-[10px] text-muted-foreground font-typewriter uppercase tracking-tighter">Guest Code</span>
+                            </div>
                           )}
                         </div>
                         {guest.partnerName && (

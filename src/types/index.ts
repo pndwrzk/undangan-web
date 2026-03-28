@@ -10,6 +10,7 @@ export interface Couple {
   brideImage?: string | null;
   hashtag?: string | null;
   heroImage?: string | null;
+  quoteImage?: string | null;
   weddingDate?: Date | string | null;
   createdAt: Date | string;
   updatedAt: Date | string;

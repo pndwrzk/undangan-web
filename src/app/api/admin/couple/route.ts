@@ -45,10 +45,11 @@ export async function POST(req: Request) {
     let groomImagePath: string | undefined = undefined;
     let brideImagePath: string | undefined = undefined;
     let heroImagePath: string | undefined = undefined;
+    let quoteImagePath: string | undefined = undefined;
 
     const unlinkOld = async (imgPath: string) => {
       try {
-        if (!imgPath.endsWith("groom.png") && !imgPath.endsWith("bride.png") && !imgPath.endsWith("hero.jpg")) {
+        if (!imgPath.endsWith("groom.png") && !imgPath.endsWith("bride.png") && !imgPath.endsWith("hero.jpg") && !imgPath.endsWith("quote-bg.png")) {
           const pathSegments = imgPath.startsWith('/') ? imgPath.substring(1).split('/') : imgPath.split('/');
           const oldFile = path.join(process.cwd(), ...pathSegments);
           await import("fs/promises").then(fs => fs.unlink(oldFile)).catch(() => {});
@@ -92,6 +93,18 @@ export async function POST(req: Request) {
       if (existingCouple?.brideImage) await unlinkOld(existingCouple.brideImage);
     }
 
+    const quoteImageFile = formData.get("quoteImageFile") as File;
+    if (quoteImageFile && quoteImageFile.size > 0) {
+      const quoteDir = path.join(uploadDir, "couple/quote");
+      await mkdir(quoteDir, { recursive: true });
+      const bytes = await quoteImageFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `quote-${Date.now()}-${quoteImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+      await writeFile(path.join(quoteDir, filename), buffer);
+      quoteImagePath = `/uploads/couple/quote/${filename}`;
+      if (existingCouple?.quoteImage) await unlinkOld(existingCouple.quoteImage);
+    }
+
     // Build update and create payload
     const dataPayload: any = {
       groomName,
@@ -106,6 +119,7 @@ export async function POST(req: Request) {
     if (groomImagePath) dataPayload.groomImage = groomImagePath;
     if (brideImagePath) dataPayload.brideImage = brideImagePath;
     if (heroImagePath) dataPayload.heroImage = heroImagePath;
+    if (quoteImagePath) dataPayload.quoteImage = quoteImagePath;
 
     const couple = await prisma.couple.upsert({
       where: { id },
@@ -117,6 +131,7 @@ export async function POST(req: Request) {
         groomImage: groomImagePath || "/groom.png",
         brideImage: brideImagePath || "/bride.png",
         heroImage: heroImagePath || "/hero.jpg",
+        quoteImage: quoteImagePath || "/quote-bg.png",
       },
     });
 

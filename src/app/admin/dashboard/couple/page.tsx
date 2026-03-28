@@ -176,7 +176,12 @@ export default function CouplePage() {
                       <div className="space-y-2 md:col-span-2">
                         <Label className="text-[10px] uppercase tracking-widest font-typewriter">Hero Background Image</Label>
                         <Input type="file" name="heroImageFile" accept="image/*" className="rounded-xl border-muted/20 text-xs file:bg-muted file:text-foreground" />
-                        <p className="text-[10px] text-muted-foreground mt-1">Leave empty to keep the current background.</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">Latar belakang utama di bagian atas.</p>
+                      </div>
+                      <div className="space-y-2 md:col-span-2">
+                        <Label className="text-[10px] uppercase tracking-widest font-typewriter">Quote Background Image</Label>
+                        <Input type="file" name="quoteImageFile" accept="image/*" className="rounded-xl border-muted/20 text-xs file:bg-muted file:text-foreground" />
+                        <p className="text-[10px] text-muted-foreground mt-1">Latar belakang untuk bagian kutipan/intro.</p>
                       </div>
                     </div>
                   </div>
@@ -237,11 +242,19 @@ export default function CouplePage() {
                </div>
               </div>
             {couple?.heroImage && (
-              <div className="md:col-span-2 bg-white rounded-[3rem] shadow-sm border border-primary/5 overflow-hidden relative group">
+              <div className="bg-white rounded-[3rem] shadow-sm border border-primary/5 overflow-hidden relative group">
                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="font-typewriter text-white uppercase tracking-widest text-sm">Hero Background Preview</p>
+                  <p className="font-typewriter text-white uppercase tracking-widest text-sm text-center px-4">Hero Background Preview</p>
                 </div>
                 <img src={couple.heroImage} alt="Hero Background" className="w-full h-64 object-cover" />
+              </div>
+            )}
+            {couple?.quoteImage && (
+              <div className="bg-white rounded-[3rem] shadow-sm border border-primary/5 overflow-hidden relative group">
+                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="font-typewriter text-white uppercase tracking-widest text-sm text-center px-4">Quote Background Preview</p>
+                </div>
+                <img src={couple.quoteImage} alt="Quote Background" className="w-full h-64 object-cover" />
               </div>
             )}
 

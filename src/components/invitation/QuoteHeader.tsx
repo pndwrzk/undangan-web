@@ -16,7 +16,7 @@ export default function QuoteHeader({ couple }: QuoteHeaderProps) {
     <section className="relative min-h-[40vh] md:min-h-[50vh] flex items-center justify-center px-6 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/quote-bg.png"
+          src={couple?.quoteImage || "/quote-bg.png"}
           alt="Quote Background"
           fill
           className="object-cover brightness-[0.4] saturate-50 scale-105"

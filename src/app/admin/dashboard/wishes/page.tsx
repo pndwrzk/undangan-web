@@ -122,6 +122,7 @@ export default function WishesPage() {
                 <TableRow className="bg-muted/30 border-b font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground hover:bg-muted/30">
                   <TableHead className="px-6 py-4">Guest Name</TableHead>
                   <TableHead className="px-6 py-4">Message</TableHead>
+                  <TableHead className="px-6 py-4">Likes</TableHead>
                   <TableHead className="px-6 py-4">Status</TableHead>
                   <TableHead className="px-6 py-4 text-right">Actions</TableHead>
                 </TableRow>
@@ -146,6 +147,12 @@ export default function WishesPage() {
                         <MessageSquare size={10} />
                         {new Date(wish.createdAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
                       </p>
+                    </TableCell>
+                    <TableCell className="px-6 py-5">
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-600 rounded-full w-fit border border-red-100 font-bold">
+                        <span className="text-xl">❤️</span>
+                        <span className="text-lg">{wish.likes || 0}</span>
+                      </div>
                     </TableCell>
                     <TableCell className="px-6 py-5">
                       <div 

@@ -36,17 +36,17 @@ function SplashContent({
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone || phone.length < 5) return;
+    if (!phone || phone.length < 4) return;
     
     setLoading(true);
     setError("");
     
     try {
-      const res = await fetch(`/api/guests/search?phone=${phone}`);
+      const res = await fetch(`/api/guests/search?q=${phone}`);
       const data = await res.json();
       
-      if (res.ok && data.id) {
-        window.location.href = `/?id=${data.id}`;
+      if (res.ok && data.code) {
+        window.location.href = `/?guest_code=${data.code}`;
       } else {
         setError(t.splash.notFound);
       }
@@ -85,7 +85,7 @@ function SplashContent({
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
           </motion.div>
-
+ 
           <div className="relative z-10 text-center px-6 max-w-lg w-full">
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
@@ -104,7 +104,7 @@ function SplashContent({
                 className="h-[1px] bg-primary/20 mx-auto mt-6"
               />
             </motion.div>
-
+ 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ function SplashContent({
               className="mb-12"
             >
               <p className="font-serif italic text-muted-foreground mb-4 text-sm">
-                {language === "id" ? "Kepada Bapak/Ibu/Saudara/i:" : "To our Valued Guests:"}
+                {String(language) === "id" ? "Kepada Bapak/Ibu/Saudara/i:" : "To our Valued Guests:"}
               </p>
               
               <AnimatePresence mode="wait">
@@ -153,10 +153,10 @@ function SplashContent({
                     <form onSubmit={handleSearch} className="flex flex-col gap-3">
                       <div className="relative">
                         <input
-                          type="tel"
+                          type="text"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          placeholder={t.splash.phonePlaceholder}
+                          placeholder={language === "id" ? "Masukkan No. Telp atau Kode" : "Enter Phone or Code"}
                           className="w-full bg-background/50 border border-primary/20 rounded-full px-6 py-3 text-sm font-serif focus:outline-none focus:border-primary/50 transition-all text-center"
                           autoFocus
                         />
