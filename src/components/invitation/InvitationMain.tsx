@@ -135,7 +135,7 @@ export default function InvitationMain({
               <p className="text-muted-foreground font-serif italic text-sm mb-12">
                 {t.footer.seeYou}
               </p>
-              
+
               <h2 className="text-3xl md:text-4xl font-serif text-primary/80 mb-4 italic select-none">
                 {coupleNames}
               </h2>
@@ -144,11 +144,11 @@ export default function InvitationMain({
                   {couple.hashtag}
                 </p>
               )}
-              
+
               <div className="w-24 h-[1px] bg-primary/20 mx-auto mb-12" />
-              
+
               <p className="font-typewriter text-[9px] uppercase tracking-widest text-muted-foreground/40">
-                &copy; {footerYear} &bull; Made with Love
+                &copy; {footerYear} &bull; Made At Home
               </p>
             </div>
           </footer>
