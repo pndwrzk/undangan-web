@@ -41,12 +41,8 @@ export default function GlobalAudio() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden) {
-        audioRef.current?.pause();
-      } else {
-        if (isPlaying) {
-          audioRef.current?.play().catch(() => {});
-        }
+      if (document.hidden && isPlaying) {
+        togglePlay(false);
       }
     };
 
