@@ -65,6 +65,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
 
     if (result.success) {
       setNewText("");
+      setNewName("");
       fetchWishes(1); // Go to first page to see the new message
     } else {
       alert("Failed to send wishes. Please try again.");

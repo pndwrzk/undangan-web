@@ -61,6 +61,20 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   if (isSubmitted) {
     return (
       <section className="py-32 px-6 bg-background relative overflow-hidden">
+        {/* Background Decorative Text */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60vw] md:text-[45vw] font-serif italic opacity-[0.03] md:opacity-[0.02] pointer-events-none select-none z-0">
+          RSVP
+        </div>
+
+        {/* Floating Particles */}
+        <motion.div 
+          animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-[10%] text-primary/10 pointer-events-none"
+        >
+          <Sparkles size={40} />
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -91,12 +105,32 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   }
 
   return (
-    <section id="rsvp" className="py-32 px-6 bg-[#FAF9F6] relative overflow-hidden">
-      <TornEdge position="top" color="fill-background" />
+    <section id="rsvp" className="py-32 px-6 bg-background relative overflow-hidden">
       
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      
+      {/* Background Decorative Text */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60vw] md:text-[45vw] font-serif italic opacity-[0.03] md:opacity-[0.02] pointer-events-none select-none z-0">
+        RSVP
+      </div>
+
+      {/* Floating Particles */}
+      <motion.div 
+        animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/4 left-[10%] text-primary/10 pointer-events-none"
+      >
+        <Sparkles size={40} />
+      </motion.div>
+      <motion.div 
+        animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-1/4 right-[10%] text-primary/10 pointer-events-none"
+      >
+        <Sparkles size={60} />
+      </motion.div>
 
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
@@ -140,6 +174,10 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           transition={{ duration: 1 }}
           className="bg-white rounded-[2rem] md:rounded-[4rem] p-6 sm:p-8 md:p-14 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.08)] border border-primary/5 relative"
         >
+          {/* Corner Decorations */}
+          <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-primary/5 rounded-tl-[2rem] md:rounded-tl-[4rem] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-primary/5 rounded-br-[2rem] md:rounded-br-[4rem] pointer-events-none" />
+          
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-[1px] bg-primary/20" />
           
           <Form {...form}>
