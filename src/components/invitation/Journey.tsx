@@ -79,8 +79,8 @@ export default function Journey({ stories }: JourneyProps) {
                 >
                   <div className={`flex flex-col items-start ${index % 2 === 0 ? 'md:items-end md:text-right' : 'md:items-start md:text-left'}`}>
                     <span className="font-typewriter text-xs uppercase tracking-widest text-primary mb-4 block">{item.date}</span>
-                    <h3 className="text-3xl font-serif mb-4">{item.title}</h3>
-                    <p className="text-muted-foreground font-serif italic leading-relaxed max-w-sm">
+                    <h3 className="text-xl md:text-2xl font-serif mb-4">{item.title}</h3>
+                    <p className="text-muted-foreground font-serif italic text-sm leading-relaxed max-w-sm">
                       "{item.description}"
                     </p>
                   </div>
@@ -101,7 +101,7 @@ export default function Journey({ stories }: JourneyProps) {
                 >
                   <div 
                     onClick={() => setSelectedPhoto(item)}
-                    className={`relative w-64 h-64 p-3 bg-white shadow-2xl transform ${item.rotate} hover:rotate-0 transition-transform duration-500 cursor-pointer group`}
+                    className={`relative w-64 h-64 p-3 bg-white shadow-2xl transform md:${item.rotate} hover:rotate-0 transition-transform duration-500 cursor-pointer group`}
                   >
                     <div className="relative w-full h-full overflow-hidden">
                       <Image

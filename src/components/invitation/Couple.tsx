@@ -29,7 +29,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   return (
-    <section id="couple" ref={sectionRef} className="pt-4 pb-32 md:pt-8 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+    <section id="couple" ref={sectionRef} className="py-28 md:py-32 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
       <TornEdge position="top" />
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
