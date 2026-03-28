@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     // 1. Try search by Code first (exact match, case insensitive)
     let guest = await prisma.guest.findUnique({
-      where: { code: q.toUpperCase() }
+      where: { code: q.toUpperCase() } as any
     });
 
     // 2. Try search by Phone if not found by code
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Guest not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ code: guest.code, name: guest.name });
+    return NextResponse.json({ code: (guest as any).code, name: guest.name });
   } catch (error) {
     console.error("Search guest error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

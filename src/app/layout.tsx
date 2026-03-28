@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat, Special_Elite, Amiri } from "next/font/google";
+import { Playfair_Display, Montserrat, Special_Elite, Amiri, Great_Vibes } from "next/font/google";
 import AuthProvider from "@/components/providers/AuthProvider";
 import "./globals.css";
 
@@ -27,6 +27,12 @@ const specialElite = Special_Elite({
   variable: "--font-typewriter",
 });
 
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-accent",
+});
+
 export const metadata: Metadata = {
   title: "The Wedding of Alvia & Pandiwa",
   description: "You are cordially invited to celebrate the wedding of Alvia & Pandiwa.",
@@ -43,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
+      <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} ${greatVibes.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
         <LanguageProvider>
           <AuthProvider>
             <MusicProvider>

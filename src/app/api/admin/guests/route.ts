@@ -107,7 +107,7 @@ export async function PUT(req: Request) {
     if (!existingGuest) return NextResponse.json({ error: "Guest not found" }, { status: 404 });
 
     // Generate code if missing
-    let code = existingGuest.code;
+    let code = (existingGuest as any).code;
     if (!code) {
       code = await generateUniqueCode(finalSide, group);
     }
