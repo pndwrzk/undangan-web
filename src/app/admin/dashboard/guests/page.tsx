@@ -165,14 +165,15 @@ export default function GuestsPage() {
     }
   };
 
-  const generateLink = (id: string) => {
+  const generateLink = (code: string | null, id: string) => {
     if (typeof window === "undefined") return "";
     const baseUrl = window.location.origin;
-    return `${baseUrl}/?id=${id}`;
+    const identifier = code || id;
+    return `${baseUrl}/?guest_code=${identifier}`;
   };
 
-  const copyInvitationLink = async (id: string) => {
-    const link = generateLink(id);
+  const copyInvitationLink = async (guest: any) => {
+    const link = generateLink(guest.code, guest.id);
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(link);
@@ -188,7 +189,7 @@ export default function GuestsPage() {
         document.execCommand('copy');
         document.body.removeChild(textArea);
       }
-      setCopiedId(id);
+      setCopiedId(guest.id);
       toast.success("Link copied to clipboard!");
       setTimeout(() => setCopiedId(null), 2000);
     } catch (err) {
@@ -197,8 +198,8 @@ export default function GuestsPage() {
     }
   };
 
-  const sendWhatsApp = (name: string, id: string, phone: string) => {
-    const link = generateLink(id);
+  const sendWhatsApp = (name: string, code: string | null, id: string, phone: string) => {
+    const link = generateLink(code, id);
     const message = `Halo ${name},\n\nTanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i ke acara pernikahan kami.\n\nBerikut adalah link undangan digital kami:\n${link}\n\nMerupakan suatu kehormatan bagi kami jika Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima kasih.`;
     const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
@@ -320,13 +321,20 @@ export default function GuestsPage() {
                   {guests.map((guest) => (
                     <TableRow key={guest.id} className="border-b border-primary/5 last:border-0 hover:bg-primary/5 transition-colors group">
                       <TableCell className="px-6 py-5">
-                        <p className="font-bold text-slate-800 text-lg">{guest.name}</p>
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="font-bold text-slate-800 text-lg">{guest.name}</p>
+                          {guest.code && (
+                            <span className="px-2 py-0.5 bg-primary/5 text-primary border border-primary/10 rounded text-[10px] font-mono font-bold tracking-wider">
+                              {guest.code}
+                            </span>
+                          )}
+                        </div>
                         {guest.partnerName && (
-                          <p className="text-xs text-primary font-typewriter tracking-tight flex items-center gap-1">
+                          <p className="text-xs text-primary font-typewriter tracking-tight flex items-center gap-1 mb-1">
                             <span className="opacity-50">&</span> {guest.partnerName}
                           </p>
                         )}
-                        <p className="text-xs text-muted-foreground font-typewriter tracking-tight mt-1">{guest.phone || 'No phone number'}</p>
+                        <p className="text-xs text-muted-foreground font-typewriter tracking-tight">{guest.phone || 'No phone number'}</p>
                       </TableCell>
                       <TableCell className="px-6 py-5">
                         <div className="flex flex-col gap-1 items-start">
@@ -345,7 +353,7 @@ export default function GuestsPage() {
                               size="sm" 
                               variant="outline" 
                               className="rounded-full bg-green-50 text-green-600 border-green-200 hover:bg-green-100 px-4"
-                              onClick={() => sendWhatsApp(guest.name, guest.id, guest.phone)}
+                              onClick={() => sendWhatsApp(guest.name, guest.code, guest.id, guest.phone)}
                             >
                               WhatsApp
                             </Button>
@@ -354,7 +362,7 @@ export default function GuestsPage() {
                             size="sm" 
                             variant="outline" 
                             className="rounded-full bg-primary/5 text-primary border-primary/20 hover:bg-primary/10 gap-2 px-4"
-                            onClick={() => copyInvitationLink(guest.id)}
+                            onClick={() => copyInvitationLink(guest)}
                           >
                             {copiedId === guest.id ? <CheckCircle2 size={14} className="text-green-600" /> : <Copy size={14} />}
                             {copiedId === guest.id ? 'Copied' : 'Copy Link'}

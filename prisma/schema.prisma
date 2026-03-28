@@ -66,6 +66,7 @@ model GuestLike {
 model Guest {
   id          String   @id @default(uuid())
   name        String
+  code        String   @unique
   phone       String?
   group       String?
   partnerName String?

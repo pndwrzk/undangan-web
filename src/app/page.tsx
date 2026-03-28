@@ -11,12 +11,12 @@ export default async function Home({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
-  const guestId = params.id as string | undefined;
+  const guestCode = params.guest_code as string | undefined;
+  const guestId = (params.id as string | undefined) || guestCode;
   const to = params.to as string | undefined;
 
-  const [couple, guest, events, gifts, gallery, stories, song] = await Promise.all([
+  const [couple, events, gifts, gallery, stories, song] = await Promise.all([
     prisma.couple.findFirst() as Promise<Couple | null>,
-    guestId ? prisma.guest.findUnique({ where: { id: guestId } }) as Promise<Guest | null> : null,
     prisma.event.findMany({ orderBy: { createdAt: 'asc' } }) as Promise<Event[]>,
     prisma.gift.findMany({ orderBy: { createdAt: 'asc' } }) as Promise<Gift[]>,
     prisma.gallery.findMany({ 
@@ -31,6 +31,23 @@ export default async function Home({
     }) as Promise<Story[]>,
     prisma.song.findFirst({ where: { isActive: true } }) as Promise<Song | null>
   ]);
+
+  const guest = await (async () => {
+    if (!guestId) return null;
+    
+    // Try as UUID first (for backward compatibility)
+    if (guestId.length > 20) {
+      try {
+        const g = await prisma.guest.findUnique({ where: { id: guestId } });
+        if (g) return g as unknown as Guest;
+      } catch (e) {}
+    }
+
+    // Try as Short Code
+    return await prisma.guest.findUnique({ 
+      where: { code: guestId.toUpperCase() } 
+    }) as unknown as Guest;
+  })();
 
   const guestName = guest ? guest.name : (to || null);
 

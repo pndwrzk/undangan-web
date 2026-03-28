@@ -60,6 +60,7 @@ export interface Gallery {
 export interface Guest {
   id: string;
   name: string;
+  code: string;
   phone?: string | null;
   group?: string | null;
   partnerName?: string | null;
