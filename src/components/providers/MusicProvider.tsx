@@ -9,11 +9,14 @@ interface MusicContextType {
   currentTime: number;
   duration: number;
   seekTime: number | null;
+  isSeeking: boolean;
   togglePlay: (value?: boolean) => void;
   setActiveSong: (song: Song | null) => void;
   setCurrentTime: (time: number) => void;
   setDuration: (duration: number) => void;
   seek: (time: number) => void;
+  setIsSeeking: (isSeeking: boolean) => void;
+  setSeekTime: (time: number | null) => void;
 }
 
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
@@ -24,6 +27,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState<number | null>(null);
+  const [isSeeking, setIsSeeking] = useState(false);
 
   const togglePlay = (value?: boolean) => {
     setIsPlaying((prev) => (value !== undefined ? value : !prev));
@@ -45,7 +49,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         setActiveSong, 
         setCurrentTime, 
         setDuration, 
-        seek 
+        seek,
+        isSeeking,
+        setIsSeeking,
+        setSeekTime
       }}
     >
       {children}

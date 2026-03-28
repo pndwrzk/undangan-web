@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useMusic } from "@/components/providers/MusicProvider";
 
 export default function GlobalAudio() {
-  const { isPlaying, activeSong, togglePlay, setCurrentTime, setDuration, seekTime } = useMusic();
+  const { isPlaying, activeSong, togglePlay, setCurrentTime, setDuration, seekTime, isSeeking, setIsSeeking, setSeekTime } = useMusic();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function GlobalAudio() {
   }, [seekTime]);
 
   const handleTimeUpdate = () => {
-    if (audioRef.current) {
+    if (audioRef.current && !isSeeking) {
       setCurrentTime(audioRef.current.currentTime);
     }
   };
@@ -37,6 +37,11 @@ export default function GlobalAudio() {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
     }
+  };
+
+  const handleSeeked = () => {
+    setIsSeeking(false);
+    setSeekTime(null);
   };
 
   useEffect(() => {
@@ -62,6 +67,8 @@ export default function GlobalAudio() {
       onEnded={() => togglePlay(false)}
       onTimeUpdate={handleTimeUpdate}
       onLoadedMetadata={handleLoadedMetadata}
+      onDurationChange={handleLoadedMetadata}
+      onSeeked={handleSeeked}
     />
   );
 }

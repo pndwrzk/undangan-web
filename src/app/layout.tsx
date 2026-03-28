@@ -42,11 +42,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} h-full antialiased`}
-    >
-      <body className="min-h-full font-sans bg-background text-foreground selection:bg-primary/30">
+    <html lang="en" className="h-full">
+      <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
         <LanguageProvider>
           <AuthProvider>
             <MusicProvider>

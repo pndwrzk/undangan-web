@@ -10,20 +10,29 @@ interface MusicPlayerProps {
 }
 
 export default function MusicPlayer({ song }: MusicPlayerProps) {
-  const { isPlaying, togglePlay, currentTime, duration, seek } = useMusic();
+  const { isPlaying, togglePlay, currentTime, duration, seek, setIsSeeking, setCurrentTime } = useMusic();
   const [isExpanded, setIsExpanded] = useState(false);
   
   if (!song) return null;
 
   const formatTime = (time: number) => {
+    if (isNaN(time) || !isFinite(time)) return "0:00";
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    seek(parseFloat(e.target.value));
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    setIsSeeking(true);
+    setCurrentTime(parseFloat(e.currentTarget.value));
   };
+  
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = parseFloat(e.target.value);
+    seek(time);
+  };
+  
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
     <div className="fixed bottom-32 right-6 z-50 flex flex-col items-end gap-3">
@@ -54,10 +63,14 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
               <input
                 type="range"
                 min="0"
-                max={duration || 0}
+                max={duration && !isNaN(duration) && isFinite(duration) ? duration : 0}
                 value={currentTime}
+                onInput={handleInput}
                 onChange={handleSeek}
-                className="w-full h-1.5 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-primary"
+                style={{
+                  background: `linear-gradient(to right, var(--color-primary) ${progress}%, color-mix(in srgb, var(--color-primary), transparent 90%) ${progress}%)`
+                }}
               />
               <div className="flex justify-between text-[10px] font-typewriter text-muted-foreground uppercase tracking-widest">
                 <span>{formatTime(currentTime)}</span>
@@ -114,12 +127,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
             <Music size={22} className={!isExpanded ? "animate-pulse" : ""} />
           )}
           
-          {/* Subtle indicator if expanded */}
-          {isExpanded && (
-            <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-               <ChevronDown size={24} className="opacity-80" />
-            </div>
-          )}
+          {/* Removed subtle indicator if expanded to keep music icon visible */}
         </button>
       </div>
     </div>
