@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useMusic } from "@/components/providers/MusicProvider";
 
 export default function GlobalAudio() {
-  const { isPlaying, activeSong, togglePlay } = useMusic();
+  const { isPlaying, activeSong, togglePlay, setCurrentTime, setDuration, seekTime } = useMusic();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -19,6 +19,25 @@ export default function GlobalAudio() {
       audioRef.current.pause();
     }
   }, [isPlaying, activeSong, togglePlay]);
+
+  // Handle seeking
+  useEffect(() => {
+    if (audioRef.current && seekTime !== null) {
+      audioRef.current.currentTime = seekTime;
+    }
+  }, [seekTime]);
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -45,6 +64,8 @@ export default function GlobalAudio() {
       src={activeSong.url}
       loop
       onEnded={() => togglePlay(false)}
+      onTimeUpdate={handleTimeUpdate}
+      onLoadedMetadata={handleLoadedMetadata}
     />
   );
 }
