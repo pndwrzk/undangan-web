@@ -53,8 +53,8 @@ export default function Journey({ stories }: JourneyProps) {
           className="text-center mb-16 max-w-2xl mx-auto"
         >
           <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.story.title}</span>
-          
-          <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-6">
+
+          <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-snug mb-6">
             {t.story.intro}
           </p>
 
@@ -99,7 +99,7 @@ export default function Journey({ stories }: JourneyProps) {
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="flex-1 flex justify-start md:justify-center"
                 >
-                  <div 
+                  <div
                     onClick={() => setSelectedPhoto(item)}
                     className={`relative w-64 h-64 p-3 bg-white shadow-2xl transform md:${item.rotate} hover:rotate-0 transition-transform duration-500 cursor-pointer group`}
                   >
@@ -147,7 +147,7 @@ export default function Journey({ stories }: JourneyProps) {
       </div>
 
       {/* Background Decorative Text */}
-      <motion.div 
+      <motion.div
         style={{ x: textX }}
         className="absolute top-1/2 left-0 -translate-y-1/2 text-[25vw] md:text-[15vw] font-serif font-black opacity-[0.03] md:opacity-[0.02] -rotate-90 select-none pointer-events-none whitespace-nowrap"
       >

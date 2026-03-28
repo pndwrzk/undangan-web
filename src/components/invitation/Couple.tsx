@@ -39,7 +39,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           transition={{ duration: 1 }}
           className="text-center mb-16 md:mb-32 max-w-2xl mx-auto"
         >
-          <p className="text-muted-foreground font-serif text-base leading-relaxed mb-12">
+          <p className="text-muted-foreground font-serif text-base leading-snug mb-12 max-w-lg mx-auto">
             {t.couple.requestRestu}
           </p>
           <div className="w-24 h-[1px] bg-primary/20 mx-auto" />
@@ -72,7 +72,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
             
             <h3 className="text-2xl md:text-3xl font-serif mb-3">{brideName}</h3>
             <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">{t.couple.brideLabel}</p>
-            <p className="text-sm italic leading-relaxed text-muted-foreground max-w-xs whitespace-pre-wrap">
+            <p className="text-sm italic leading-snug text-muted-foreground max-w-[280px] whitespace-pre-wrap">
               {brideBio}
             </p>
           </motion.div>
@@ -103,7 +103,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
             
             <h3 className="text-2xl md:text-3xl font-serif mb-3">{groomName}</h3>
             <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">{t.couple.groomLabel}</p>
-            <p className="text-sm italic leading-relaxed text-muted-foreground max-w-xs whitespace-pre-wrap">
+            <p className="text-sm italic leading-snug text-muted-foreground max-w-[280px] whitespace-pre-wrap">
               {groomBio}
             </p>
           </motion.div>

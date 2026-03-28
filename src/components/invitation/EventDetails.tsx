@@ -24,7 +24,7 @@ export default function EventDetails({ events }: { events?: any[] }) {
           <span className="font-arabic text-2xl md:text-3xl text-primary mb-8 md:mb-10 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
             {t.event.sectionLabel}
           </span>
-          <h2 className="text-base md:text-lg font-serif mb-8 text-muted-foreground italic leading-relaxed max-w-4xl mx-auto px-6 opacity-90">
+          <h2 className="text-base md:text-lg font-serif mb-8 text-muted-foreground italic leading-snug max-w-2xl mx-auto px-6 opacity-90">
             "{t.event.title.split(' (')[0]}"
             <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-4 md:mt-6 not-italic opacity-40">
               {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}

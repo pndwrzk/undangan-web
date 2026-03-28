@@ -88,7 +88,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <h2 className="text-3xl md:text-4xl font-serif mb-4 italic text-primary">
               {language === "id" ? "Terima Kasih!" : "Thank You!"}
             </h2>
-            <p className="text-muted-foreground font-serif text-lg leading-relaxed mb-8">
+            <p className="text-muted-foreground font-serif text-lg leading-snug mb-8">
               {t.rsvp.successMessage}
             </p>
             <Button 
@@ -143,7 +143,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <Sparkles size={14} className="text-primary" />
             <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
           </div>
-          <p className="text-muted-foreground font-serif italic max-w-xl mx-auto text-base md:text-lg leading-relaxed">
+          <p className="text-muted-foreground font-serif italic max-w-lg mx-auto text-base md:text-lg leading-snug">
             {t.rsvp.subtitle}
           </p>
         </motion.div>
@@ -158,7 +158,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <h3 className="text-3xl font-serif mb-6 text-primary italic">
               {language === "id" ? "Tautan Pribadi Diperlukan" : "Personal Link Required"}
             </h3>
-            <p className="text-lg text-muted-foreground font-serif leading-relaxed">
+            <p className="text-lg text-muted-foreground font-serif leading-snug">
               {language === "id" 
                 ? "Kami tidak dapat mengenali Anda. Silakan gunakan tautan unik yang dibagikan kepada Anda untuk mengakses portal RSVP."
                 : "We are unable to recognize you. Please use your unique link to access the RSVP portal."

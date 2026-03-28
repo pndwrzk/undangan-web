@@ -47,7 +47,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           className="mb-16"
         >
           <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
-          <p className="text-base md:text-lg italic text-muted-foreground font-serif max-w-xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg italic text-muted-foreground font-serif max-w-lg mx-auto leading-snug">
             {t.gift.description}
           </p>
         </motion.div>
@@ -94,7 +94,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
            transition={{ duration: 1, delay: 0.5 }}
            className="mt-16 max-w-md mx-auto"
         >
-           <p className="text-sm text-muted-foreground font-serif italic italic leading-relaxed">
+           <p className="text-sm text-muted-foreground font-serif italic italic leading-snug">
              {t.gift.warningNote}
            </p>
         </motion.div>

@@ -146,7 +146,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
         >
           <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block underline underline-offset-8 decoration-primary/20">{t.guestbook.sectionLabel}</span>
           <div className="flex flex-col items-center max-w-2xl mx-auto">
-            <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed mb-8">
+            <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-snug mb-8 max-w-lg">
               {t.guestbook.description}
             </p>
             <div className="flex items-center justify-center gap-4 text-primary/40 font-typewriter uppercase text-[10px] tracking-widest">
@@ -243,7 +243,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                           )}
                         </div>
                         
-                        <p className="text-sm text-muted-foreground italic mb-4 font-serif leading-relaxed flex-1">"{msg.message}"</p>
+                        <p className="text-sm text-muted-foreground italic mb-4 font-serif leading-snug flex-1">"{msg.message}"</p>
                         <span className="font-typewriter text-[10px] uppercase tracking-widest text-muted-foreground/50">
                           {new Date(msg.createdAt).toLocaleString(language === "id" ? 'id-ID' : 'en-US')}
                         </span>

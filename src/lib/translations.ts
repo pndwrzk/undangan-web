@@ -94,7 +94,7 @@ export const translations: Record<Language, TranslationDict> = {
     },
     couple: {
       title: "Profil Kami",
-      intro: "Dari setiap langkah yang membawa kami ke berbagai arah, kami menemukan satu sama lain\nsebagai tempat untuk pulang.",
+      intro: "Dari setiap langkah yang membawa kami ke berbagai arah,\nkami menemukan satu sama lain sebagai tempat untuk pulang.",
       requestRestu: "Dengan mengharap ridho Allah SWT, kami memohon restu dan kehadiran Anda pada hari bahagia kami:",
       groomLabel: "Mempelai Pria",
       brideLabel: "Mempelai Wanita",
