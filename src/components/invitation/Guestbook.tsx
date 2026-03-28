@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { MessageSquare, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageSquare, Heart, ChevronLeft, ChevronRight, Sparkles, Loader2 } from "lucide-react";
 import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { toast } from "sonner";
 
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
@@ -18,6 +19,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   const [newText, setNewText] = useState("");
   const [loading, setLoading] = useState(true);
   const [likedMessages, setLikedMessages] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
   
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -106,6 +108,33 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
     }
   };
 
+  const handleAIGenerate = async () => {
+    setIsGenerating(true);
+    try {
+      const response = await fetch("/api/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language }),
+      });
+      const data = await response.json();
+      if (data.text) {
+        setNewText(data.text);
+        toast.success(language === "id" ? "Ucapan berhasil dibuat!" : "Wish generated successfully!");
+      } else {
+        throw new Error(data.message || "Failed to generate");
+      }
+    } catch (error: any) {
+      console.error("AI Generation Error:", error);
+      toast.error(
+        language === "id" 
+          ? "Gagal membuat ucapan. Silakan coba lagi." 
+          : "Failed to generate wish. Please try again."
+      );
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   // Helper for page numbers
   const renderPageNumbers = () => {
     const pages = [];
@@ -180,7 +209,22 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                     />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.message}</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.message}</label>
+                    <button
+                      type="button"
+                      onClick={handleAIGenerate}
+                      disabled={isGenerating}
+                      className="flex items-center gap-1.5 text-[10px] font-typewriter uppercase tracking-wider text-primary hover:text-primary/70 transition-colors bg-primary/5 px-3 py-1 rounded-full disabled:opacity-50"
+                    >
+                      {isGenerating ? (
+                        <Loader2 size={12} className="animate-spin" />
+                      ) : (
+                        <Sparkles size={12} />
+                      )}
+                      {t.guestbook.generateAI}
+                    </button>
+                  </div>
                   <Textarea
                     placeholder={t.guestbook.placeholderMessage}
                     value={newText}

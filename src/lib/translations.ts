@@ -59,6 +59,7 @@ export interface TranslationDict {
     placeholderName: string;
     placeholderMessage: string;
     sendButton: string;
+    generateAI: string;
     loading: string;
     empty: string;
     restrictedTitle: string;
@@ -137,6 +138,7 @@ export const translations: Record<Language, TranslationDict> = {
       placeholderName: "Nama Anda",
       placeholderMessage: "Tuliskan doa dan ucapan manis Anda di sini...",
       sendButton: "Kirim Doa & Ucapan",
+      generateAI: "Buat dengan AI",
       loading: "Memuat ucapan...",
       empty: "Belum ada ucapan. Jadilah yang pertama!",
       restrictedTitle: "Tautan Terbatas",
@@ -213,6 +215,7 @@ export const translations: Record<Language, TranslationDict> = {
       placeholderName: "Your Name",
       placeholderMessage: "Write your sincere wishes and sweet greetings here...",
       sendButton: "Send Wishes",
+      generateAI: "Generate with AI",
       loading: "Loading wishes...",
       empty: "No wishes yet. Be the first!",
       restrictedTitle: "Access Restricted",

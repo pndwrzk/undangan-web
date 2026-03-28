@@ -41,6 +41,7 @@ export const metadata: Metadata = {
 import { MusicProvider } from "@/components/providers/MusicProvider";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import GlobalAudio from "@/components/audio/GlobalAudio";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -58,6 +59,7 @@ export default function RootLayout({
             </MusicProvider>
           </AuthProvider>
         </LanguageProvider>
+        <Toaster />
       </body>
     </html>
   );
