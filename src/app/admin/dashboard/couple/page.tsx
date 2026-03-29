@@ -261,7 +261,7 @@ export default function CouplePage() {
                   <img src={couple?.groomImage || "/placeholder-groom.jpg"} alt="Groom" className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" />
                   
                   {/* Photo Actions Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/20 md:bg-black/30">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/20 md:bg-black/30">
                     <div className="flex gap-3">
                       <button 
                          onClick={() => groomInputRef.current?.click()}
@@ -317,7 +317,7 @@ export default function CouplePage() {
                   <img src={couple?.brideImage || "/placeholder-bride.jpg"} alt="Bride" className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" />
                   
                   {/* Photo Actions Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/20 md:bg-black/30">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/20 md:bg-black/30">
                     <div className="flex gap-3">
                       <button 
                          onClick={() => brideInputRef.current?.click()}
@@ -411,7 +411,7 @@ export default function CouplePage() {
                     )}
                     <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     
-                    <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 z-20">
+                    <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity bg-black/20 z-20">
                       <button 
                         onClick={() => item.ref.current?.click()}
                         className="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform"

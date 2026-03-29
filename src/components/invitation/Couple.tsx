@@ -2,43 +2,32 @@
 
 import { Couple as CoupleType } from "@/types";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import TornEdge from "@/components/invitation/TornEdge";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
-export default function Couple({ couple }: { couple: CoupleType | null }) {
-  const { t } = useLanguage();
-  const brideName = couple?.brideName || "Mempelai Wanita";
-  const brideBio = couple?.brideBio;
-  const brideImage = couple?.brideImage || "/bride.png";
-  
-  const groomName = couple?.groomName || "Mempelai Pria";
-  const groomBio = couple?.groomBio;
-  const groomImage = couple?.groomImage || "/groom.png";
-
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-  };
-
-  const PersonSection = ({ 
-    name, 
-    label, 
-    bio, 
-    image, 
-    id,
-    align = "right"
-  }: { 
-    name: string; 
-    label: string; 
-    bio?: string | null; 
-    image: string; 
-    id: string;
-    align?: "left" | "right";
-  }) => (
+// Extracted outside Couple to avoid remount on every re-render (prevents flicker)
+function PersonSection({ 
+  name, 
+  label, 
+  bio, 
+  image, 
+  id,
+  align = "right",
+  onContextMenu,
+}: { 
+  name: string; 
+  label: string; 
+  bio?: string | null; 
+  image: string; 
+  id: string;
+  align?: "left" | "right";
+  onContextMenu: (e: React.MouseEvent) => void;
+}) {
+  return (
     <div 
       className="relative h-[80vh] md:h-screen w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none"
-      onContextMenu={handleContextMenu}
+      onContextMenu={onContextMenu}
     >
       {/* Background Image - Protected */}
       <div className="absolute inset-0 z-0">
@@ -78,6 +67,21 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
       </motion.div>
     </div>
   );
+}
+
+export default function Couple({ couple }: { couple: CoupleType | null }) {
+  const { t } = useLanguage();
+  const brideName = couple?.brideName || "Mempelai Wanita";
+  const brideBio = couple?.brideBio;
+  const brideImage = couple?.brideImage || "/bride.png";
+  
+  const groomName = couple?.groomName || "Mempelai Pria";
+  const groomBio = couple?.groomBio;
+  const groomImage = couple?.groomImage || "/groom.png";
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
 
   return (
     <section id="couple" className="bg-background">
@@ -90,6 +94,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           bio={brideBio}
           image={brideImage}
           align="right"
+          onContextMenu={handleContextMenu}
         />
 
         {/* Groom Section Second */}
@@ -100,6 +105,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           bio={groomBio}
           image={groomImage}
           align="left"
+          onContextMenu={handleContextMenu}
         />
       </div>
     </section>
