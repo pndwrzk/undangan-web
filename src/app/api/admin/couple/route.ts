@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     const weddingDate = formData.get("weddingDate") as string;
     const id = formData.get("id") as string || '00000000-0000-4000-8000-000000000000';
 
-    const existingCouple = await prisma.couple.findUnique({ where: { id } });
+    const existingCouple = await prisma.couple.findUnique({ where: { id } }) as any;
 
     // Handle File Uploads
     const uploadDir = path.join(process.cwd(), "uploads");
@@ -140,15 +140,18 @@ export async function POST(req: Request) {
     }
 
     // Build update and create payload
+    // For each text field: only overwrite if explicitly sent in form data, 
+    // otherwise keep existing DB value (prevents reset when doing image-only uploads)
+    const has = (key: string) => formData.has(key);
     const dataPayload: any = {
-      groomName,
-      groomAlias,
-      groomBio,
-      brideName,
-      brideAlias,
-      brideBio,
-      hashtag: hashtag || "#AlviaPandiwaMenyatu",
-      weddingDate: weddingDate ? new Date(weddingDate) : null,
+      groomName:   has("groomName")    ? groomName   : existingCouple?.groomName,
+      groomAlias:  has("groomAlias")   ? groomAlias  : existingCouple?.groomAlias,
+      groomBio:    has("groomBio")     ? groomBio    : existingCouple?.groomBio,
+      brideName:   has("brideName")    ? brideName   : existingCouple?.brideName,
+      brideAlias:  has("brideAlias")   ? brideAlias  : existingCouple?.brideAlias,
+      brideBio:    has("brideBio")     ? brideBio    : existingCouple?.brideBio,
+      hashtag:     has("hashtag")      ? (hashtag || "#AlviaPandiwaMenyatu") : existingCouple?.hashtag,
+      weddingDate: has("weddingDate")  ? (weddingDate ? new Date(weddingDate) : null) : existingCouple?.weddingDate,
     };
     if (groomImagePath) dataPayload.groomImage = groomImagePath;
     if (brideImagePath) dataPayload.brideImage = brideImagePath;
