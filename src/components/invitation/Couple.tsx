@@ -10,109 +10,97 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 export default function Couple({ couple }: { couple: CoupleType | null }) {
   const { t } = useLanguage();
   const brideName = couple?.brideName || "Mempelai Wanita";
-  const brideAlias = couple?.brideAlias || couple?.brideName;
   const brideBio = couple?.brideBio;
   const brideImage = couple?.brideImage || "/bride.png";
   
   const groomName = couple?.groomName || "Mempelai Pria";
-  const groomAlias = couple?.groomAlias || couple?.groomName;
   const groomBio = couple?.groomBio;
   const groomImage = couple?.groomImage || "/groom.png";
 
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-  
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
+  const PersonSection = ({ 
+    name, 
+    label, 
+    bio, 
+    image, 
+    id,
+    align = "right"
+  }: { 
+    name: string; 
+    label: string; 
+    bio?: string | null; 
+    image: string; 
+    id: string;
+    align?: "left" | "right";
+  }) => (
+    <div 
+      className="relative h-[80vh] md:h-screen w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none"
+      onContextMenu={handleContextMenu}
+    >
+      {/* Background Image - Protected */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className="object-cover pointer-events-none brightness-[0.9] contrast-[1.05]"
+          unoptimized
+          draggable={false}
+        />
+        {/* Gradient Overlay for Text Readability */}
+        <div className={`absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none`} />
+        {/* Transparent Physical Overlay for Protection */}
+        <div className="absolute inset-0 z-20 bg-transparent pointer-events-auto" />
+      </div>
+
+      {/* Content container */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30, x: align === "right" ? 30 : -30 }}
+        whileInView={{ opacity: 1, y: 0, x: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className={`relative z-30 p-8 md:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
+      >
+        <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-1 drop-shadow-sm">
+          {label}
+        </p>
+        <h3 className="text-xl md:text-2xl font-serif text-white mb-3 drop-shadow-md">
+          {name}
+        </h3>
+        {bio && (
+          <p className="text-white/80 font-serif text-sm md:text-base leading-relaxed drop-shadow-sm">
+            {bio}
+          </p>
+        )}
+      </motion.div>
+    </div>
+  );
 
   return (
-    <section id="couple" ref={sectionRef} className="py-20 md:py-32 px-6 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
-      {/* <TornEdge position="top" /> */}
-      <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-center mb-16 md:mb-32 max-w-2xl mx-auto"
-        >
-          <p className="text-muted-foreground font-serif text-base leading-snug mb-12 max-w-lg mx-auto">
-            {t.couple.requestRestu}
-          </p>
-          <div className="w-24 h-[1px] bg-primary/20 mx-auto" />
-        </motion.div>
+    <section id="couple" className="bg-background">
+      <div className="flex flex-col md:flex-row">
+        {/* Bride Section First */}
+        <PersonSection 
+          id="bride"
+          name={brideName}
+          label={t.couple.brideLabel}
+          bio={brideBio}
+          image={brideImage}
+          align="right"
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 items-center">
-          {/* Bride */}
-          <motion.div
-            style={{ y: y1 }}
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="flex flex-col items-center md:items-end text-center md:text-right"
-          >
-            <div className="relative w-72 h-96 mb-8 transform -rotate-2 group">
-              <div className="absolute inset-0 bg-white shadow-2xl p-3 pt-3 pb-12 transition-transform group-hover:rotate-0 duration-500">
-                <div className="relative w-full h-full overflow-hidden">
-                  <Image
-                    src={brideImage}
-                    alt={brideName}
-                    fill
-                    className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                  />
-                </div>
-              </div>
-              {/* Tape effect */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-black/5 opacity-50 rotate-1" />
-            </div>
-            
-            <h3 className="text-2xl md:text-3xl font-serif mb-3">{brideName}</h3>
-            <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">{t.couple.brideLabel}</p>
-            <p className="text-sm italic leading-snug text-muted-foreground max-w-[280px] whitespace-pre-wrap">
-              {brideBio}
-            </p>
-          </motion.div>
-
-          {/* Groom */}
-          <motion.div
-            style={{ y: y2 }}
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="flex flex-col items-center md:items-start text-center md:text-left"
-          >
-            <div className="relative w-72 h-96 mb-8 transform rotate-3 group order-first md:order-none">
-              <div className="absolute inset-0 bg-white shadow-2xl p-3 pt-3 pb-12 transition-transform group-hover:rotate-0 duration-500">
-                <div className="relative w-full h-full overflow-hidden">
-                  <Image
-                    src={groomImage}
-                    alt={groomName}
-                    fill
-                    className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                  />
-                </div>
-              </div>
-              {/* Tape effect */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-black/5 opacity-50 -rotate-2" />
-            </div>
-            
-            <h3 className="text-2xl md:text-3xl font-serif mb-3">{groomName}</h3>
-            <p className="font-typewriter text-xs uppercase tracking-widest text-primary mb-6">{t.couple.groomLabel}</p>
-            <p className="text-sm italic leading-snug text-muted-foreground max-w-[280px] whitespace-pre-wrap">
-              {groomBio}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-      
-      {/* Background Motif */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60vw] md:text-[40vw] font-serif italic opacity-[0.03] md:opacity-[0.02] pointer-events-none select-none z-0">
-        &
+        {/* Groom Section Second */}
+        <PersonSection 
+          id="groom"
+          name={groomName}
+          label={t.couple.groomLabel}
+          bio={groomBio}
+          image={groomImage}
+          align="left"
+        />
       </div>
     </section>
   );

@@ -18,6 +18,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { INDONESIAN_BANKS, getBankInfo } from "@/constants/banks";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function GiftsPage() {
   const { status } = useSession();
@@ -28,6 +36,7 @@ export default function GiftsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [selectedBank, setSelectedBank] = useState<string>("");
   
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -50,6 +59,12 @@ export default function GiftsPage() {
     setSavingGift(true);
     const formData = new FormData(e.currentTarget);
     const payload = Object.fromEntries(formData);
+
+    // Handle custom bank name
+    if (payload.bankName === "Other" && payload.customBankName) {
+      payload.bankName = payload.customBankName as string;
+    }
+    delete payload.customBankName;
 
     const method = editingId ? "PUT" : "POST";
     if (editingId) payload.id = editingId;
@@ -96,11 +111,11 @@ export default function GiftsPage() {
 
   const handleEdit = (g: any) => {
     setEditingId(g.id);
+    setSelectedBank(g.bankName);
     setIsDialogOpen(true);
     // Use timeout to ensure dialog is rendered before populating
     setTimeout(() => {
       if (formRef.current) {
-        (formRef.current.elements.namedItem("bankName") as HTMLInputElement).value = g.bankName;
         (formRef.current.elements.namedItem("accountNumber") as HTMLInputElement).value = g.accountNumber;
         (formRef.current.elements.namedItem("accountName") as HTMLInputElement).value = g.accountName;
       }
@@ -109,6 +124,7 @@ export default function GiftsPage() {
 
   const openAddDialog = () => {
     setEditingId(null);
+    setSelectedBank("");
     setIsDialogOpen(true);
     if (formRef.current) formRef.current.reset();
   };
@@ -140,19 +156,52 @@ export default function GiftsPage() {
               }
             />
             <DialogContent className="sm:max-w-[425px] border-primary/10">
-              <form ref={formRef} onSubmit={handleSaveGift} className="flex flex-col max-h-[90vh]">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Bank Account" : "Add Bank Account"}</DialogTitle>
-                  <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                    Enter the details for the digital gift destination.
-                  </DialogDescription>
-                </DialogHeader>
-                
-                <DialogBody className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="bankName" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Bank Name</Label>
-                    <Input id="bankName" name="bankName" placeholder="e.g. BCA, Mandiri, DANA" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
-                  </div>
+                <form 
+                  key={editingId ? `edit-${editingId}` : "add-gift"}
+                  ref={formRef} 
+                  onSubmit={handleSaveGift} 
+                  className="flex flex-col max-h-[90vh]"
+                >
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Bank Account" : "Add Bank Account"}</DialogTitle>
+                    <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
+                      Enter the details for the digital gift destination.
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <DialogBody className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="bankName" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Bank Name</Label>
+                      <Select 
+                        value={selectedBank} 
+                        onValueChange={(val) => setSelectedBank(val || "")}
+                      >
+                        <SelectTrigger className="w-full rounded-xl border-primary/10 bg-muted/20 h-11 px-4">
+                          <SelectValue placeholder="Select a bank" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {INDONESIAN_BANKS.map((bank) => (
+                            <SelectItem key={bank.name} value={bank.name}>
+                              <div className="flex items-center gap-2">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={bank.logo} alt={bank.name} className="w-5 h-auto max-h-4 object-contain" />
+                                <span>{bank.name}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <input type="hidden" name="bankName" value={selectedBank} />
+                      {selectedBank === "Other" && (
+                        <Input 
+                          name="customBankName" 
+                          placeholder="Enter bank name manually" 
+                          className="mt-2 rounded-xl border-primary/10 bg-muted/20"
+                          defaultValue={editingId ? "" : ""}
+                        />
+                      )}
+                    </div>
                   <div className="space-y-2">
                     <Label htmlFor="accountNumber" className="text-xs uppercase tracking-[0.2em] font-typewriter ml-1">Account Number</Label>
                     <Input id="accountNumber" name="accountNumber" placeholder="e.g. 1234567890" className="rounded-xl border-primary/10 focus-visible:ring-primary bg-muted/20" required />
@@ -194,9 +243,16 @@ export default function GiftsPage() {
                   </div>
 
                   <div className="relative z-10 mb-10">
-                    <div className="flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-3 mb-4">
                       <span className="h-[1px] w-6 bg-primary/30"></span>
-                      <p className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary">{g.bankName}</p>
+                      <div className="flex items-center gap-2">
+                        {getBankInfo(g.bankName) ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={getBankInfo(g.bankName)?.logo} alt={g.bankName} className="h-4 w-auto object-contain" />
+                        ) : (
+                          <p className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary">{g.bankName}</p>
+                        )}
+                      </div>
                     </div>
                     <p className="text-3xl font-serif mb-2 tracking-wider text-slate-800">{g.accountNumber}</p>
                     <p className="text-xs font-typewriter text-muted-foreground uppercase tracking-widest">a/n {g.accountName}</p>

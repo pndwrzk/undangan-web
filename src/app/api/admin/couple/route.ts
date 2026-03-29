@@ -46,6 +46,7 @@ export async function POST(req: Request) {
     let brideImagePath: string | undefined = undefined;
     let heroImagePath: string | undefined = undefined;
     let quoteImagePath: string | undefined = undefined;
+    let storyImagePath: string | undefined = undefined;
 
     const unlinkOld = async (imgPath: string) => {
       try {
@@ -57,6 +58,12 @@ export async function POST(req: Request) {
       } catch (e) {}
     };
 
+    const deleteGroomImage = formData.get("deleteGroomImage") === "true";
+    const deleteBrideImage = formData.get("deleteBrideImage") === "true";
+    const deleteHeroImage = formData.get("deleteHeroImage") === "true";
+    const deleteQuoteImage = formData.get("deleteQuoteImage") === "true";
+    const deleteStoryImage = formData.get("deleteStoryImage") === "true";
+
     const heroImageFile = formData.get("heroImageFile") as File;
     if (heroImageFile && heroImageFile.size > 0) {
       const heroDir = path.join(uploadDir, "couple/hero");
@@ -66,6 +73,9 @@ export async function POST(req: Request) {
       const filename = `hero-${Date.now()}-${heroImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(heroDir, filename), buffer);
       heroImagePath = `/uploads/couple/hero/${filename}`;
+      if (existingCouple?.heroImage) await unlinkOld(existingCouple.heroImage);
+    } else if (deleteHeroImage) {
+      heroImagePath = "/hero.jpg";
       if (existingCouple?.heroImage) await unlinkOld(existingCouple.heroImage);
     }
 
@@ -79,6 +89,9 @@ export async function POST(req: Request) {
       await writeFile(path.join(groomDir, filename), buffer);
       groomImagePath = `/uploads/couple/groom/${filename}`;
       if (existingCouple?.groomImage) await unlinkOld(existingCouple.groomImage);
+    } else if (deleteGroomImage) {
+      groomImagePath = "/groom.png"; // Reset to default
+      if (existingCouple?.groomImage) await unlinkOld(existingCouple.groomImage);
     }
 
     const brideImageFile = formData.get("brideImageFile") as File;
@@ -90,6 +103,9 @@ export async function POST(req: Request) {
       const filename = `bride-${Date.now()}-${brideImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
       await writeFile(path.join(brideDir, filename), buffer);
       brideImagePath = `/uploads/couple/bride/${filename}`;
+      if (existingCouple?.brideImage) await unlinkOld(existingCouple.brideImage);
+    } else if (deleteBrideImage) {
+      brideImagePath = "/bride.png"; // Reset to default
       if (existingCouple?.brideImage) await unlinkOld(existingCouple.brideImage);
     }
 
@@ -103,6 +119,24 @@ export async function POST(req: Request) {
       await writeFile(path.join(quoteDir, filename), buffer);
       quoteImagePath = `/uploads/couple/quote/${filename}`;
       if (existingCouple?.quoteImage) await unlinkOld(existingCouple.quoteImage);
+    } else if (deleteQuoteImage) {
+      quoteImagePath = "/quote-bg.png"; // Reset to default
+      if (existingCouple?.quoteImage) await unlinkOld(existingCouple.quoteImage);
+    }
+
+    const storyImageFile = formData.get("storyImageFile") as File;
+    if (storyImageFile && storyImageFile.size > 0) {
+      const storyDir = path.join(uploadDir, "couple/story");
+      await mkdir(storyDir, { recursive: true });
+      const bytes = await storyImageFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `story-${Date.now()}-${storyImageFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+      await writeFile(path.join(storyDir, filename), buffer);
+      storyImagePath = `/uploads/couple/story/${filename}`;
+      if (existingCouple?.storyImage) await unlinkOld(existingCouple.storyImage);
+    } else if (deleteStoryImage) {
+      storyImagePath = null as any; // Allow null for optional story image
+      if (existingCouple?.storyImage) await unlinkOld(existingCouple.storyImage);
     }
 
     // Build update and create payload
@@ -120,6 +154,7 @@ export async function POST(req: Request) {
     if (brideImagePath) dataPayload.brideImage = brideImagePath;
     if (heroImagePath) dataPayload.heroImage = heroImagePath;
     if (quoteImagePath) dataPayload.quoteImage = quoteImagePath;
+    if (storyImagePath !== undefined) dataPayload.storyImage = storyImagePath;
 
     const couple = await prisma.couple.upsert({
       where: { id },

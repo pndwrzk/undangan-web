@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Trash2, MessageSquare, CheckCircle, XCircle } from "lucide-react";
+import { Trash2, MessageSquare, CheckCircle, XCircle, Heart } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -142,16 +142,16 @@ export default function WishesPage() {
                       </div>
                     </TableCell>
                     <TableCell className="px-6 py-5 max-w-md">
-                      <p className="text-sm font-serif italic text-slate-700 leading-relaxed">"{wish.message}"</p>
+                      <p className="text-sm font-serif italic text-slate-700 leading-relaxed whitespace-normal break-words">"{wish.message}"</p>
                       <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1 font-typewriter">
                         <MessageSquare size={10} />
                         {new Date(wish.createdAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
                       </p>
                     </TableCell>
                     <TableCell className="px-6 py-5">
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-600 rounded-full w-fit border border-red-100 font-bold">
-                        <span className="text-xl">❤️</span>
-                        <span className="text-lg">{wish.likes || 0}</span>
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-50 text-red-600 rounded-full w-fit border border-red-100">
+                        <Heart size={12} fill="currentColor" />
+                        <span className="text-sm font-bold leading-none">{wish.likes || 0}</span>
                       </div>
                     </TableCell>
                     <TableCell className="px-6 py-5">

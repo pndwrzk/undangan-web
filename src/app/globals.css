@@ -58,7 +58,7 @@
   --popover-foreground: oklch(0.2 0.01 20);
   --primary: oklch(0.45 0.08 120);    /* Olive Green #556B2F-ish */
   --primary-foreground: oklch(0.985 0.01 90);
-  --secondary: oklch(0.95 0.02 90);
+  --secondary: oklch(0.65 0.08 30);
   --secondary-foreground: oklch(0.2 0.01 20);
   --muted: oklch(0.95 0.02 90);
   --muted-foreground: oklch(0.5 0.01 20);
@@ -69,6 +69,14 @@
   --input: oklch(0.85 0.02 90);
   --ring: oklch(0.45 0.08 120);
   --radius: 0.5rem;
+
+  /* Sonner Overrides (Enforced) */
+  --normal-bg: #556B2F !important;
+  --normal-text: #FDFCF0 !important;
+  --success-bg: #556B2F !important;
+  --success-text: #FDFCF0 !important;
+  --error-bg: #ef4444 !important;
+  --error-text: #ffffff !important;
 }
 
 .dark {
@@ -77,6 +85,14 @@
   --card: oklch(0.25 0.01 20);
   --card-foreground: oklch(0.985 0.01 90);
   --primary: oklch(0.7 0.1 80);
+
+  /* Sonner Dark Mode Overrides (Force Theme Green) */
+  --normal-bg: #556B2F !important;
+  --normal-text: #FDFCF0 !important;
+  --success-bg: #556B2F !important;
+  --success-text: #FDFCF0 !important;
+  --error-bg: #ef4444 !important;
+  --error-text: #ffffff !important;
 }
 
 @layer base {
@@ -111,4 +127,33 @@
   .animate-slow-zoom {
     animation: slow-zoom 20s ease-in-out infinite alternate;
   }
+}
+
+/* Sonner Atomic Enforcement */
+[data-sonner-toast] {
+  background: #556B2F !important;
+  color: #FDFCF0 !important;
+  border-color: rgba(85, 107, 47, 0.2) !important;
+}
+
+[data-sonner-toast][data-type='success'] {
+  background: #556B2F !important;
+  color: #FDFCF0 !important;
+  border-color: rgba(85, 107, 47, 0.3) !important;
+}
+
+[data-sonner-toast][data-type='error'] {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+[data-sonner-toast] [data-description] {
+  color: inherit !important;
+  opacity: 0.8 !important;
+}
+
+[data-sonner-toast] [data-button] {
+  background: var(--primary-foreground) !important;
+  color: var(--primary) !important;
 }

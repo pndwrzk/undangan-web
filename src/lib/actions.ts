@@ -24,6 +24,7 @@ export async function submitRSVP(formData: { name: string; attendance: string; g
       });
     }
 
+    revalidatePath("/");
     revalidatePath("/admin/dashboard");
     return { success: true, data: rsvp };
   } catch (error) {

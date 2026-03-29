@@ -11,19 +11,8 @@ export interface Couple {
   hashtag?: string | null;
   heroImage?: string | null;
   quoteImage?: string | null;
+  storyImage?: string | null;
   weddingDate?: Date | string | null;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-}
-
-export interface Story {
-  id: string;
-  date: string;
-  title: string;
-  description: string;
-  image?: string | null;
-  icon?: string | null;
-  order: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
@@ -66,6 +55,8 @@ export interface Guest {
   group?: string | null;
   partnerName?: string | null;
   side: number;
+  rsvp?: RSVP | null;
+  wishes?: Guestbook[];
   createdAt: Date | string;
 }
 

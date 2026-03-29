@@ -14,7 +14,7 @@ export default function QuoteHeader({ couple }: QuoteHeaderProps) {
 
   return (
     <section
-      className="relative min-h-[30vh] md:min-h-[55vh] flex items-center justify-center px-6 overflow-hidden"
+      className="relative min-h-[30vh] md:min-h-[55vh] flex items-center justify-center overflow-hidden"
     >
       <div className="absolute inset-0 z-0">
         <Image
@@ -33,7 +33,7 @@ export default function QuoteHeader({ couple }: QuoteHeaderProps) {
           viewport={{ once: true }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <p className="text-white font-accent text-3xl md:text-4xl leading-tight tracking-normal drop-shadow-lg text-center mx-auto max-w-[340px] md:max-w-4xl px-0">
+          <p className="text-white font-serif italic text-xl md:text-2xl leading-snug tracking-normal drop-shadow-xl text-center mx-auto max-w-[320px] md:max-w-4xl px-0">
             {t.couple.intro}
           </p>
         </motion.div>

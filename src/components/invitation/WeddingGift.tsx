@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Gift as GiftType } from "@/types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { getBankInfo } from "@/constants/banks";
 
 export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   const { t } = useLanguage();
@@ -53,38 +54,53 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {gifts.map((acc, index) => (
-            <motion.div
-              key={acc.id || acc.accountNumber}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="bg-background p-8 rounded-[2rem] shadow-lg border border-primary/5 hover:border-primary/20 transition-all flex flex-col items-center"
-            >
-              <p className="font-typewriter text-xs uppercase tracking-[0.2em] text-primary mb-4">{acc.bankName}</p>
-              <p className="text-xl md:text-2xl font-serif mb-2 tracking-widest">{acc.accountNumber}</p>
-              <p className="text-sm font-typewriter text-muted-foreground uppercase mb-8">a/n {acc.accountName}</p>
-              
-              <Button
-                variant="outline"
-                onClick={() => handleCopy(acc.accountNumber)}
-                className="rounded-full px-6 py-4 flex items-center gap-2 hover:bg-primary/5 border-primary/20"
+          {gifts.map((acc, index) => {
+             const bankInfo = getBankInfo(acc.bankName);
+             
+             return (
+              <motion.div
+                key={acc.id || acc.accountNumber}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className="bg-background p-8 rounded-[2rem] shadow-lg border border-primary/5 hover:border-primary/20 transition-all flex flex-col items-center"
               >
-                {copied === acc.accountNumber ? (
-                  <>
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-xs uppercase font-typewriter">{t.gift.accountCopied}</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy size={16} className="text-primary" />
-                    <span className="text-xs uppercase font-typewriter">{t.gift.copyAccount}</span>
-                  </>
-                )}
-              </Button>
-            </motion.div>
-          ))}
+                <div className="mb-4 h-8 flex items-center justify-center">
+                  {bankInfo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img 
+                      src={bankInfo.logo} 
+                      alt={acc.bankName} 
+                      className="h-full w-auto object-contain transition-all"
+                    />
+                  ) : (
+                    <p className="font-typewriter text-xs uppercase tracking-[0.2em] text-primary">{acc.bankName}</p>
+                  )}
+                </div>
+                <p className="text-xl md:text-2xl font-serif mb-2 tracking-widest tabular-nums">{acc.accountNumber}</p>
+                <p className="text-sm font-typewriter text-muted-foreground uppercase mb-8">a/n {acc.accountName}</p>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => handleCopy(acc.accountNumber)}
+                  className="rounded-full px-6 py-4 flex items-center gap-2 hover:bg-primary/5 border-primary/20"
+                >
+                  {copied === acc.accountNumber ? (
+                    <>
+                      <Check size={16} className="text-green-600" />
+                      <span className="text-xs uppercase font-typewriter tracking-widest">{t.gift.accountCopied}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={16} className="text-primary" />
+                      <span className="text-xs uppercase font-typewriter tracking-widest">{t.gift.copyAccount}</span>
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            );
+          })}
         </div>
 
         <motion.div

@@ -104,9 +104,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/admin/dashboard/couple" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/couple' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
             <Heart size={18} /> Bride & Groom
           </Link>
-          <Link href="/admin/dashboard/story" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/story' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
-            <History size={18} /> Journey of Love
-          </Link>
           <Link href="/admin/dashboard/events" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/events' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
             <Calendar size={18} /> Events
           </Link>

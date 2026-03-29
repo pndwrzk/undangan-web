@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 export default function RSVP({ couple, guest }: { couple: CoupleType | null, guest?: GuestType | null }) {
   const { t, language } = useLanguage();
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(!!guest?.rsvp);
   const brideName = couple?.brideAlias || couple?.brideName || (language === "id" ? "Mempelai Wanita" : "The Bride");
   const groomName = couple?.groomAlias || couple?.groomName || (language === "id" ? "Mempelai Pria" : "The Groom");
 
@@ -91,13 +91,15 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <p className="text-muted-foreground font-serif text-lg leading-snug mb-8">
               {t.rsvp.successMessage}
             </p>
-            <Button 
-              variant="link" 
-              onClick={() => setIsSubmitted(false)}
-              className="text-primary hover:text-primary/70 font-typewriter text-[10px] uppercase tracking-[0.3em]"
-            >
-              {language === "id" ? "Perbarui Konfirmasi" : "Update RSVP"}
-            </Button>
+            <div className="pt-4 border-t border-primary/5">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsSubmitted(false)}
+                className="text-primary hover:bg-primary/5 font-typewriter text-[10px] uppercase tracking-[0.3em] rounded-full px-8 py-6 h-auto border-primary/20"
+              >
+                {language === "id" ? "Perbarui Konfirmasi" : "Update RSVP"}
+              </Button>
+            </div>
           </div>
         </motion.div>
       </section>
@@ -143,7 +145,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <Sparkles size={14} className="text-primary" />
             <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
           </div>
-          <p className="text-muted-foreground font-serif italic max-w-lg mx-auto text-base md:text-lg leading-snug">
+          <p className="text-muted-foreground font-serif italic max-w-2xl md:max-w-3xl mx-auto text-base md:text-lg leading-snug">
             {t.rsvp.subtitle}
           </p>
         </motion.div>
@@ -155,10 +157,10 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             viewport={{ once: true }}
             className="bg-white p-8 md:p-16 rounded-[2rem] md:rounded-[4rem] shadow-xl border border-primary/10 text-center"
           >
-            <h3 className="text-3xl font-serif mb-6 text-primary italic">
+            <h3 className="text-lg md:text-xl font-serif mb-3 text-primary italic">
               {language === "id" ? "Tautan Pribadi Diperlukan" : "Personal Link Required"}
             </h3>
-            <p className="text-lg text-muted-foreground font-serif leading-snug">
+            <p className="text-xs md:text-sm text-muted-foreground font-serif leading-snug">
               {language === "id" 
                 ? "Kami tidak dapat mengenali Anda. Silakan gunakan tautan unik yang dibagikan kepada Anda untuk mengakses portal RSVP."
                 : "We are unable to recognize you. Please use your unique link to access the RSVP portal."

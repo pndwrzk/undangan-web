@@ -28,6 +28,7 @@ model Couple {
   hashtag    String?  @default("#AlviaPandiwaMenyatu")
   heroImage  String?  @default("/hero.jpg")
   quoteImage String?  @default("/quote-bg.png")
+  storyImage String?
   weddingDate DateTime?
   createdAt       DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -39,6 +40,7 @@ model RSVP {
   attendance String
   guests     String?
   guestId    String?  @unique
+  guest      Guest?   @relation(fields: [guestId], references: [id], onDelete: SetNull)
   createdAt  DateTime @default(now())
 }
 
@@ -73,6 +75,7 @@ model Guest {
   partnerName String?
   side        Int      @default(0)
   wishes      Guestbook[]
+  rsvp        RSVP?
   createdAt   DateTime @default(now())
 }
 
@@ -106,17 +109,6 @@ model Gallery {
   createdAt DateTime @default(now())
 }
 
-model Story {
-  id          String   @id @default(uuid())
-  date        String
-  title       String
-  description String   @db.Text
-  image       String?
-  icon        String?  @default("Heart")
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
 
 model Song {
   id        String   @id @default(uuid())

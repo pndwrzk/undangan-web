@@ -192,8 +192,13 @@ export default function GalleryPage() {
                 </Button>
               }
             />
-            <DialogContent className="sm:max-w-[450px] border-primary/10">
-              <form ref={formRef} onSubmit={handleUploadImage} className="flex flex-col max-h-[90vh]">
+            <DialogContent className="sm:max-w-[500px] border-primary/10">
+              <form 
+                key={editingId ? `edit-${editingId}` : "upload-gallery"}
+                ref={formRef} 
+                onSubmit={handleUploadImage} 
+                className="flex flex-col max-h-[90vh]"
+              >
                 <DialogHeader>
                   <DialogTitle className="text-2xl font-serif">{editingId ? "Edit Photo" : "Upload Photo"}</DialogTitle>
                   <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
@@ -283,11 +288,11 @@ export default function GalleryPage() {
                                     </Button>
                                   }
                                 />
-                                <DialogContent className="sm:max-w-[400px] border-red-100 cursor-default">
+                                <DialogContent className="sm:max-w-[450px] border-red-100">
                                   <DialogHeader>
-                                    <DialogTitle className="text-2xl font-serif text-red-600">Confirm Delete</DialogTitle>
+                                    <DialogTitle className="text-2xl font-serif text-destructive">Confirm Delete</DialogTitle>
                                     <DialogDescription className="font-typewriter text-xs uppercase tracking-widest mt-2">
-                                      Are you sure you want to delete this photo?
+                                      This action cannot be undone.
                                     </DialogDescription>
                                   </DialogHeader>
                                   

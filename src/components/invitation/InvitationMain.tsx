@@ -12,7 +12,6 @@ const Splash = dynamic(() => import("@/components/invitation/Splash"), { ssr: fa
 const Hero = dynamic(() => import("@/components/invitation/Hero"), { ssr: false });
 const Couple = dynamic(() => import("@/components/invitation/Couple"), { ssr: false });
 const Journey = dynamic(() => import("@/components/invitation/Journey"), { ssr: false });
-const Countdown = dynamic(() => import("@/components/invitation/Countdown"), { ssr: false });
 const EventDetails = dynamic(() => import("@/components/invitation/EventDetails"), { ssr: false });
 const RSVP = dynamic(() => import("@/components/invitation/RSVP"), { ssr: false });
 import type { QuoteHeaderProps } from "@/components/invitation/QuoteHeader";
@@ -24,7 +23,7 @@ import BottomNav from "@/components/invitation/BottomNav";
 import LoginModal from "@/components/auth/LoginModal";
 import { Lock, LayoutDashboard } from "lucide-react";
 
-import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Story as StoryType, Song as SongType } from "@/types";
+import { Couple as CoupleType, Guest as GuestType, Event as EventType, Gift as GiftType, Gallery as GalleryType, Song as SongType } from "@/types";
 
 interface InvitationContentProps {
   couple: CoupleType | null;
@@ -33,7 +32,6 @@ interface InvitationContentProps {
   events?: EventType[];
   gifts?: GiftType[];
   gallery?: GalleryType[];
-  stories?: StoryType[];
   song?: SongType | null;
 }
 
@@ -46,7 +44,6 @@ export default function InvitationMain({
   events = [],
   gifts = [],
   gallery = [],
-  stories = [],
   song = null
 }: InvitationContentProps) {
   const { status: authStatus } = useSession();
@@ -88,7 +85,7 @@ export default function InvitationMain({
 
       {/* Main Container - Only render when mounted to prevent hydration errors from stale SSR */}
       {mounted ? (
-        <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all duration-1000 ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
+        <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative overflow-hidden transition-all duration-1000 md:rounded-3xl ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
           {/* Paper Texture & Gradient Overlay */}
           <div
             className="absolute inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-multiply"
@@ -101,13 +98,15 @@ export default function InvitationMain({
           <Hero couple={couple} />
           <QuoteHeader couple={couple} />
           <Couple couple={couple} />
-          <Journey stories={stories} />
-          {/* <Countdown couple={couple} /> */}
-          <EventDetails events={events} />
-          <Gallery gallery={gallery} />
-          <WeddingGift gifts={gifts} />
-          <RSVP couple={couple} guest={guest} />
-          <Guestbook guest={guest} />
+          <Journey imageUrl={couple?.storyImage} />
+
+          <div className="px-0 md:px-8 lg:px-12">
+            <EventDetails events={events} couple={couple} />
+            <Gallery gallery={gallery} />
+            <WeddingGift gifts={gifts} />
+            <RSVP couple={couple} guest={guest} />
+            <Guestbook guest={guest} />
+          </div>
 
           {isOpen && <BottomNav />}
 

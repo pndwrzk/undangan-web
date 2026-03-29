@@ -110,13 +110,14 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
 
   const handleAIGenerate = async () => {
     setIsGenerating(true);
+    let data: any = null;
     try {
       const response = await fetch("/api/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ language }),
       });
-      const data = await response.json();
+      data = await response.json();
       if (data.text) {
         setNewText(data.text);
         toast.success(language === "id" ? "Ucapan berhasil dibuat!" : "Wish generated successfully!");
@@ -125,11 +126,11 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
       }
     } catch (error: any) {
       console.error("AI Generation Error:", error);
-      toast.error(
+      toast.error(data?.message || (
         language === "id" 
           ? "Gagal membuat ucapan. Silakan coba lagi." 
           : "Failed to generate wish. Please try again."
-      );
+      ));
     } finally {
       setIsGenerating(false);
     }

@@ -52,7 +52,7 @@ export default function Hero({ couple }: { couple: any }) {
         </button>
       </div>
 
-      <div className="container relative z-10 flex flex-col items-center justify-center gap-12 px-6">
+      <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-12 px-6">
         {/* Names */}
         <div className="flex-1 text-center">
 
