@@ -16,7 +16,7 @@ export default function Journey({ imageUrl }: JourneyProps) {
   return (
     <section 
       id="story" 
-      className="relative h-[80vh] md:h-screen flex flex-col items-center justify-center overflow-hidden bg-background select-none"
+      className="relative h-dvh flex flex-col items-center justify-center overflow-hidden bg-background select-none"
       onContextMenu={handleContextMenu}
     >
       {/* Full Cover Background Image - Protected */}

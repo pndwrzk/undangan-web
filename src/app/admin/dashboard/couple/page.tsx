@@ -260,8 +260,8 @@ export default function CouplePage() {
                   )}
                   <img src={couple?.groomImage || "/placeholder-groom.jpg"} alt="Groom" className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" />
                   
-                  {/* Photo Actions Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/20 md:bg-black/30">
+                  {/* Photo Actions Overlay - desktop hover only */}
+                  <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/30">
                     <div className="flex gap-3">
                       <button 
                          onClick={() => groomInputRef.current?.click()}
@@ -283,6 +283,15 @@ export default function CouplePage() {
                   <div className="absolute top-4 left-4 p-2 bg-white/80 backdrop-blur-md rounded-full text-primary border border-primary/10">
                     <Heart size={16} fill="currentColor" />
                   </div>
+                </div>
+                {/* Mobile-only action buttons */}
+                <div className="flex md:hidden gap-2 mt-3 px-2">
+                  <button onClick={() => groomInputRef.current?.click()} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary/10 text-primary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                    <Camera size={14} /> Change Photo
+                  </button>
+                  <button onClick={() => setConfirmReset({ type: 'groom', open: true })} className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-500 rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
 
@@ -316,8 +325,8 @@ export default function CouplePage() {
                   )}
                   <img src={couple?.brideImage || "/placeholder-bride.jpg"} alt="Bride" className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" />
                   
-                  {/* Photo Actions Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/20 md:bg-black/30">
+                  {/* Photo Actions Overlay - desktop hover only */}
+                  <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/30">
                     <div className="flex gap-3">
                       <button 
                          onClick={() => brideInputRef.current?.click()}
@@ -339,6 +348,15 @@ export default function CouplePage() {
                   <div className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-md rounded-full text-secondary border border-secondary/10">
                     <Heart size={16} fill="currentColor" />
                   </div>
+                </div>
+                {/* Mobile-only action buttons */}
+                <div className="flex md:hidden gap-2 mt-3 px-2">
+                  <button onClick={() => brideInputRef.current?.click()} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-secondary/10 text-secondary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                    <Camera size={14} /> Change Photo
+                  </button>
+                  <button onClick={() => setConfirmReset({ type: 'bride', open: true })} className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-500 rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
 
@@ -366,9 +384,9 @@ export default function CouplePage() {
               <div className="p-6 bg-primary/5 rounded-[2rem] text-primary transition-colors group-hover:bg-primary/10">
                 <Hash size={40} />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="font-typewriter text-[10px] uppercase tracking-[0.4em] text-muted-foreground mb-1">Official Ceremony Hashtag</p>
-                <p className="text-4xl font-serif text-slate-800">{couple?.hashtag}</p>
+                <p className="text-xl md:text-2xl font-serif text-slate-800 break-all">{couple?.hashtag}</p>
               </div>
            </div>
            <div className="flex items-center gap-8 group">
@@ -411,7 +429,8 @@ export default function CouplePage() {
                     )}
                     <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     
-                    <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity bg-black/20 z-20">
+                    {/* Desktop hover overlay */}
+                    <div className="absolute inset-0 hidden md:flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 z-20">
                       <button 
                         onClick={() => item.ref.current?.click()}
                         className="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform"
@@ -428,9 +447,18 @@ export default function CouplePage() {
                       </button>
                     </div>
                   </div>
-                  <div className="px-8 pb-8 flex-1 flex flex-col">
+                  <div className="px-8 pb-4 flex-1 flex flex-col">
                     <h4 className="text-xl font-serif text-slate-800 mb-2">{item.title}</h4>
                     <p className="text-xs text-muted-foreground font-serif italic flex-1">{item.desc}</p>
+                  </div>
+                  {/* Mobile action buttons */}
+                  <div className="flex md:hidden gap-2 px-8 pb-6">
+                    <button onClick={() => item.ref.current?.click()} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary/10 text-primary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                      <ImageIcon size={14} /> Change
+                    </button>
+                    <button onClick={() => setConfirmReset({ type: item.type as any, open: true })} className="flex items-center justify-center gap-2 px-3 py-2.5 bg-red-50 text-red-500 rounded-2xl active:scale-95 transition-all">
+                      <Trash2 size={14} />
+                    </button>
                   </div>
                </div>
                <input type="file" ref={item.ref} className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && handleImageUpload(item.type as any, e.target.files[0])} />

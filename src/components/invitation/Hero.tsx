@@ -27,7 +27,7 @@ export default function Hero({ couple }: { couple: any }) {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [0.4, 0]);
 
   return (
-    <section ref={containerRef} id="hero" className="relative h-[100dvh] md:min-h-[85vh] flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
+    <section ref={containerRef} id="hero" className="relative h-dvh flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
       {/* Background with texture/image bg */}
       <motion.div
         style={{ y, opacity }}

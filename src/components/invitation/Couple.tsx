@@ -3,7 +3,6 @@
 import { Couple as CoupleType } from "@/types";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import TornEdge from "@/components/invitation/TornEdge";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
 // Extracted outside Couple to avoid remount on every re-render (prevents flicker)
@@ -26,7 +25,7 @@ function PersonSection({
 }) {
   return (
     <div 
-      className="relative h-[80vh] md:h-screen w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none"
+      className="relative h-dvh w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none"
       onContextMenu={onContextMenu}
     >
       {/* Background Image - Protected */}
@@ -48,9 +47,8 @@ function PersonSection({
       {/* Content container */}
       <motion.div 
         initial={{ opacity: 0, y: 30, x: align === "right" ? 30 : -30 }}
-        whileInView={{ opacity: 1, y: 0, x: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        animate={{ opacity: 1, y: 0, x: 0 }}
+        transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
         className={`relative z-30 p-8 md:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
       >
         <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-1 drop-shadow-sm">
