@@ -11,8 +11,8 @@ export async function POST(request: Request) {
     const bride = couple?.brideAlias || couple?.brideName || (isID ? "Mempelai Wanita" : "The Bride");
 
     const prompt = isID 
-      ? `Buatkan satu ucapan selamat menikah atau doa pendek yang manis, santai, dan ceria untuk ${groom} dan ${bride}. Pastikan untuk MENYEBUTKAN NAMA ${groom} dan ${bride} dalam ucapannya. Perbolehkan menggunakan emoji/emoticon secukupnya 😊. Berikan hanya teks ucapannya saja tanpa tanda petik, maksimal 100 karakter.`
-      : `Generate one short, sweet, casual, and cheerful wedding wish for ${groom} and ${bride}. Make sure to MENTION THE NAMES of ${groom} and ${bride} in the wish. You may use emojis/emoticons 😊. Provide only the message text without quotes, max 100 characters.`;
+      ? `Buatkan satu ucapan selamat menikah atau doa pendek yang manis, santai, dan ceria untuk ${groom} dan ${bride}. Pastikan untuk MENYEBUTKAN NAMA ${groom} dan ${bride} dalam ucapannya. Perbolehkan menggunakan emoji/emoticon secukupnya 😊. PENTING: JANGAN PERNAH membungkus teks dengan tanda petik di awal atau akhir. Jika perlu kutipan di tengah kalimat silakan, tapi dilarang keras ada tanda petik di paling awal atau paling akhir teks. Maksimal 100 karakter.`
+      : `Generate one short, sweet, casual, and cheerful wedding wish for ${groom} and ${bride}. Make sure to MENTION THE NAMES of ${groom} and ${bride} in the wish. You may use emojis/emoticons 😊. IMPORTANT: NEVER wrap the text with quotation marks at the start or end. Quotes inside the sentence are fine if needed, but forbidden at the absolute start or end. Max 100 characters.`;
 
     // GROQ AI (Primary)
     const groqKey = process.env.GROQ_API_KEY;
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         top_p: 0.95,
         stream: false
       });
-      const text = chatCompletion.choices[0]?.message?.content?.trim() || "";
+      const text = (chatCompletion.choices[0]?.message?.content || "").trim();
       if (text) return NextResponse.json({ text });
       
       throw new Error("Empty response from Groq");
