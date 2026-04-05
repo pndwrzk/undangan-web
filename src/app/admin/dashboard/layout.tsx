@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-muted/10 flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-background flex flex-col md:flex-row font-sans">
       
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b sticky top-0 z-30 shadow-sm">

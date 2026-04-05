@@ -252,7 +252,7 @@ export default function CouplePage() {
             <div className="flex flex-col md:flex-row">
               {/* Profile Image Column */}
               <div className="p-4 md:w-1/2">
-                <div className="relative h-80 md:h-[450px] rounded-[2rem] overflow-hidden bg-muted/20 border-2 border-primary/10 transition-colors group-hover:border-primary/30">
+                <div className="relative h-80 md:h-[450px] rounded-[2rem] overflow-hidden bg-[#fcfaf3] border-2 border-primary/10 transition-colors group-hover:border-primary/30">
                   {isUpdatingImage === 'groom' && (
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-30 flex items-center justify-center">
                       <div className="animate-spin rounded-full h-10 w-10 border-4 border-white/20 border-t-white"></div>
@@ -317,7 +317,7 @@ export default function CouplePage() {
             <div className="flex flex-col md:flex-row-reverse">
               {/* Profile Image Column */}
               <div className="p-4 md:w-1/2">
-                <div className="relative h-80 md:h-[450px] rounded-[2rem] overflow-hidden bg-muted/20 border-2 border-secondary/10 transition-colors group-hover:border-secondary/30">
+                <div className="relative h-80 md:h-[450px] rounded-[2rem] overflow-hidden bg-[#fcfaf3] border-2 border-secondary/10 transition-colors group-hover:border-secondary/30">
                   {isUpdatingImage === 'bride' && (
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-30 flex items-center justify-center">
                       <div className="animate-spin rounded-full h-10 w-10 border-4 border-white/20 border-t-white"></div>
@@ -421,7 +421,7 @@ export default function CouplePage() {
            ].map((item, i) => (
              <div key={i} className="group relative">
                <div className="bg-white rounded-[2.5rem] p-1 shadow-lg border border-primary/5 overflow-hidden h-full flex flex-col">
-                  <div className="relative h-64 md:h-80 m-4 rounded-[2rem] overflow-hidden bg-muted/20 border-2 border-primary/5 transition-colors group-hover:border-primary/20">
+                  <div className="relative h-64 md:h-80 m-4 rounded-[2rem] overflow-hidden bg-[#fcfaf3] border-2 border-primary/5 transition-colors group-hover:border-primary/20">
                     {isUpdatingImage === item.type && (
                       <div className="absolute inset-0 bg-black/40 backdrop-blur-xs z-30 flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>

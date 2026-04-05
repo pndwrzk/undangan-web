@@ -78,6 +78,7 @@ export interface TranslationDict {
   gallery: {
     title: string;
     description: string;
+    quote: string;
   };
 }
 
@@ -130,7 +131,7 @@ export const translations: Record<Language, TranslationDict> = {
       accountHolder: "Pemilik Rekening",
       copyAccount: "Salin Rekening",
       accountCopied: "Rekening Berhasil Disalin!",
-      warningNote: "Tanpa mengurangi rasa hormat, mohon maaf kami tidak menerima tamu di rumah",
+      warningNote: "Tanpa mengurangi rasa hormat, mohon maaf kami tidak menerima tamu di rumah.",
     },
     guestbook: {
       sectionLabel: "Kirim Doa",
@@ -151,10 +152,11 @@ export const translations: Record<Language, TranslationDict> = {
     gallery: {
       title: "Momen Bahagia",
       description: "Momen-momen berharga yang berhasil kami abadikan dalam bidikan kamera",
+      quote: "Together, we chose a love of mawaddah, a life guided by rahmah, and a forever as one.",
     },
     footer: {
       closing: "Akan menjadi kebahagiaan bagi kami apabila Anda berkenan hadir di hari pernikahan kami. Terima kasih atas doa, ucapan baik, dan perhatian yang diberikan",
-      seeYou: "Sampai jumpa di hari bahagia kami",
+      seeYou: "Sampai jumpa di hari bahagia kami 🤍",
     },
     story: {
       title: "Cerita Kami",
@@ -230,6 +232,7 @@ export const translations: Record<Language, TranslationDict> = {
     gallery: {
       title: "Captured Moments",
       description: "Precious moments we've captured through the lens of our camera",
+      quote: "Together, we chose a love of mawaddah, a life guided by rahmah, and a forever as one.",
     },
     footer: {
       closing: "It would be an absolute joy for us if you could be present on our wedding day. Thank you for the prayers, kind words, and the attention given",

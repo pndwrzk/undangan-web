@@ -37,14 +37,14 @@ function SplashContent({
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone || phone.length < 4) return;
-    
+
     setLoading(true);
     setError("");
-    
+
     try {
       const res = await fetch(`/api/guests/search?q=${phone}`);
       const data = await res.json();
-      
+
       if (res.ok && data.code) {
         window.location.href = `/?guest_code=${data.code}`;
       } else {
@@ -70,7 +70,7 @@ function SplashContent({
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background overflow-hidden"
         >
           {/* Background Image with Overlay */}
-          <motion.div 
+          <motion.div
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
@@ -85,7 +85,7 @@ function SplashContent({
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
           </motion.div>
- 
+
           <div className="relative z-10 text-center px-6 max-w-lg w-full">
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
@@ -93,7 +93,7 @@ function SplashContent({
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="mb-8"
             >
-              <p className="font-typewriter text-[10px] uppercase tracking-[0.5em] text-primary mb-4">{t.splash.weddingInvitation}</p>
+              <p className="font-typewriter text-[11px] uppercase tracking-[0.5em] text-primary mb-4">{t.splash.weddingInvitation}</p>
               <h1 className="text-5xl md:text-7xl font-serif text-foreground mb-4">
                 {brideName} <br /> <span className="italic text-primary">&</span> <br /> {groomName}
               </h1>
@@ -104,7 +104,7 @@ function SplashContent({
                 className="h-[1px] bg-primary/20 mx-auto mt-6"
               />
             </motion.div>
- 
+
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -114,7 +114,7 @@ function SplashContent({
               <p className="font-serif italic text-muted-foreground mb-4 text-sm">
                 {String(language) === "id" ? "Kepada Bapak/Ibu/Saudara/i:" : "To our Valued Guests:"}
               </p>
-              
+
               <AnimatePresence mode="wait">
                 {!showSearch ? (
                   <motion.div
@@ -132,7 +132,7 @@ function SplashContent({
                       {partnerName}
                     </h2>
                     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-primary/5 -rotate-1" />
-                    
+
                     {isDefaultGuest && (
                       <button
                         onClick={() => setShowSearch(true)}
@@ -166,11 +166,11 @@ function SplashContent({
                           </div>
                         )}
                       </div>
-                      
+
                       {error && (
                         <p className="text-[10px] text-red-500 font-serif italic">{error}</p>
                       )}
-                      
+
                       <div className="flex gap-2 justify-center">
                         <button
                           type="submit"
@@ -222,7 +222,7 @@ function SplashContent({
           </motion.div>
 
           {/* Language Switcher - Not Fixed, part of Splash */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 1 }}

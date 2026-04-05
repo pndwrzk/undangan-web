@@ -23,7 +23,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
   if (!gallery || gallery.length === 0) return null;
 
   return (
-    <section className="pt-16 md:pt-24 pb-20 md:pb-32 px-6 bg-background relative">
+    <section className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 bg-[#faf5eb] relative">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -32,8 +32,9 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
           transition={{ duration: 1 }}
           className="text-center mb-12"
         >
-          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gallery.title}</span>
-          <p className="text-muted-foreground font-serif italic text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-6">
+
+          <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gallery.title}</span>
+          <p className="text-muted-foreground font-serif italic text-[14px] md:text-lg leading-relaxed max-w-2xl mx-auto mb-6">
             {t.gallery.description}
           </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
@@ -80,7 +81,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
                     alt={selectedPhoto.caption || "Gallery Photo"}
                     className="max-w-full max-h-[85vh] md:max-h-[90vh] object-contain rounded-lg shadow-2xl"
                   />
-                  
+
                   {/* Close button inside photo corner */}
                   <button
                     onClick={() => setSelectedPhoto(null)}
@@ -100,32 +101,47 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
             </div>
           </DialogContent>
         </Dialog>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-10 flex items-center justify-center gap-3 px-2"
+        >
+          <div className="w-4 md:w-8 h-[1px] bg-primary/20 shrink-0" />
+          <p className="text-[11px] md:text-xs text-muted-foreground font-typewriter tracking-[0.1em] md:tracking-widest leading-relaxed text-center">
+            {t.gallery.quote}
+          </p>
+          <div className="w-4 md:w-8 h-[1px] bg-primary/20 shrink-0" />
+        </motion.div>
       </div>
-      
+
+
       {/* Decorative Scrapbook Elements */}
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           y: [0, -15, 0],
           rotate: [-12, -8, -12]
         }}
-        transition={{ 
+        transition={{
           duration: 5,
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="absolute top-16 left-8 w-20 h-20 border-4 border-primary/10 rounded-full hidden md:block" 
+        className="absolute top-16 left-8 w-20 h-20 border-4 border-primary/10 rounded-full hidden md:block"
       />
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           y: [0, 20, 0],
           rotate: [45, 50, 45]
         }}
-        transition={{ 
+        transition={{
           duration: 7,
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="absolute bottom-16 right-8 w-28 h-28 bg-accent/5 rounded-[3rem] hidden md:block" 
+        className="absolute bottom-16 right-8 w-28 h-28 bg-accent/5 rounded-[3rem] hidden md:block"
       />
     </section>
   );

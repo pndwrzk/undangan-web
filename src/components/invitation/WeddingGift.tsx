@@ -38,7 +38,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   };
 
   return (
-    <section id="gift" className="py-20 md:py-32 px-6 bg-muted/10 relative">
+    <section id="gift" className="py-12 md:py-20 px-6 bg-[#fcfaf3] relative">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -47,17 +47,18 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           transition={{ duration: 1 }}
           className="mb-16"
         >
-          <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
-          <p className="text-base md:text-lg italic text-muted-foreground font-serif max-w-lg mx-auto leading-snug">
+          <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
+          <p className="text-[14px] md:text-lg italic text-muted-foreground font-serif max-w-lg mx-auto leading-snug">
             {t.gift.description}
           </p>
+          <div className="w-20 h-[1px] mt-[25px] bg-primary/30 mx-auto" />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {gifts.map((acc, index) => {
-             const bankInfo = getBankInfo(acc.bankName);
-             
-             return (
+            const bankInfo = getBankInfo(acc.bankName);
+
+            return (
               <motion.div
                 key={acc.id || acc.accountNumber}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -69,9 +70,9 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                 <div className="mb-4 h-8 flex items-center justify-center">
                   {bankInfo ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img 
-                      src={bankInfo.logo} 
-                      alt={acc.bankName} 
+                    <img
+                      src={bankInfo.logo}
+                      alt={acc.bankName}
                       className="h-full w-auto object-contain transition-all"
                     />
                   ) : (
@@ -80,7 +81,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                 </div>
                 <p className="text-xl md:text-2xl font-serif mb-2 tracking-widest tabular-nums">{acc.accountNumber}</p>
                 <p className="text-sm font-typewriter text-muted-foreground uppercase mb-8">a/n {acc.accountName}</p>
-                
+
                 <Button
                   variant="outline"
                   onClick={() => handleCopy(acc.accountNumber)}
@@ -104,15 +105,15 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
         </div>
 
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 1, delay: 0.5 }}
-           className="mt-16 max-w-md mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-10 max-w-md mx-auto"
         >
-           <p className="text-sm text-muted-foreground font-serif italic italic leading-snug">
-             {t.gift.warningNote}
-           </p>
+          <p className="text-[13px] md:text-sm text-muted-foreground font-serif italic italic leading-snug">
+            {t.gift.warningNote}
+          </p>
         </motion.div>
       </div>
     </section>

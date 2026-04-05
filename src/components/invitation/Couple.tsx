@@ -82,7 +82,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   };
 
   return (
-    <section id="couple" className="bg-background">
+    <section id="couple" className="bg-background relative -mt-[2px] z-10">
       <div className="flex flex-col md:flex-row">
         {/* Bride Section First */}
         <PersonSection 

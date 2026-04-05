@@ -102,10 +102,10 @@ export default function InvitationMain({
 
           <div className="px-0 md:px-8 lg:px-12">
             <EventDetails events={events} couple={couple} />
-            <Gallery gallery={gallery} />
             <WeddingGift gifts={gifts} />
             <RSVP couple={couple} guest={guest} />
             <Guestbook guest={guest} />
+            <Gallery gallery={gallery} />
           </div>
 
           {isOpen && <BottomNav />}
@@ -129,25 +129,25 @@ export default function InvitationMain({
 
           <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-          <footer className="py-24 px-6 text-center bg-background relative">
+          <footer className="py-16 px-6 text-center bg-[#fcfaf3] relative">
             <div className="max-w-2xl mx-auto">
-              <p className="text-muted-foreground font-serif italic text-sm leading-relaxed mb-6">
+              <p className="text-muted-foreground font-serif italic text-sm md:text-lg leading-relaxed mb-6">
                 {t.footer.closing}
               </p>
-              <p className="text-muted-foreground font-serif italic text-sm mb-12">
+              <p className="text-muted-foreground font-serif italic text-sm md:text-lg mb-12">
                 {t.footer.seeYou}
               </p>
 
               <h2 className="text-3xl md:text-4xl font-serif text-primary/80 mb-4 italic select-none">
                 {coupleNames}
               </h2>
-              <p className="font-typewriter text-[10px]  tracking-[0.3em] text-primary/60 mb-10">
+              <p className="font-typewriter text-[10px] md:text-xs tracking-[0.3em] text-primary/60 mb-10">
                 #ALLPathsLeadToPandiwa
               </p>
 
               <div className="w-24 h-[1px] bg-primary/20 mx-auto mb-12" />
 
-              <p className="font-typewriter text-[9px] uppercase tracking-widest text-muted-foreground/40">
+              <p className="font-typewriter text-[9px] md:text-xs uppercase tracking-widest text-muted-foreground/40">
                 &copy; {footerYear} &bull; Made At Home
               </p>
             </div>

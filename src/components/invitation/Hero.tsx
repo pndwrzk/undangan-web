@@ -46,7 +46,7 @@ export default function Hero({ couple }: { couple: any }) {
       <div className="absolute top-8 right-8 z-20">
         <button
           onClick={toggleLanguage}
-          className="px-4 py-2 bg-white/60 backdrop-blur-md rounded-full border border-primary/20 text-[10px] font-typewriter tracking-widest text-primary hover:bg-primary/20 transition-all active:scale-95 shadow-sm"
+          className="px-4 py-2 bg-white/60 backdrop-blur-md rounded-full border border-primary/20 text-[10px] md:text-xs font-typewriter tracking-widest text-primary hover:bg-primary/20 transition-all active:scale-95 shadow-sm"
         >
           {language === "id" ? "EN" : "ID"}
         </button>
@@ -77,7 +77,7 @@ export default function Hero({ couple }: { couple: any }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="text-primary font-typewriter tracking-[0.2em]  text-sm mb-8"
+              className="text-primary font-typewriter tracking-[0.2em] text-[12px] md:text-xs mb-8"
             >
               {officialHashtag}
             </motion.p>
