@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import type { Gallery } from "@/types";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { useState } from "react";
+import { Dialog, DialogContent } from "../ui/dialog";
 
 const classPattern = [
   "col-span-2 row-span-2",
@@ -16,11 +17,11 @@ const classPattern = [
   "col-span-1 row-span-1"
 ];
 
-export default function Gallery({ gallery }: { gallery?: any[] }) {
+export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   const { t } = useLanguage();
-  const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<Gallery | null>(null);
 
-  if (!gallery || gallery.length === 0) return null;
+  if (!Array.isArray(gallery) || gallery.length === 0) return null;
 
   return (
     <section className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative z-70 -mt-[2px]">
@@ -124,7 +125,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
 
 
       {/* Decorative Scrapbook Elements */}
-      <motion.div
+      {/* <motion.div
         animate={{
           y: [0, -15, 0],
           rotate: [-12, -8, -12]
@@ -147,7 +148,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
           ease: "easeInOut"
         }}
         className="absolute bottom-16 right-8 w-28 h-28 bg-accent/5 rounded-[3rem] hidden md:block"
-      />
+      /> */}
     </section>
   );
 }
