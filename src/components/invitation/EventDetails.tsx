@@ -115,7 +115,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
   return (
     <>
       {/* SECTION 1: COUNTDOWN */}
-      <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
+      <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 md:px-12 lg:px-24 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
         <TornEdge position="top" color="fill-muted/5" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
@@ -188,7 +188,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
       </section>
 
       {/* SECTION 2: EVENT PLANNING */}
-      <section id="event-planning" className="py-8 md:py-12 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-[31] -mt-[2px] overflow-hidden">
+      <section id="event-planning" className="py-8 md:py-12 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative z-[31] -mt-[2px] overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
             {events.map((ev, idx) => (
