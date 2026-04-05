@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       
       throw new Error("Empty response from Groq");
     } catch (err: any) {
+      console.log(err)
       console.error("Groq Error:", err.message);
       return NextResponse.json(
         { error: "Groq Provider Error", message: "Gagal membuat ucapan. Silakan coba lagi nanti." },
