@@ -90,12 +90,12 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                   {copied === acc.accountNumber ? (
                     <>
                       <Check size={16} className="text-green-600" />
-                      <span className="text-xs uppercase font-sans tracking-widest">{t.gift.accountCopied}</span>
+                      <span className="text-[10px] uppercase font-sans tracking-[0.1em]">{t.gift.accountCopied}</span>
                     </>
                   ) : (
                     <>
                       <Copy size={16} className="text-primary" />
-                      <span className="text-xs uppercase font-sans tracking-widest">{t.gift.copyAccount}</span>
+                      <span className="text-[10px] uppercase font-sans tracking-[0.1em]">{t.gift.copyAccount}</span>
                     </>
                   )}
                 </Button>
