@@ -156,7 +156,7 @@ export const translations: Record<Language, TranslationDict> = {
     },
     footer: {
       closing: "Akan menjadi kebahagiaan bagi kami apabila Anda berkenan hadir di hari pernikahan kami. Terima kasih atas doa, ucapan baik, dan perhatian yang diberikan.",
-      seeYou: "Sampai jumpa di hari bahagia kami 🤍",
+      seeYou: "Sampai jumpa di hari bahagia kami🤍",
     },
     story: {
       title: "Cerita Kami",
@@ -236,7 +236,7 @@ export const translations: Record<Language, TranslationDict> = {
     },
     footer: {
       closing: "It would be an absolute joy for us if you could be present on our wedding day. Thank you for the prayers, kind words, and the attention given.",
-      seeYou: "See you on our happy day",
+      seeYou: "See you on our happy day🤍",
     },
     story: {
       title: "Our Story",
