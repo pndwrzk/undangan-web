@@ -61,12 +61,12 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!guest) return;
-    
+
     // Ensure numberOfAttendees is a valid number when attendance is "yes"
-    const numberOfAttendees = values.attendance === "yes" 
-      ? parseInt(values.numberOfAttendees || "1") || 1 
+    const numberOfAttendees = values.attendance === "yes"
+      ? parseInt(values.numberOfAttendees || "1") || 1
       : undefined;
-    
+
     const result = await submitRSVP({
       name: guest.name,
       attendance: values.attendance,
@@ -84,14 +84,8 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
     return (
       <section id="rsvp" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
 
-        {/* Floating Particles */}
-        <motion.div
-          animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-[10%] text-primary/10 pointer-events-none"
-        >
-          <Heart size={40} />
-        </motion.div>
+
+
 
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -103,10 +97,10 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-10">
               <CheckCircle2 className="w-10 h-10 text-primary" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-serif mb-4 italic text-primary">
+            <h2 className="text-lg md:text-xl font-serif mb-4 italic text-primary">
               {language === "id" ? "Terima Kasih!" : "Thank You!"}
             </h2>
-            <p className="text-muted-foreground font-serif text-lg leading-snug mb-8">
+            <p className="text-muted-foreground font-serif text-[14px] md:text-base leading-snug mb-8">
               {t.rsvp.successMessage}
             </p>
             <div className="pt-4 border-t border-primary/5">
