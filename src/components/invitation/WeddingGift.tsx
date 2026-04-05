@@ -111,7 +111,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           transition={{ duration: 1, delay: 0.5 }}
           className="mt-10 max-w-md mx-auto"
         >
-          <p className="text-[13px] md:text-sm text-muted-foreground font-typewriter italic italic leading-snug">
+          <p className="text-[13px] md:text-sm text-muted-foreground font-typewriter  leading-snug">
             {t.gift.warningNote}
           </p>
         </motion.div>
