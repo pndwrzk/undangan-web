@@ -7,43 +7,62 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function Hero({ couple }: { couple: any }) {
   const { t, language, toggleLanguage } = useLanguage();
-  const brideName = couple?.brideAlias || couple?.brideName || (language === "id" ? "Mempelai Wanita" : "The Bride");
-  const groomName = couple?.groomAlias || couple?.groomName || (language === "id" ? "Mempelai Pria" : "The Groom");
+  const brideName =
+    couple?.brideAlias ||
+    couple?.brideName ||
+    (language === "id" ? "Mempelai Wanita" : "The Bride");
+
+  const groomName =
+    couple?.groomAlias ||
+    couple?.groomName ||
+    (language === "id" ? "Mempelai Pria" : "The Groom");
 
   // Format wedding date
   const wDate = couple?.weddingDate ? new Date(couple.weddingDate) : new Date();
   const day = wDate.getDate();
-  const month = wDate.toLocaleString(language === "id" ? 'id-ID' : 'en-US', { month: 'long' });
+  const month = wDate.toLocaleString(language === "id" ? "id-ID" : "en-US", {
+    month: "long",
+  });
   const year = wDate.getFullYear();
   const officialHashtag = couple?.hashtag;
 
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end start"],
   });
 
-  // Reduced parallax intensity on mobile for smoother performance
+  // Parallax (unchanged behaviour)
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [0.4, 0]);
 
   return (
-    <section ref={containerRef} id="hero" className="relative h-dvh flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background">
-      {/* Background with texture/image bg */}
+    <section
+      ref={containerRef}
+      id="hero"
+      className="relative h-dvh flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background"
+    >
+      {/* Background with parallax */}
       <motion.div
-        style={{ y, opacity }}
-        className="absolute inset-0 z-0 will-change-transform"
+        style={{
+          y,
+          opacity,
+          willChange: "transform, opacity",
+        }}
+        className="absolute inset-0 z-0 will-change-transform transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]"
       >
         <Image
           src={couple?.heroImage || "/hero-bg.png"}
           alt="Wedding Background"
           fill
-          className="object-cover"
           priority
+          quality={100}
+          sizes="100vw"
+          className="object-cover"
         />
       </motion.div>
 
-      {/* Language Switcher - Not Fixed, part of Hero */}
+      {/* Language Switcher */}
       <div className="absolute top-8 right-8 z-20">
         <button
           onClick={toggleLanguage}
@@ -54,9 +73,7 @@ export default function Hero({ couple }: { couple: any }) {
       </div>
 
       <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
-        {/* Names */}
         <div className="flex-1 text-center">
-
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +87,10 @@ export default function Hero({ couple }: { couple: any }) {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 1, duration: 1 }}
               className="text-primary italic"
-            >&</motion.span> {groomName}
+            >
+              &
+            </motion.span>{" "}
+            {groomName}
           </motion.h1>
 
           {officialHashtag && (
@@ -91,10 +111,9 @@ export default function Hero({ couple }: { couple: any }) {
             className="hidden md:block w-32 h-[1px] bg-primary"
           />
         </div>
-
       </div>
 
-      {/* Decorative Pencil/Element */}
+      {/* Decorative element */}
       <div className="absolute bottom-10 right-10 hidden lg:block opacity-20 rotate-12">
         <div className="w-1 h-64 bg-primary/40 rounded-full" />
       </div>

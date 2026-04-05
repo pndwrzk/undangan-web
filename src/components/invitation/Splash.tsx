@@ -200,7 +200,7 @@ function SplashContent({
             >
               <Button
                 onClick={onOpen}
-                className="bg-primary hover:bg-primary/90 text-white px-8 py-6 rounded-full shadow-[0_15px_30px_-10px_rgba(var(--primary-rgb),0.5)] transition-all hover:scale-105 group text-lg font-sans tracking-widest uppercase overflow-hidden relative"
+                className="bg-primary hover:bg-primary/90 text-white  px-8 py-6 rounded-full shadow-[0_15px_30px_-10px_rgba(var(--primary-rgb),0.5)] transition-all hover:scale-105 group text-[14px] md:text-base font-sans tracking-widest uppercase overflow-hidden relative"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   <MailOpen className="h-6 w-6 group-hover:rotate-12 transition-transform" />
