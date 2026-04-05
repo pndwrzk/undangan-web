@@ -3,12 +3,14 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function submitRSVP(formData: { name: string; attendance: string; guestId?: string | null }) {
+export async function submitRSVP(formData: { name: string; attendance: string; guestId?: string | null; numberOfAttendees?: number }) {
   try {
     const data: any = {
       name: formData.name,
       attendance: formData.attendance,
-      guests: "1",
+      guests: formData.attendance === "yes" 
+        ? (formData.numberOfAttendees || 1) 
+        : null,
     };
 
     let rsvp;

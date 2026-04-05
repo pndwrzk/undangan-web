@@ -105,7 +105,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           bio={groomBio}
           image={groomImage}
           align="left"
-          className="-mt-[1px] md:mt-0"
+          className="-mt-1 md:mt-0"
           onContextMenu={handleContextMenu}
         />
       </div>

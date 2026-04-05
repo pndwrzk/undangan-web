@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { submitRSVP } from "@/lib/actions";
 import { useState } from "react";
 import { CheckCircle2, UserCheck, UserMinus, Heart } from "lucide-react";
@@ -35,21 +36,42 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
     attendance: z.string().min(1, {
       message: language === "id" ? "Silakan pilih status kehadiran Anda." : "Please select your attendance status."
     }),
-  });
+    numberOfAttendees: z.string().optional(),
+  }).refine(
+    (data) => {
+      if (data.attendance === "yes") {
+        const num = parseInt(data.numberOfAttendees || "0");
+        return !isNaN(num) && num > 0;
+      }
+      return true;
+    },
+    {
+      message: language === "id" ? "Silakan masukkan jumlah yang hadir (minimal 1)" : "Please enter number of attendees (minimum 1)",
+      path: ["numberOfAttendees"],
+    }
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       attendance: "",
+      numberOfAttendees: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!guest) return;
+    
+    // Ensure numberOfAttendees is a valid number when attendance is "yes"
+    const numberOfAttendees = values.attendance === "yes" 
+      ? parseInt(values.numberOfAttendees) || 1 
+      : undefined;
+    
     const result = await submitRSVP({
       name: guest.name,
       attendance: values.attendance,
       guestId: guest.id,
+      numberOfAttendees,
     });
     if (result.success) {
       setIsSubmitted(true);
@@ -60,7 +82,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
   if (isSubmitted) {
     return (
-      <section className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
+      <section id="rsvp" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
 
         {/* Floating Particles */}
         <motion.div
@@ -272,6 +294,42 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                     </FormItem>
                   )}
                 />
+
+                {/* Conditional Number of Attendees Field */}
+                <AnimatePresence>
+                  {form.watch("attendance") === "yes" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <FormField
+                        control={form.control}
+                        name="numberOfAttendees"
+                        render={({ field }) => (
+                          <FormItem className="space-y-4">
+                            <div className="text-center">
+                              <FormLabel className="font-serif text-lg italic text-primary/80">
+                                {language === "id" ? "Berapa Orang yang Akan Hadir?" : "How Many People Will Attend?"}
+                              </FormLabel>
+                            </div>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder={language === "id" ? "Masukkan jumlah" : "Enter number"}
+                                className="text-center rounded-2xl border-primary/20 h-12 text-lg font-serif"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-center font-typewriter text-[10px] text-red-400" />
+                          </FormItem>
+                        )}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-sans py-6 rounded-2xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 group relative overflow-hidden">
                   <span className="relative z-10">{t.rsvp.sendRSVP}</span>

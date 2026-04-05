@@ -113,7 +113,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
   );
 
   return (
-    <>
+    <div id="event">
       {/* SECTION 1: COUNTDOWN */}
       <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 md:px-12 lg:px-24 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
         <TornEdge position="top" color="fill-muted/5" />
@@ -202,7 +202,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               >
                 <div className="flex items-center justify-between mb-4 md:mb-6">
                   <div className="p-2.5 md:p-3 rounded-xl bg-primary/10 text-primary">
-                    {idx % 2 === 0 ? <Calendar size={20} className="md:w-6 md:h-6" /> : <Clock size={20} className="md:w-6 md:h-6" />}
+                     <Calendar size={20} className="md:w-6 md:h-6" /> 
                   </div>
                   <span className="font-typewriter text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 bg-accent/10 rounded-full">{ev.title}</span>
                 </div>
@@ -242,6 +242,6 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

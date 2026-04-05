@@ -23,7 +23,7 @@ export default function BottomNav() {
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ delay: 2, duration: 1 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] md:hidden"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] md:hidden pointer-events-auto"
     >
       <nav className="bg-white/80 backdrop-blur-lg border border-primary/10 rounded-full px-6 py-3 flex items-center gap-8 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)]">
         {navItems.map((item) => (

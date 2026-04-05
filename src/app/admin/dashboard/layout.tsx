@@ -4,7 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, LayoutDashboard, Heart, Shield, Calendar, Gift, Image, MessageSquare, History, Music, Menu, X, ExternalLink } from "lucide-react";
+import { LogOut, Users, LayoutDashboard, Heart, Shield, Calendar, Gift, Image, MessageSquare, History, Music, Menu, X, ExternalLink, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
 import {
@@ -118,6 +118,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </Link>
           <Link href="/admin/dashboard/guests" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/guests' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
             <Users size={18} /> Guest List
+          </Link>
+          <Link href="/admin/dashboard/rsvp" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/rsvp' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
+            <CheckCircle size={18} /> RSVP Data
           </Link>
           <Link href="/admin/dashboard/wishes" className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${pathname === '/admin/dashboard/wishes' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}>
             <MessageSquare size={18} /> Guest Wishes

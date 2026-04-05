@@ -35,7 +35,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed bottom-32 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-24 md:bottom-32 right-4 md:right-6 z-[100] flex flex-col items-end gap-3">
       <AnimatePresence>
         {isExpanded && (
           <>

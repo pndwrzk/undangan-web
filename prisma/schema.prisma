@@ -38,7 +38,7 @@ model RSVP {
   id         String   @id @default(uuid())
   name       String
   attendance String
-  guests     String?
+  guests     Int?
   guestId    String?  @unique
   guest      Guest?   @relation(fields: [guestId], references: [id], onDelete: SetNull)
   createdAt  DateTime @default(now())
