@@ -25,49 +25,54 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
   return (
     <section className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative z-70 -mt-[2px]">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-center mb-12"
-        >
+        {/* Animated gallery header commented out */}
+        {false && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center mb-12"
+          >
+            <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gallery.title}</span>
+            <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-relaxed max-w-2xl mx-auto mb-6">
+              {t.gallery.description}
+            </p>
+            <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
+          </motion.div>
+        )}
 
-          <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gallery.title}</span>
-          <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-relaxed max-w-2xl mx-auto mb-6">
-            {t.gallery.description}
-          </p>
-          <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
-        </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
-          {gallery.map((photo, index) => (
-            <motion.div
-              key={photo.id || index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer ${classPattern[index % classPattern.length]}`}
-              onClick={() => setSelectedPhoto(photo)}
-            >
-              <Image
-                src={photo.imageUrl}
-                alt={photo.caption || "Gallery Photo"}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-end justify-center pb-8 px-4">
-                {photo.caption && (
-                  <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs md:text-sm font-serif italic px-6 py-2.5 rounded-full text-center shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100 translate-y-4 group-hover:translate-y-0">
-                    {photo.caption}
-                  </span>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Animated gallery grid commented out */}
+        {false && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+            {gallery.map((photo, index) => (
+              <motion.div
+                key={photo.id || index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer ${classPattern[index % classPattern.length]}`}
+                onClick={() => setSelectedPhoto(photo)}
+              >
+                <Image
+                  src={photo.imageUrl}
+                  alt={photo.caption || "Gallery Photo"}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-end justify-center pb-8 px-4">
+                  {photo.caption && (
+                    <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs md:text-sm font-serif italic px-6 py-2.5 rounded-full text-center shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100 translate-y-4 group-hover:translate-y-0">
+                      {photo.caption}
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {/* Lightbox */}
         <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>

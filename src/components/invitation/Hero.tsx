@@ -4,8 +4,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import type { Couple } from "@/types";
 
-export default function Hero({ couple }: { couple: any }) {
+export default function Hero({ couple }: { couple: Couple | null }) {
   const { t, language, toggleLanguage } = useLanguage();
   const brideName =
     couple?.brideAlias ||
@@ -42,25 +43,27 @@ export default function Hero({ couple }: { couple: any }) {
       id="hero"
       className="relative h-dvh flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background"
     >
-      {/* Background with parallax */}
-      <motion.div
-        style={{
-          y,
-          opacity,
-          willChange: "transform, opacity",
-        }}
-        className="absolute inset-0 z-0 will-change-transform transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]"
-      >
-        <Image
-          src={couple?.heroImage || "/hero-bg.png"}
-          alt="Wedding Background"
-          fill
-          priority
-          quality={100}
-          sizes="100vw"
-          className="object-cover"
-        />
-      </motion.div>
+      {/* Background with parallax - commented out */}
+      {false && (
+        <motion.div
+          style={{
+            y,
+            opacity,
+            willChange: "transform, opacity",
+          }}
+          className="absolute inset-0 z-0 will-change-transform transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]"
+        >
+          <Image
+            src={couple?.heroImage || "/hero-bg.png"}
+            alt="Wedding Background"
+            fill
+            priority
+            quality={100}
+            sizes="100vw"
+            className="object-cover"
+          />
+        </motion.div>
+      )}
 
       {/* Language Switcher */}
       <div className="absolute top-8 right-8 z-20">
@@ -74,26 +77,30 @@ export default function Hero({ couple }: { couple: any }) {
 
       <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
         <div className="flex-1 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-            className="text-6xl md:text-8xl font-serif text-foreground leading-tight mb-12 md:mb-16"
-          >
-            {brideName} <br />
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="text-primary italic"
+          {/* Animated heading commented out */}
+          {false && (
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.3 }}
+              className="text-6xl md:text-8xl font-serif text-foreground leading-tight mb-12 md:mb-16"
             >
-              &
-            </motion.span>{" "}
-            {groomName}
-          </motion.h1>
+              {brideName} <br />
+              <motion.span
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="text-primary italic"
+              >
+                &
+              </motion.span>{" "}
+              {groomName}
+            </motion.h1>
+          )}
 
-          {officialHashtag && (
+          {/* Animated hashtag commented out */}
+          {false && officialHashtag && (
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -104,12 +111,15 @@ export default function Hero({ couple }: { couple: any }) {
             </motion.p>
           )}
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="hidden md:block w-32 h-[1px] bg-primary"
-          />
+          {/* Animated divider commented out */}
+          {false && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1 }}
+              className="hidden md:block w-32 h-[1px] bg-primary"
+            />
+          )}
         </div>
       </div>
 
