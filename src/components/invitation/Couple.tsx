@@ -56,7 +56,7 @@ function PersonSection({
         <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-3 drop-shadow-sm">
           {label}
         </p>
-        <h3 className="text-xl md:text-2xl font-serif text-white mb-1 drop-shadow-md">
+        <h3 className="text-xl md:text-2xl font-serif text-white mb-0.5 drop-shadow-md">
           {name}
         </h3>
         {bio && (
