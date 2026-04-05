@@ -115,7 +115,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
   return (
     <>
       {/* SECTION 1: COUNTDOWN */}
-      <section id="event-countdown" className="pt-12 md:pt-20 pb-8 md:pb-12 px-6 bg-[#fcfaf3] relative overflow-hidden">
+      <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
         <TornEdge position="top" color="fill-muted/5" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
@@ -123,18 +123,18 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-8 md:mb-12"
           >
-            <span className="font-arabic text-[20px] md:text-3xl text-primary mb-8 md:mb-10 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
+            <span className="font-arabic text-[20px] md:text-3xl text-primary mb-6 md:mb-8 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
               {t.event.sectionLabel}
             </span>
-            <h2 className="text-[14px] md:text-lg font-serif mb-6 text-muted-foreground italic leading-snug max-w-2xl mx-auto px-6 opacity-90">
+            <h2 className="text-[14px] md:text-lg font-serif mb-4 md:mb-6 text-muted-foreground italic leading-snug max-w-2xl mx-auto px-6 opacity-90">
               "{t.event.title.split(' (')[0]}"
               <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-3 md:mt-4 not-italic opacity-40">
                 {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}
               </span>
             </h2>
-            <div className="w-12 md:w-16 h-[1px] bg-primary/10 mx-auto mb-10 md:mb-16" />
+            <div className="w-12 md:w-16 h-[1px] bg-primary/10 mx-auto mb-6 md:mb-8" />
           </motion.div>
 
           {/* Unified Countdown Card */}
@@ -142,7 +142,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col items-center justify-center bg-[#505b24] p-8 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-xl w-full relative overflow-hidden"
+            className="flex flex-col items-center justify-center bg-[#505b24] p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-xl w-full relative overflow-hidden"
           >
             {/* Decorative Elements */}
             <motion.div
@@ -163,12 +163,11 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-3xl pointer-events-none"
             />
 
-            <span className="font-serif italic text-[14px] md:text-sm text-white/90 max-w-lg text-center leading-relaxed relative z-10">
+            <span className="font-serif italic text-[14px] md:text-sm text-white/90 max-w-lg text-center leading-relaxed relative z-10  mb-8 md:mb-10">
               {t.couple.requestRestu}
             </span>
-            <div className="w-12 h-[1px] bg-white/30 mx-auto mt-6 mb-10 relative z-10" />
 
-            <div className="flex justify-center gap-4 mb-10 relative z-10">
+            <div className="flex justify-center gap-4 mb-8 md:mb-10 relative z-10">
               <TimerBox value={timeLeft.days} label={language === "id" ? "Hari" : "Days"} />
               <TimerBox value={timeLeft.hours} label={language === "id" ? "Jam" : "Hours"} />
               <TimerBox value={timeLeft.minutes} label={language === "id" ? "Menit" : "Mins"} />
@@ -189,7 +188,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
       </section>
 
       {/* SECTION 2: EVENT PLANNING */}
-      <section id="event-planning" className="py-12 md:py-20 px-6 bg-[#faf5eb] relative overflow-hidden">
+      <section id="event-planning" className="py-8 md:py-12 px-6 bg-[#faf5eb] relative z-[31] -mt-[2px] overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
             {events.map((ev, idx) => (

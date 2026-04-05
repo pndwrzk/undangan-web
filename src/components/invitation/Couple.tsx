@@ -6,26 +6,28 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
 // Extracted outside Couple to avoid remount on every re-render (prevents flicker)
-function PersonSection({ 
-  name, 
-  label, 
-  bio, 
-  image, 
+function PersonSection({
+  name,
+  label,
+  bio,
+  image,
   id,
   align = "right",
+  className = "",
   onContextMenu,
-}: { 
-  name: string; 
-  label: string; 
-  bio?: string | null; 
-  image: string; 
+}: {
+  name: string;
+  label: string;
+  bio?: string | null;
+  image: string;
   id: string;
   align?: "left" | "right";
+  className?: string;
   onContextMenu: (e: React.MouseEvent) => void;
 }) {
   return (
-    <div 
-      className="relative h-dvh w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none"
+    <div
+      className={`relative h-dvh w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none ${className}`}
       onContextMenu={onContextMenu}
     >
       {/* Background Image - Protected */}
@@ -45,16 +47,16 @@ function PersonSection({
       </div>
 
       {/* Content container */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30, x: align === "right" ? 30 : -30 }}
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
         className={`relative z-30 p-8 md:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
       >
-        <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-1 drop-shadow-sm">
+        <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-3 drop-shadow-sm">
           {label}
         </p>
-        <h3 className="text-xl md:text-2xl font-serif text-white mb-3 drop-shadow-md">
+        <h3 className="text-xl md:text-2xl font-serif text-white mb-1 drop-shadow-md">
           {name}
         </h3>
         {bio && (
@@ -72,7 +74,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   const brideName = couple?.brideName || "Mempelai Wanita";
   const brideBio = couple?.brideBio;
   const brideImage = couple?.brideImage || "/bride.png";
-  
+
   const groomName = couple?.groomName || "Mempelai Pria";
   const groomBio = couple?.groomBio;
   const groomImage = couple?.groomImage || "/groom.png";
@@ -85,7 +87,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
     <section id="couple" className="bg-background relative -mt-[2px] z-10">
       <div className="flex flex-col md:flex-row">
         {/* Bride Section First */}
-        <PersonSection 
+        <PersonSection
           id="bride"
           name={brideName}
           label={t.couple.brideLabel}
@@ -95,14 +97,15 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           onContextMenu={handleContextMenu}
         />
 
-        {/* Groom Section Second */}
-        <PersonSection 
+        {/* Groom Section Second - Added negative margin on mobile top to close gap */}
+        <PersonSection
           id="groom"
           name={groomName}
           label={t.couple.groomLabel}
           bio={groomBio}
           image={groomImage}
           align="left"
+          className="-mt-[1px] md:mt-0"
           onContextMenu={handleContextMenu}
         />
       </div>
