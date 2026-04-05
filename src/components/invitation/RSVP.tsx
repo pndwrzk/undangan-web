@@ -93,11 +93,11 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           transition={{ type: "spring", damping: 20 }}
           className="max-w-xl mx-auto text-center relative z-10"
         >
-          <div className="bg-white p-12 md:p-20 rounded-[4rem] border-double border-8 border-primary/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] relative">
-            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-10">
-              <CheckCircle2 className="w-10 h-10 text-primary" />
+          <div className="bg-white p-7 md:p-12 rounded-[2rem] border-double border-4 border-primary/10 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.08)] relative">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-7 h-7 text-primary" />
             </div>
-            <h2 className="text-lg md:text-xl font-serif mb-4 italic text-primary">
+            <h2 className="text-base md:text-lg font-serif mb-3 italic text-primary">
               {language === "id" ? "Terima Kasih!" : "Thank You!"}
             </h2>
             <p className="text-muted-foreground font-serif text-[14px] md:text-base leading-snug mb-8">
@@ -107,7 +107,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
               <Button
                 variant="outline"
                 onClick={() => setIsSubmitted(false)}
-                className="text-primary hover:bg-primary/5 font-typewriter text-[10px] uppercase tracking-[0.3em] rounded-full px-8 py-6 h-auto border-primary/20"
+                className="text-primary hover:bg-primary/5 font-typewriter text-[9px] uppercase tracking-[0.3em] rounded-full px-5 py-3 h-auto border-primary/20 min-h-0"
               >
                 {language === "id" ? "Perbarui Konfirmasi" : "Update RSVP"}
               </Button>
