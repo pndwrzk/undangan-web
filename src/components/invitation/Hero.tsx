@@ -44,7 +44,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
       className="relative h-dvh flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background"
     >
       {/* Background with parallax - commented out */}
-      {false && (
+     
         <motion.div
           style={{
             y,
@@ -63,7 +63,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
             className="object-cover"
           />
         </motion.div>
-      )}
+    
 
       {/* Language Switcher */}
       <div className="absolute top-8 right-8 z-20">
@@ -78,7 +78,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
       <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
         <div className="flex-1 text-center">
           {/* Animated heading commented out */}
-          {false && (
+         
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -97,10 +97,10 @@ export default function Hero({ couple }: { couple: Couple | null }) {
               </motion.span>{" "}
               {groomName}
             </motion.h1>
-          )}
+        
 
           {/* Animated hashtag commented out */}
-          {false && officialHashtag && (
+        
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -109,17 +109,17 @@ export default function Hero({ couple }: { couple: Couple | null }) {
             >
               {officialHashtag}
             </motion.p>
-          )}
+       
 
           {/* Animated divider commented out */}
-          {false && (
+         
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1 }}
               className="hidden md:block w-32 h-[1px] bg-primary"
             />
-          )}
+        
         </div>
       </div>
 

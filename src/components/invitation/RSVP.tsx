@@ -20,11 +20,8 @@ import { CheckCircle2, UserCheck, UserMinus, Heart } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
 import { Couple as CoupleType, Guest as GuestType } from "@/types";
-import TornEdge from "@/components/invitation/TornEdge";
 
-const formSchema = z.object({
-  attendance: z.string().min(1, { message: "Silakan pilih status kehadiran Anda." }),
-});
+
 
 export default function RSVP({ couple, guest }: { couple: CoupleType | null, guest?: GuestType | null }) {
   const { t, language } = useLanguage();
@@ -127,7 +124,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
 
       {/* Floating Particles */}
-      <motion.div
+      {/* <motion.div
         animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/4 left-[10%] text-primary/10 pointer-events-none"
@@ -140,7 +137,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
         className="absolute bottom-1/4 right-[10%] text-primary/10 pointer-events-none"
       >
         <Heart size={60} />
-      </motion.div>
+      </motion.div> */}
 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* <motion.div
