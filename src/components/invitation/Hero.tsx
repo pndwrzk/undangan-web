@@ -23,7 +23,8 @@ export default function Hero({ couple }: { couple: any }) {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  // Reduced parallax intensity on mobile for smoother performance
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [0.4, 0]);
 
   return (
@@ -31,7 +32,7 @@ export default function Hero({ couple }: { couple: any }) {
       {/* Background with texture/image bg */}
       <motion.div
         style={{ y, opacity }}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 will-change-transform"
       >
         <Image
           src={couple?.heroImage || "/hero-bg.png"}
