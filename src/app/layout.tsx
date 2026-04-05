@@ -50,6 +50,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <meta property="og:title" content="The Wedding of Alvia & Pandiwa" />
+        <meta property="og:description" content="You are cordially invited to celebrate the wedding of Alvia & Pandiwa." />
+        <meta property="og:image" content="http://finallyhomewithpandiwa.com/public/images/wedding_placeholders/og-image.jpg" />
+        <meta property="og:url" content="http://finallyhomewithpandiwa.com/" />
+        <meta property="og:type" content="website" />
+      </head>
       <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} ${greatVibes.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
         <LanguageProvider>
           <AuthProvider>

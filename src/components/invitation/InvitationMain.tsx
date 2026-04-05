@@ -112,7 +112,7 @@ export default function InvitationMain({
           {mounted && (
             <button
               onClick={() => authStatus === "authenticated" ? router.push("/admin/dashboard") : setIsLoginOpen(true)}
-              className="fixed right-[-20px] top-1/2 -translate-y-1/2 z-[50] bg-primary/10 hover:bg-primary/20 p-2 rounded-l-xl transition-all group overflow-hidden"
+              className="fixed right-[-20px] top-1/2 -translate-y-1/2 z-[110] bg-primary/10 hover:bg-primary/20 p-2 rounded-l-xl transition-all group overflow-hidden"
               title={authStatus === "authenticated" ? "Admin Dashboard" : "Admin Login"}
             >
               <div className="pl-4 pr-1">
