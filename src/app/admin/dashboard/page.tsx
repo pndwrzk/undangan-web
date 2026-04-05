@@ -185,7 +185,7 @@ export default function OverviewPage() {
           <h3 className="text-2xl font-serif mb-6">Guest Distribution</h3>
           <div className="space-y-6">
             {(() => {
-              const avgGuests = stats.confirmed > 0 ? (stats.guests / stats.confirmed).toFixed(2) : 0;
+              const avgGuests = stats.confirmed > 0 ? (stats.guests / stats.confirmed).toFixed(2) : "0";
               const maxGuests = Math.max(...rsvps.filter((r: any) => r.attendance === 'yes').map((r: any) => r.guests || 1), 0);
               
               return (

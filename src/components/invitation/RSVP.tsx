@@ -64,7 +64,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
     
     // Ensure numberOfAttendees is a valid number when attendance is "yes"
     const numberOfAttendees = values.attendance === "yes" 
-      ? parseInt(values.numberOfAttendees) || 1 
+      ? parseInt(values.numberOfAttendees || "1") || 1 
       : undefined;
     
     const result = await submitRSVP({
