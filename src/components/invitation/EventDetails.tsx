@@ -115,7 +115,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
   return (
     <>
       {/* SECTION 1: COUNTDOWN */}
-      <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
+      <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
         <TornEdge position="top" color="fill-muted/5" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
@@ -128,7 +128,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
             <span className="font-arabic text-[20px] md:text-3xl text-primary mb-6 md:mb-8 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
               {t.event.sectionLabel}
             </span>
-            <h2 className="text-[14px] md:text-lg font-serif mb-4 md:mb-6 text-muted-foreground italic leading-snug max-w-2xl mx-auto px-6 opacity-90">
+            <h2 className="text-[14px] md:text-base font-serif mb-4 md:mb-6 text-muted-foreground italic leading-snug max-w-2xl mx-auto px-6 opacity-90">
               "{t.event.title.split(' (')[0]}"
               <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-3 md:mt-4 not-italic opacity-40">
                 {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}
@@ -178,7 +178,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               href={generateCalendarLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full max-w-xs py-4 bg-[#ebeadf] border border-transparent rounded-xl text-[#505b24] font-bold font-serif flex items-center justify-center gap-2 hover:bg-[#ebeadf]/90 transition-all shadow-md uppercase tracking-[0.1em] text-[10px] relative z-10"
+              className="w-full max-w-xs py-4 bg-[#ebeadf] border border-transparent rounded-xl text-[#505b24] font-bold font-sans flex items-center justify-center gap-2 hover:bg-[#ebeadf]/90 transition-all shadow-md uppercase tracking-[0.1em] text-[10px] relative z-10"
             >
               <Bell size={14} />
               {language === "id" ? "Simpan Tanggal" : "Save the Date"}
@@ -188,7 +188,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
       </section>
 
       {/* SECTION 2: EVENT PLANNING */}
-      <section id="event-planning" className="py-8 md:py-12 px-6 bg-[#faf5eb] relative z-[31] -mt-[2px] overflow-hidden">
+      <section id="event-planning" className="py-8 md:py-12 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-[31] -mt-[2px] overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
             {events.map((ev, idx) => (
@@ -213,14 +213,14 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
                   <div className="flex items-start gap-3">
                     <Clock className="text-primary mt-1 shrink-0" size={16} />
                     <div>
-                      <p className="font-bold text-foreground text-sm md:text-base">{ev.time}</p>
+                      <p className="font-bold text-foreground text-sm md:text-base ">{ev.time}</p>
                       <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">{ev.date}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="text-primary mt-1 shrink-0" size={16} />
                     <div>
-                      <p className="font-bold text-foreground leading-snug text-sm md:text-base">{ev.location}</p>
+                      <p className="font-bold text-foreground leading-snug text-sm md:text-base ">{ev.location}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">{ev.address}</p>
                     </div>
                   </div>
@@ -231,7 +231,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
                     href={ev.mapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-8 w-full py-3 bg-primary text-white flex items-center justify-center gap-2 rounded-lg font-serif uppercase tracking-[0.2em] text-[10px] hover:bg-primary/90 transition-all group-hover:shadow-md"
+                    className="mt-8 w-full py-3 bg-primary text-white flex items-center justify-center gap-2 rounded-lg font-sans uppercase tracking-[0.1em] text-[10px] hover:bg-primary/90 transition-all group-hover:shadow-md"
                   >
                     <ExternalLink size={12} />
                     {t.event.viewMap}

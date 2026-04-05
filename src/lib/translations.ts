@@ -99,7 +99,7 @@ export const translations: Record<Language, TranslationDict> = {
     couple: {
       title: "Profil Kami",
       intro: "Dari setiap langkah yang membawa kami ke berbagai arah,\nkami menemukan satu sama lain sebagai tempat untuk pulang",
-      requestRestu: "Dan segala sesuatu Kami ciptakan berpasang-pasangan, agar kamu mengingat kebesaran Allah.",
+      requestRestu: "Dengan mengharap ridho Allah SWT,\nkami memohon restu dan kehadiran Anda pada hari bahagia kami",
       groomLabel: "Mempelai Pria",
       brideLabel: "Mempelai Wanita",
     },
@@ -179,7 +179,7 @@ export const translations: Record<Language, TranslationDict> = {
     couple: {
       title: "Our Profiles",
       intro: "From every step that brought us in different directions,\nwe found each other as a place to come home",
-      requestRestu: "And of all things We created two mates; perhaps you will remember.",
+      requestRestu: "With the blessing of Allah SWT,\nwe humbly request your blessings and presence on our happy day",
       groomLabel: "The Groom",
       brideLabel: "The Bride",
     },

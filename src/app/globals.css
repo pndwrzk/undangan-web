@@ -157,3 +157,10 @@
   background: var(--primary-foreground) !important;
   color: var(--primary) !important;
 }
+
+/* Global Button Font Standardization */
+button, 
+.Button,
+.button {
+  font-family: var(--font-sans) !important;
+}

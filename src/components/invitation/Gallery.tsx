@@ -23,7 +23,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
   if (!gallery || gallery.length === 0) return null;
 
   return (
-    <section className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 bg-[#faf5eb] relative">
+    <section className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-70 -mt-[2px]">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -34,7 +34,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
         >
 
           <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gallery.title}</span>
-          <p className="text-muted-foreground font-serif italic text-[14px] md:text-lg leading-relaxed max-w-2xl mx-auto mb-6">
+          <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-relaxed max-w-2xl mx-auto mb-6">
             {t.gallery.description}
           </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
@@ -93,7 +93,7 @@ export default function Gallery({ gallery }: { gallery?: any[] }) {
 
                   {selectedPhoto.caption && (
                     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-white text-center shadow-2xl">
-                      <p className="font-serif italic text-sm md:text-base drop-shadow-sm">{selectedPhoto.caption}</p>
+                      <p className="font-serif italic text-sm md:text-base  drop-shadow-sm">{selectedPhoto.caption}</p>
                     </div>
                   )}
                 </div>

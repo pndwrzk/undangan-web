@@ -60,7 +60,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
   if (isSubmitted) {
     return (
-      <section className="py-12 md:py-20 px-6 bg-[#faf5eb] relative overflow-hidden">
+      <section className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
 
         {/* Floating Particles */}
         <motion.div
@@ -103,7 +103,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   }
 
   return (
-    <section id="rsvp" className="py-12 md:py-20 px-6 bg-[#faf5eb] relative overflow-hidden">
+    <section id="rsvp" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
 
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -137,7 +137,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
             <span className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">RSVP Undangan</span>
           </div>
-          <p className="text-muted-foreground font-serif italic max-w-2xl md:max-w-3xl mx-auto text-base md:text-lg leading-snug">
+          <p className="text-muted-foreground font-serif italic max-w-2xl md:max-w-3xl mx-auto text-base md:text-base leading-snug">
             {t.rsvp.subtitle}
           </p>
         </motion.div> */}
@@ -150,7 +150,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           className="text-center mb-12"
         >
           <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">RSVP Undangan</span>
-          <p className="text-muted-foreground font-serif italic text-[14px] md:text-lg leading-relaxed max-w-2xl mx-auto mb-6">
+          <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-relaxed max-w-2xl mx-auto mb-6">
             {t.rsvp.subtitle}
           </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
@@ -273,7 +273,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                   )}
                 />
 
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-serif py-6 rounded-2xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 text-xl group relative overflow-hidden">
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-sans py-6 rounded-2xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 text-xl group relative overflow-hidden">
                   <span className="relative z-10">{t.rsvp.sendRSVP}</span>
                   <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 </Button>

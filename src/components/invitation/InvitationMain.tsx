@@ -100,13 +100,11 @@ export default function InvitationMain({
           <Couple couple={couple} />
           <Journey imageUrl={couple?.storyImage} />
 
-          <div className="px-0 md:px-8 lg:px-12">
-            <EventDetails events={events} couple={couple} />
-            <WeddingGift gifts={gifts} />
-            <RSVP couple={couple} guest={guest} />
-            <Guestbook guest={guest} />
-            <Gallery gallery={gallery} />
-          </div>
+          <EventDetails events={events} couple={couple} />
+          <WeddingGift gifts={gifts} />
+          <RSVP couple={couple} guest={guest} />
+          <Guestbook guest={guest} />
+          <Gallery gallery={gallery} />
 
           {isOpen && <BottomNav />}
 
@@ -129,12 +127,12 @@ export default function InvitationMain({
 
           <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-          <footer className="py-16 px-6 text-center bg-[#fcfaf3] relative">
+          <footer className="py-16 px-6 text-center bg-[#fcfaf3] relative z-80 -mt-[2px]">
             <div className="max-w-2xl mx-auto">
-              <p className="text-muted-foreground font-serif italic text-sm md:text-lg leading-relaxed mb-6">
+              <p className="text-muted-foreground font-serif italic text-sm md:text-base leading-relaxed mb-6">
                 {t.footer.closing}
               </p>
-              <p className="text-muted-foreground font-serif italic text-sm md:text-lg mb-12">
+              <p className="text-muted-foreground font-serif italic text-sm md:text-base mb-12">
                 {t.footer.seeYou}
               </p>
 

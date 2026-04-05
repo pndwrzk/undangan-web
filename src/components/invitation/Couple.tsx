@@ -51,7 +51,7 @@ function PersonSection({
         initial={{ opacity: 0, y: 30, x: align === "right" ? 30 : -30 }}
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-        className={`relative z-30 p-8 md:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
+        className={`relative z-30 p-8 md:p-8 lg:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
       >
         <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-3 drop-shadow-sm">
           {label}
@@ -60,7 +60,7 @@ function PersonSection({
           {name}
         </h3>
         {bio && (
-          <p className="text-white/80 font-serif text-sm md:text-base leading-relaxed drop-shadow-sm">
+          <p className="text-white/80 font-serif text-sm md:text-base  leading-relaxed drop-shadow-sm">
             {bio}
           </p>
         )}

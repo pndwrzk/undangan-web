@@ -155,7 +155,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
           className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${currentPage === i
             ? "bg-primary text-white shadow-md scale-110"
             : "bg-background hover:bg-muted text-muted-foreground"
-            } text-sm font-bold font-serif`}
+            } text-sm font-bold font-sans`}
         >
           {i}
         </button>
@@ -165,7 +165,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   };
 
   return (
-    <section id="guestbook" className="py-12 md:py-20 px-6 bg-[#fcfaf3] relative">
+    <section id="guestbook" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative z-60 -mt-[2px]">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -175,7 +175,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
         >
           <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.guestbook.sectionLabel}</span>
           <div className="flex flex-col items-center max-w-2xl mx-auto">
-            <p className="text-muted-foreground font-serif italic text-[14px] md:text-lg leading-snug mb-4 max-w-lg">
+            <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-snug mb-4 max-w-lg">
               {t.guestbook.description}
             </p>
             <div className="flex items-center justify-center gap-4 text-primary/40 font-typewriter uppercase text-[10px] tracking-widest">
@@ -215,7 +215,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                       type="button"
                       onClick={handleAIGenerate}
                       disabled={isGenerating}
-                      className="flex items-center gap-1.5 text-[10px] font-typewriter uppercase tracking-wider text-primary hover:text-primary/70 transition-colors bg-primary/5 px-3 py-1 rounded-full disabled:opacity-50"
+                      className="flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-wider text-primary hover:text-primary/70 transition-colors bg-primary/5 px-3 py-1 rounded-full disabled:opacity-50"
                     >
                       {isGenerating ? (
                         <Loader2 size={12} className="animate-spin" />
@@ -236,7 +236,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                 <Button
                   type="submit"
                   disabled={!newText || !newName}
-                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6 shadow-md disabled:opacity-50"
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6 shadow-md disabled:opacity-50 font-sans tracking-widest"
                 >
                   {t.guestbook.sendButton}
                 </Button>
