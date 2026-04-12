@@ -58,7 +58,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
             {t.gift.sectionLabel}
           </span>
 
-          <p className="text-[14px] md:text-base italic text-muted-foreground font-typewriter max-w-lg mx-auto leading-snug">
+          <p className="text-[14px] md:text-base italic text-muted-foreground font-serif max-w-lg mx-auto leading-snug">
             {t.gift.description}
           </p>
 
@@ -66,7 +66,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
         </motion.div>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {gifts.map((acc, index) => {
             const bankInfo = getBankInfo(acc.bankName);
 
@@ -77,50 +77,39 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="
-                  bg-background
-                  p-6 md:p-7
-                  rounded-2xl
-                  shadow-lg
-                  border border-primary/5
-                  hover:border-primary/20
-                  transition-all
-                  relative
-                  min-h-[140px]
-                "
+                className="bg-background p-5 rounded-2xl shadow-lg border border-primary/5 hover:border-primary/20 transition-all"
               >
-                {/* NAME - kiri atas */}
-                <p className="absolute top-6 left-6 text-lg font-typewriter font-semibold">
-                  {acc.accountName}
-                </p>
-
-                {/* LOGO - kanan atas */}
-                <div className="absolute top-6 right-6 h-8">
-                  {bankInfo ? (
-                    <img
-                      src={bankInfo.logo}
-                      alt={acc.bankName}
-                      className="h-full w-auto object-contain"
-                    />
-                  ) : (
-                    <p className="font-semibold">{acc.bankName}</p>
-                  )}
+                {/* Top Row: Name + Logo */}
+                <div className="flex items-start justify-between gap-3 mb-6">
+                  <p className="text-lg font-typewriter font-semibold text-slate-800">
+                    {acc.accountName}
+                  </p>
+                  <div className="h-6 w-20 flex items-center justify-end flex-shrink-0">
+                    {bankInfo ? (
+                      <img
+                        src={bankInfo.logo}
+                        alt={acc.bankName}
+                        className="max-h-6 w-auto object-contain"
+                      />
+                    ) : (
+                      <p className="text-xs font-semibold text-primary">{acc.bankName}</p>
+                    )}
+                  </div>
                 </div>
 
-                {/* NOMOR + COPY */}
-                <div className="absolute left-6 bottom-8 flex items-center gap-3">
-                  <p className="text-base md:text-l font-typewriter tracking-widest tabular-nums">
+                {/* Bottom Row: Account Number + Copy */}
+                <div className="flex items-center gap-2">
+                  <p className="text-base font-typewriter tracking-widest tabular-nums text-slate-800">
                     {acc.accountNumber}
                   </p>
-
                   <button
                     onClick={() => handleCopy(acc.accountNumber)}
-                    className="p-1.5 rounded-md hover:bg-primary/5 transition"
+                    className="p-1.5 rounded-md hover:bg-primary/10 transition-all active:scale-95 flex-shrink-0"
                   >
                     {copied === acc.accountNumber ? (
-                      <Check size={18} className="text-green-600" />
+                      <Check size={16} className="text-green-600" />
                     ) : (
-                      <Copy size={18} className="text-primary" />
+                      <Copy size={16} className="text-primary" />
                     )}
                   </button>
                 </div>

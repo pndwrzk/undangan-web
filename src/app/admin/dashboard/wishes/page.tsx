@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Trash2, MessageSquare, CheckCircle, XCircle, Heart } from "lucide-react";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -67,7 +68,7 @@ export default function WishesPage() {
   const toggleStatus = async (id: string, currentStatus: number) => {
     const newStatus = currentStatus === 1 ? 0 : 1;
     try {
-      const res = await fetch("/api/admin/wishes", {
+      const res = await apiRequest("/api/admin/wishes", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: newStatus }),
@@ -85,7 +86,7 @@ export default function WishesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/wishes?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/wishes?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         toast.success("Wish deleted successfully!");
         setDeleteConfirmId(null);

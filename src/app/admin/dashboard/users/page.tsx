@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { apiRequest } from "@/lib/api-client";
 import {
   Table,
   TableBody,
@@ -75,7 +76,7 @@ export default function UsersPage() {
         ? { id: editingId, name, password }
         : { username, name, password };
 
-      const res = await fetch(url, {
+      const res = await apiRequest(url, {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -100,7 +101,7 @@ export default function UsersPage() {
   const handleDelete = async (id: string, currentUsername: string) => {
     if (!confirm(`Are you sure you want to delete admin "${currentUsername}"?`)) return;
     try {
-      const res = await fetch(`/api/admin/users?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/users?id=${id}`, { method: "DELETE" });
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error || "Failed to delete user");

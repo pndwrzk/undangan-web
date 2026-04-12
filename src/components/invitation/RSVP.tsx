@@ -27,6 +27,7 @@ import { Couple as CoupleType, Guest as GuestType } from "@/types";
 export default function RSVP({ couple, guest }: { couple: CoupleType | null, guest?: GuestType | null }) {
   const { t, language } = useLanguage();
   const [isSubmitted, setIsSubmitted] = useState(!!guest?.rsvp);
+  const [attendanceChoice, setAttendanceChoice] = useState(guest?.rsvp || "");
   const brideName = couple?.brideAlias || couple?.brideName || (language === "id" ? "Mempelai Wanita" : "The Bride");
   const groomName = couple?.groomAlias || couple?.groomName || (language === "id" ? "Mempelai Pria" : "The Groom");
 
@@ -72,6 +73,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
       numberOfAttendees,
     });
     if (result.success) {
+      setAttendanceChoice(values.attendance);
       setIsSubmitted(true);
     } else {
       alert(t.rsvp.errorMessage);
@@ -100,7 +102,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
               {language === "id" ? "Terima Kasih!" : "Thank You!"}
             </h2>
             <p className="text-muted-foreground font-serif text-[14px] md:text-base leading-snug mb-8">
-              {t.rsvp.successMessage}
+              {attendanceChoice === "yes" ? t.rsvp.successMessage : t.rsvp.successMessageDecline}
             </p>
             <div className="pt-4 border-t border-primary/5">
               <Button
@@ -194,34 +196,34 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="bg-white rounded-[2rem] md:rounded-[4rem] p-6 sm:p-8 md:p-14 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.08)] border border-primary/5 relative"
+            className="bg-white rounded-2xl md:rounded-3xl p-5 sm:p-6 md:p-8 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.08)] border border-primary/5 relative"
           >
             {/* Corner Decorations */}
-            <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-primary/5 rounded-tl-[2rem] md:rounded-tl-[4rem] pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-primary/5 rounded-br-[2rem] md:rounded-br-[4rem] pointer-events-none" />
+            <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-primary/5 rounded-tl-2xl md:rounded-tl-3xl pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-primary/5 rounded-br-2xl md:rounded-br-3xl pointer-events-none" />
 
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-[1px] bg-primary/20" />
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-16">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                   control={form.control}
                   name="attendance"
                   render={({ field }) => (
-                    <FormItem className="space-y-10">
+                    <FormItem className="space-y-4">
                       <div className="text-center">
-                        <FormLabel className="font-serif text-2xl italic text-primary/80">
+                        <FormLabel className="font-serif text-xs md:text-sm italic text-primary/80">
                           {language === "id" ? "Pilih Status Kehadiran Anda" : "Choose Your Attendance Status"}
                         </FormLabel>
-                        <div className="w-12 h-[1px] bg-primary/20 mx-auto mt-3" />
+                        <div className="w-10 h-[1px] bg-primary/20 mx-auto mt-2" />
                       </div>
 
                       <FormControl>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <button
                             type="button"
                             onClick={() => field.onChange("yes")}
-                            className={`relative group p-6 rounded-[2.5rem] border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-3 ${field.value === "yes"
+                            className={`relative group p-3 rounded-xl border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-2 ${field.value === "yes"
                               ? "border-primary bg-primary/5 shadow-md"
                               : "border-muted-foreground/10 bg-transparent hover:border-primary/40 hover:bg-primary/[0.02]"
                               }`}
@@ -231,20 +233,20 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                                 <motion.div
                                   initial={{ opacity: 0, scale: 0 }}
                                   animate={{ opacity: 1, scale: 1 }}
-                                  className="absolute top-4 right-6"
+                                  className="absolute top-2 right-3"
                                 >
-                                  <CheckCircle2 className="text-primary w-6 h-6" />
+                                  <CheckCircle2 className="text-primary w-4 h-4" />
                                 </motion.div>
                               )}
                             </AnimatePresence>
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${field.value === "yes" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                              <UserCheck size={24} />
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-500 ${field.value === "yes" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                              <UserCheck size={16} />
                             </div>
                             <div className="text-center">
-                              <span className={`block text-lg font-serif font-bold transition-colors ${field.value === "yes" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
+                              <span className={`block text-xs md:text-sm font-serif font-bold transition-colors ${field.value === "yes" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
                                 {t.rsvp.yesAttend}
                               </span>
-                              <span className="block text-[9px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-1">
+                              <span className="block text-[6px] md:text-[8px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-0.5">
                                 {language === "id" ? "Kehadiran Dikonfirmasi" : "Attendance Confirmed"}
                               </span>
                             </div>
@@ -253,7 +255,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                           <button
                             type="button"
                             onClick={() => field.onChange("no")}
-                            className={`relative group p-6 rounded-[2.5rem] border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-3 ${field.value === "no"
+                            className={`relative group p-3 rounded-xl border-2 transition-all duration-500 overflow-hidden flex flex-col items-center gap-2 ${field.value === "no"
                               ? "border-primary bg-primary/5 shadow-md"
                               : "border-muted-foreground/10 bg-transparent hover:border-primary/40 hover:bg-primary/[0.02]"
                               }`}
@@ -263,20 +265,20 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                                 <motion.div
                                   initial={{ opacity: 0, scale: 0 }}
                                   animate={{ opacity: 1, scale: 1 }}
-                                  className="absolute top-4 right-6"
+                                  className="absolute top-2 right-3"
                                 >
-                                  <CheckCircle2 className="text-primary w-6 h-6" />
+                                  <CheckCircle2 className="text-primary w-4 h-4" />
                                 </motion.div>
                               )}
                             </AnimatePresence>
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 ${field.value === "no" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                              <UserMinus size={24} />
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-500 ${field.value === "no" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                              <UserMinus size={16} />
                             </div>
                             <div className="text-center">
-                              <span className={`block text-lg font-serif font-bold transition-colors ${field.value === "no" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
+                              <span className={`block text-xs md:text-sm font-serif font-bold transition-colors ${field.value === "no" ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
                                 {t.rsvp.noAttend}
                               </span>
-                              <span className="block text-[9px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-1">
+                              <span className="block text-[6px] md:text-[8px] font-typewriter uppercase tracking-widest text-muted-foreground/60 mt-0.5">
                                 {language === "id" ? "Berhalangan Hadir" : "Regretfully Decline"}
                               </span>
                             </div>
@@ -300,31 +302,76 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                       <FormField
                         control={form.control}
                         name="numberOfAttendees"
-                        render={({ field }) => (
-                          <FormItem className="space-y-4">
-                            <div className="text-center">
-                              <FormLabel className="font-serif text-lg italic text-primary/80">
-                                {language === "id" ? "Berapa Orang yang Akan Hadir?" : "How Many People Will Attend?"}
-                              </FormLabel>
-                            </div>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                min="1"
-                                placeholder={language === "id" ? "Masukkan jumlah" : "Enter number"}
-                                className="text-center rounded-2xl border-primary/20 h-12 text-lg font-serif"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-center font-typewriter text-[10px] text-red-400" />
-                          </FormItem>
-                        )}
+                        render={({ field }) => {
+                          const currentValue = parseInt(field.value || "1");
+                          
+                          const increment = () => {
+                            const newValue = currentValue + 1;
+                            field.onChange(newValue.toString());
+                          };
+                          
+                          const decrement = () => {
+                            if (currentValue > 1) {
+                              const newValue = currentValue - 1;
+                              field.onChange(newValue.toString());
+                            }
+                          };
+                          
+                          return (
+                            <FormItem className="space-y-3 w-full">
+                              <div className="text-center">
+                                <FormLabel className="font-serif text-xs md:text-sm italic text-primary/80">
+                                  {language === "id" ? "Berapa Orang yang Akan Hadir?" : "How Many People Will Attend?"}
+                                </FormLabel>
+                              </div>
+                              <FormControl>
+                                <div className="flex items-center gap-2 w-full">
+                                  {/* Input - 90% on mobile, larger on desktop */}
+                                  <div className="flex-[9] md:flex-[19] w-full">
+                                    <Input
+                                      type="number"
+                                      min="1"
+                                      placeholder={language === "id" ? "Masukkan jumlah" : "Enter number"}
+                                      style={{ height: '55px' }}
+                                     className="w-full text-center rounded-xl border-primary/20 text-primary
+             text-xl md:text-2xl font-serif
+             [appearance:textfield] 
+             [&::-webkit-outer-spin-button]:appearance-none 
+             [&::-webkit-inner-spin-button]:appearance-none"
+                                      {...field}
+                                    />
+                                  </div>
+                                  
+                                  {/* Buttons - 10% on mobile, smaller on desktop */}
+                                  <div className="flex-[1] md:flex-[1] flex flex-col gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={increment}
+                                      className="h-[18px] w-full px-4 md:px-0 py-3 rounded-lg bg-primary hover:bg-primary/90 transition-all flex items-center justify-center text-white font-bold text-base md:text-sm"
+                                    >
+                                      +
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={decrement}
+                                      disabled={currentValue <= 1}
+                                      className="h-[18px] w-full px-4 md:px-0  py-3 rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center text-white font-bold text-base md:text-sm"
+                                    >
+                                      −
+                                    </button>
+                                  </div>
+                                </div>
+                              </FormControl>
+                              <FormMessage className="text-center font-typewriter text-[10px] text-red-400" />
+                            </FormItem>
+                          );
+                        }}
                       />
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-sans py-6 rounded-2xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 group relative overflow-hidden">
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-sans text-sm md:text-base py-5 rounded-xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 group relative overflow-hidden">
                   <span className="relative">{t.rsvp.sendRSVP}</span>
                   <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 </Button>

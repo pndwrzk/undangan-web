@@ -1,10 +1,15 @@
 import { Groq } from "groq-sdk";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { validateCsrfForRoute } from "@/lib/csrf-validation";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(request);
+  if (csrfError) return csrfError;
+
   try {
     const { language } = await request.json();
     const isID = language === "id";

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { UserPlus, Pencil, Trash2, Search, Filter, Copy, CheckCircle2 } from "lucide-react";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -117,13 +118,13 @@ export default function GuestsPage() {
     try {
       let res;
       if (editingId) {
-        res = await fetch(`/api/admin/guests?id=${editingId}`, {
+        res = await apiRequest(`/api/admin/guests?id=${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, group, phone, side, partnerName }),
         });
       } else {
-        res = await fetch("/api/admin/guests", {
+        res = await apiRequest("/api/admin/guests", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, group, phone, side, partnerName }),
@@ -150,7 +151,7 @@ export default function GuestsPage() {
 
   const handleDeleteGuest = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/guests?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/guests?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         toast.success("Guest removed successfully!");
         setDeleteConfirmId(null);

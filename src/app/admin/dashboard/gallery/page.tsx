@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Plus, Trash2, Image as ImageIcon, X, GripHorizontal, Pencil } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -75,7 +76,7 @@ export default function GalleryPage() {
     if (editingId) formData.append("id", editingId);
 
     try {
-      const res = await fetch("/api/admin/gallery", {
+      const res = await apiRequest("/api/admin/gallery", {
         method: editingId ? "PUT" : "POST",
         body: formData,
       });
@@ -105,7 +106,7 @@ export default function GalleryPage() {
 
   const handleDeleteImage = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/gallery?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/gallery?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         setImages(images.filter(img => img.id !== id));
         toast.success("Image deleted successfully!");
@@ -139,7 +140,7 @@ export default function GalleryPage() {
     setImages(updatedItems);
 
     try {
-      const res = await fetch("/api/admin/gallery", {
+      const res = await apiRequest("/api/admin/gallery", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedItems.map(item => ({ id: item.id, order: item.order }))),

@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir, unlink } from "fs/promises";
 import path from "path";
+import { validateCsrfForRoute } from "@/lib/csrf-validation";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -33,6 +34,10 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(req);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -85,6 +90,10 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(req);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -148,6 +157,10 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(req);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

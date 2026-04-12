@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import bcrypt from "bcryptjs";
+import { validateCsrfForRoute } from "@/lib/csrf-validation";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -26,6 +27,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(request);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -58,6 +63,10 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(request);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -84,6 +93,10 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(request);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

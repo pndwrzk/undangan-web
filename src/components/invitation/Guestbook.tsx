@@ -10,6 +10,7 @@ import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { toast } from "sonner";
 import { Z_INDEX } from "@/lib/z-index";
+import { apiRequest } from "@/lib/api-client";
 
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
@@ -113,7 +114,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
     setIsGenerating(true);
     let data: any = null;
     try {
-      const response = await fetch("/api/ai/generate", {
+      const response = await apiRequest("/api/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ language }),
@@ -199,8 +200,8 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 sticky top-8">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2">{t.guestbook.yourName}</label>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2 mb-1">{t.guestbook.yourName}</label>
                   <Input
                     placeholder={t.guestbook.placeholderName}
                     value={newName}
@@ -216,7 +217,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                       type="button"
                       onClick={handleAIGenerate}
                       disabled={isGenerating}
-                      className="flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-wider text-primary hover:text-primary/70 transition-colors bg-primary/5 px-3 py-1 rounded-full disabled:opacity-50"
+                      className="flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-wider text-primary hover:text-primary/70 transition-colors bg-primary/5 px-3 py-1 rounded-full disabled:opacity-50 mb-1"
                     >
                       {isGenerating ? (
                         <Loader2 size={12} className="animate-spin" />
@@ -247,7 +248,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
 
           {/* List */}
           <div className="md:col-span-2 flex flex-col gap-8">
-            <div className="space-y-6 min-h-[400px]">
+            <div className={`space-y-6 ${loading ? 'min-h-screen' : 'min-h-[500px]'}`}>
               {loading ? (
                 <div className="text-center py-12 text-muted-foreground font-serif italic">{t.guestbook.loading}</div>
               ) : (

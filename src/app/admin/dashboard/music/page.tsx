@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Music, Play, CheckCircle2, Pause } from "lucide-react";
 import { useMusic } from "@/components/providers/MusicProvider";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -64,7 +65,7 @@ export default function MusicPage() {
     if (editingId) formData.append("id", editingId);
 
     try {
-      const res = await fetch("/api/admin/songs", {
+      const res = await apiRequest("/api/admin/songs", {
         method: editingId ? "PUT" : "POST",
         body: formData,
       });
@@ -86,7 +87,7 @@ export default function MusicPage() {
 
   const handleDeleteSong = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/songs?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/songs?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         toast.success("Song deleted successfully!");
         setDeleteConfirmId(null);
@@ -104,7 +105,7 @@ export default function MusicPage() {
       formData.append("id", song.id);
       formData.append("isActive", String(!song.isActive));
 
-      const res = await fetch("/api/admin/songs", {
+      const res = await apiRequest("/api/admin/songs", {
         method: "PUT",
         body: formData,
       });

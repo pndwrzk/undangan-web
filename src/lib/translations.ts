@@ -39,6 +39,7 @@ export interface TranslationDict {
     numberOfGuests: string;
     sendRSVP: string;
     successMessage: string;
+    successMessageDecline: string;
     errorMessage: string;
   };
   gift: {
@@ -120,7 +121,8 @@ export const translations: Record<Language, TranslationDict> = {
       noAttend: "Maaf, Tidak Bisa",
       numberOfGuests: "Jumlah Tamu",
       sendRSVP: "Kirim Konfirmasi",
-      successMessage: "Terima kasih atas konfirmasi Anda!",
+      successMessage: "Terima kasih atas konfirmasi kehadiran Anda! Kehadiran Anda sangat berarti bagi kami dan akan membuat hari bahagia kami semakin sempurna.",
+      successMessageDecline: "Terima kasih atas konfirmasinya. Meskipun tidak dapat hadir, kami mohon doa restu untuk pernikahan kami.",
       errorMessage: "Gagal mengirim konfirmasi. Silakan coba lagi",
     },
     gift: {
@@ -138,7 +140,7 @@ export const translations: Record<Language, TranslationDict> = {
       title: "Doa & Ucapan",
       description: "Dengan sepenuh hati, kami mengundang Anda untuk menitipkan doa tulus dan harapan indah bagi kami dan keluarga tercinta.",
       showingWishes: "Terdapat {count} Doa & Ucapan Tulus",
-      yourName: "Nama Anda",
+      yourName: "From",
       message: "Pesan / Doa",
       placeholderName: "Nama Anda",
       placeholderMessage: "Tuliskan doa dan ucapan manis Anda di sini..",
@@ -200,7 +202,8 @@ export const translations: Record<Language, TranslationDict> = {
       noAttend: "Sorry, I can't",
       numberOfGuests: "Number of Guests",
       sendRSVP: "Send Confirmation",
-      successMessage: "Thank you for your confirmation!",
+      successMessage: "Thank you for your confirmation! Your presence means the world to us and will make our special day even more perfect.",
+      successMessageDecline: "Thank you for your confirmation. Although you cannot attend, we kindly ask for your prayers and blessings for our marriage.",
       errorMessage: "Failed to send confirmation. Please try again",
     },
     gift: {
@@ -211,14 +214,14 @@ export const translations: Record<Language, TranslationDict> = {
       accountHolder: "Account Holder",
       copyAccount: "Copy Account",
       accountCopied: "Account Number Copied!",
-      warningNote: "With all due respect, we apologize as we are not accepting guests at home",
+      warningNote: "With all due respect, we apologize as we are not accepting guests at home.",
     },
     guestbook: {
       sectionLabel: "Send Wishes",
       title: "Wishes & Greeting",
       description: "With all our hearts, we invite you to leave your sincere prayers and beautiful hopes for us and our beloved family.",
       showingWishes: "Showing {count} Heartfelt Wishes",
-      yourName: "Your Name",
+      yourName: "From",
       message: "Message / Wish",
       placeholderName: "Your Name",
       placeholderMessage: "Write your sincere wishes and sweet greetings here..",

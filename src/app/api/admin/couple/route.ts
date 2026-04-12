@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { validateCsrfForRoute } from "@/lib/csrf-validation";
 
 export async function GET() {
   try {
@@ -16,6 +17,10 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  // Validate CSRF
+  const csrfError = await validateCsrfForRoute(req);
+  if (csrfError) return csrfError;
+
   const session = await getServerSession(authOptions);
   
   if (!session) {

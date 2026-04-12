@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Pencil, Heart, Calendar, Hash, Image as ImageIcon, Trash2, Camera, User, Sparkles } from "lucide-react";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -57,7 +58,7 @@ export default function CouplePage() {
     if (couple?.id) formData.append("id", couple.id);
 
     try {
-      const res = await fetch("/api/admin/couple", {
+      const res = await apiRequest("/api/admin/couple", {
         method: "POST",
         body: formData,
       });
@@ -87,7 +88,7 @@ export default function CouplePage() {
     formData.append(`${type}ImageFile`, file);
 
     try {
-      const res = await fetch("/api/admin/couple", {
+      const res = await apiRequest("/api/admin/couple", {
         method: "POST",
         body: formData,
       });
@@ -118,7 +119,7 @@ export default function CouplePage() {
     formData.append(`delete${type.charAt(0).toUpperCase() + type.slice(1)}Image`, "true");
 
     try {
-      const res = await fetch("/api/admin/couple", {
+      const res = await apiRequest("/api/admin/couple", {
         method: "POST",
         body: formData,
       });

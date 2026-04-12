@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { MapPin, Calendar, Clock, Plus, Pencil, Trash2 } from "lucide-react";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -56,7 +57,7 @@ export default function EventsPage() {
     if (editingId) payload.id = editingId;
 
     try {
-      const res = await fetch("/api/admin/events", {
+      const res = await apiRequest("/api/admin/events", {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -84,7 +85,7 @@ export default function EventsPage() {
 
   const handleDeleteEvent = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/events?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/events?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         setEvents(events.filter(ev => ev.id !== id));
         toast.success("Event deleted successfully!");
