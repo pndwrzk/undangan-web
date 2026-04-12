@@ -107,7 +107,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="text-primary font-typewriter tracking-[0.2em] text-[12px] md:text-xs mb-8"
+              className="text-primary font-typewriter tracking-[0.2em] text-lg md:text-3xl mb-8"
             >
               {officialHashtag}
             </motion.p>

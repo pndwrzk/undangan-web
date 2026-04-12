@@ -78,7 +78,7 @@ export default function InvitationMain({
 
   return (
     <div
-      className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-0 md:p-8 lg:p-12 selection:bg-primary/20"
+      className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-0 md:p-8 lg:p-12 selection:bg-primary/20 overflow-x-hidden"
     >
       {/* Splash Screen */}
       <Splash onOpen={handleOpen} isOpen={isOpen} couple={couple} guestName={guestName} partnerName={partnerName} />
@@ -86,7 +86,7 @@ export default function InvitationMain({
 
       {/* Main Container - Only render when mounted to prevent hydration errors from stale SSR */}
       {mounted ? (
-        <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative transition-all duration-1000 md:rounded-3xl ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
+        <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative transition-all duration-1000 md:rounded-3xl overflow-hidden ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
           {/* Paper Texture & Gradient Overlay */}
           <div
             style={{ 

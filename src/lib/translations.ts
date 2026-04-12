@@ -149,7 +149,7 @@ export const translations: Record<Language, TranslationDict> = {
       loading: "Memuat ucapan..",
       empty: "Belum ada ucapan. Jadilah yang pertama!",
       restrictedTitle: "Tautan Terbatas",
-      restrictedDesc: "Silakan gunakan tautan undangan unik Anda untuk dapat mengirimkan ucapan doa",
+      restrictedDesc: "Silakan gunakan tautan undangan unik Anda untuk dapat mengirimkan ucapan doa.",
     },
     gallery: {
       title: "Momen Bahagia",
@@ -230,7 +230,7 @@ export const translations: Record<Language, TranslationDict> = {
       loading: "Loading wishes..",
       empty: "No wishes yet. Be the first!",
       restrictedTitle: "Access Restricted",
-      restrictedDesc: "Please use your unique invitation link to send wishes to the couple",
+      restrictedDesc: "Please use your unique invitation link to send wishes to the couple.",
     },
     gallery: {
       title: "Captured Moments",

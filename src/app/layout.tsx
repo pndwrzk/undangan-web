@@ -51,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
         <meta property="og:title" content="The Wedding of Alvia & Pandiwa" />
         <meta property="og:description" content="You are cordially invited to celebrate the wedding of Alvia & Pandiwa." />
         <meta property="og:image" content="http://finallyhomewithpandiwa.com/public/images/wedding_placeholders/og-image.jpg" />

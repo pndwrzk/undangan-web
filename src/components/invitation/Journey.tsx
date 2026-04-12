@@ -18,21 +18,28 @@ export default function Journey({ imageUrl }: JourneyProps) {
     <section
       id="story"
       style={{ zIndex: Z_INDEX.TORN_EDGE }}
-      className="relative h-dvh flex flex-col items-center justify-center overflow-hidden bg-background select-none -mt-1"
+      className="relative w-full overflow-hidden bg-background select-none -mt-1 will-change-transform"
       onContextMenu={handleContextMenu}
     >
-      {/* Full Cover Background Image - Protected */}
-      <div style={{ zIndex: Z_INDEX.BACKGROUND }} className="absolute inset-0 overflow-hidden">
+      {/* Image wrapper */}
+      <div className="relative w-full">
         <Image
           src={imageUrl}
           alt="Our Story"
-          fill
-          className="object-cover pointer-events-none brightness-[0.95] contrast-[1.02]"
+          width={2000}   // bebas, hanya untuk ratio
+          height={1200}  // bebas, hanya untuk ratio
+          className="w-full h-auto object-cover brightness-[0.95] contrast-[1.02] pointer-events-none"
           unoptimized
           draggable={false}
+          priority
+          loading="eager"
         />
-        {/* Transparent Overlay to prevent direct right-click on image */}
-        <div style={{ zIndex: Z_INDEX.BACKGROUND_OVERLAY }} className="absolute inset-0 bg-black/5 pointer-events-auto" />
+
+        {/* overlay */}
+        <div
+          style={{ zIndex: Z_INDEX.BACKGROUND_OVERLAY }}
+          className="absolute inset-0 bg-black/5 pointer-events-auto"
+        />
       </div>
     </section>
   );
