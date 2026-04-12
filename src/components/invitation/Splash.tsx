@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { MailOpen } from "lucide-react";
 import { Suspense } from "react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { Z_INDEX } from "@/lib/z-index";
 
 import { Couple as CoupleType } from "@/types";
 
@@ -67,14 +68,16 @@ function SplashContent({
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.15, filter: "blur(20px)" }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background overflow-hidden"
+          style={{ zIndex: Z_INDEX.SPLASH_SCREEN }}
+          className="fixed inset-0 flex flex-col items-center justify-center bg-background overflow-hidden"
         >
           {/* Background Image with Overlay */}
           <motion.div
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
-            className="absolute inset-0 z-0"
+            style={{ zIndex: Z_INDEX.BACKGROUND }}
+            className="absolute inset-0"
           >
             <Image
               src={couple?.heroImage || "/hero-bg.png"}
@@ -86,7 +89,7 @@ function SplashContent({
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
           </motion.div>
 
-          <div className="relative z-10 text-center px-6 max-w-lg w-full">
+          <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="relative text-center px-6 max-w-lg w-full">
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -124,7 +127,7 @@ function SplashContent({
                     exit={{ opacity: 0, scale: 0.95 }}
                     className="relative py-4"
                   >
-                    <h2 className="text-2xl md:text-3xl font-serif text-foreground relative z-10 transition-all">
+                    <h2 className="text-2xl md:text-3xl font-serif text-foreground relative transition-all">
                       {guestName}
                       {partnerName && (
                         <span className="text-primary italic mx-2">&</span>
@@ -202,7 +205,7 @@ function SplashContent({
                 onClick={onOpen}
                 className="bg-primary hover:bg-primary/90 text-white  px-8 py-6 rounded-full shadow-[0_15px_30px_-10px_rgba(var(--primary-rgb),0.5)] transition-all hover:scale-105 group text-[14px] md:text-base font-sans tracking-widest uppercase overflow-hidden relative"
               >
-                <span className="relative z-10 flex items-center gap-3">
+                <span className="relative flex items-center gap-3">
                   <MailOpen className="h-6 w-6 group-hover:rotate-12 transition-transform" />
                   {t.splash.openInvitation}
                 </span>
@@ -226,7 +229,8 @@ function SplashContent({
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 1 }}
-            className="absolute top-8 right-8 z-[110]"
+            style={{ zIndex: Z_INDEX.LANGUAGE_SWITCHER }}
+            className="absolute top-8 right-8"
           >
             <button
               onClick={toggleLanguage}
@@ -243,7 +247,7 @@ function SplashContent({
 
 export default function Splash(props: { onOpen: () => void; isOpen: boolean; couple: CoupleType | null; guestName?: string | null; partnerName?: string | null }) {
   return (
-    <Suspense fallback={<div className="fixed inset-0 z-[100] bg-background" />}>
+    <Suspense fallback={<div style={{ zIndex: Z_INDEX.SPLASH_SCREEN }} className="fixed inset-0 bg-background" />}>
       <SplashContent {...props} />
     </Suspense>
   );

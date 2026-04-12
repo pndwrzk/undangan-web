@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { useState } from "react";
 import { Dialog, DialogContent } from "../ui/dialog";
+import { Z_INDEX } from "@/lib/z-index";
 
 const classPattern = [
   "col-span-2 row-span-2",
@@ -24,7 +25,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   if (!Array.isArray(gallery) || gallery.length === 0) return null;
 
   return (
-    <section className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative z-70 -mt-[2px]">
+    <section style={{ zIndex: Z_INDEX.FOOTER - 10 }} className="pt-12 md:pt-20 pb-12 md:pb-20 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative -mt-[2px]">
       <div className="max-w-6xl mx-auto">
 
         {/* Animated gallery header */}

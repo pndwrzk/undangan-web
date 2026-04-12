@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import type { Couple } from "@/types";
+import { Z_INDEX } from "@/lib/z-index";
 
 export default function Hero({ couple }: { couple: Couple | null }) {
   const { t, language, toggleLanguage } = useLanguage();
@@ -50,8 +51,9 @@ export default function Hero({ couple }: { couple: Couple | null }) {
             y,
             opacity,
             willChange: "transform, opacity",
+            zIndex: Z_INDEX.BACKGROUND,
           }}
-          className="absolute inset-0 z-0 will-change-transform transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]"
+          className="absolute inset-0 will-change-transform transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]"
         >
           <Image
             src={couple?.heroImage || "/hero-bg.png"}
@@ -66,7 +68,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
     
 
       {/* Language Switcher */}
-      <div className="absolute top-8 right-8 z-20">
+      <div style={{ zIndex: Z_INDEX.TORN_EDGE }} className="absolute top-8 right-8">
         <button
           onClick={toggleLanguage}
           className="px-4 py-2 bg-white/60 backdrop-blur-md rounded-full border border-primary/20 text-[10px] md:text-xs font-typewriter tracking-widest text-primary hover:bg-primary/20 transition-all active:scale-95 shadow-sm"
@@ -75,7 +77,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
         </button>
       </div>
 
-      <div className="w-full max-w-4xl mx-auto relative z-10 flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
+      <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="w-full max-w-4xl mx-auto relative flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
         <div className="flex-1 text-center">
           {/* Animated heading commented out */}
          

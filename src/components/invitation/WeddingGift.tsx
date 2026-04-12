@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Gift as GiftType } from "@/types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { getBankInfo } from "@/constants/banks";
+import { Z_INDEX } from "@/lib/z-index";
 
 export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   const { t } = useLanguage();
@@ -40,7 +41,8 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   return (
     <section
       id="gift"
-      className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative z-40 -mt-[2px]"
+      style={{ zIndex: Z_INDEX.GIFT_SECTION }}
+      className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]"
     >
       <div className="max-w-4xl mx-auto text-center">
 

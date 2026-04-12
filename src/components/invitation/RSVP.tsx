@@ -18,6 +18,7 @@ import { submitRSVP } from "@/lib/actions";
 import { useState } from "react";
 import { CheckCircle2, UserCheck, UserMinus, Heart } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { Z_INDEX } from "@/lib/z-index";
 
 import { Couple as CoupleType, Guest as GuestType } from "@/types";
 
@@ -79,7 +80,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
   if (isSubmitted) {
     return (
-      <section id="rsvp" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
+      <section id="rsvp" style={{ zIndex: Z_INDEX.RSVP_SECTION }} className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
 
 
 
@@ -88,7 +89,8 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", damping: 20 }}
-          className="max-w-xl mx-auto text-center relative z-10"
+          style={{ zIndex: Z_INDEX.BASE_CONTENT }}
+          className="max-w-xl mx-auto text-center relative"
         >
           <div className="bg-white p-7 md:p-12 rounded-[2rem] border-double border-4 border-primary/10 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.08)] relative">
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -116,7 +118,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   }
 
   return (
-    <section id="rsvp" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative z-50 -mt-[2px] overflow-hidden">
+    <section id="rsvp" style={{ zIndex: Z_INDEX.RSVP_SECTION }} className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
 
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -139,7 +141,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
         <Heart size={60} />
       </motion.div> */}
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-4xl mx-auto relative">
         {/* <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -323,7 +325,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 </AnimatePresence>
 
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-sans py-6 rounded-2xl shadow-lg transition-all hover:translate-y-[-2px] active:translate-y-0 group relative overflow-hidden">
-                  <span className="relative z-10">{t.rsvp.sendRSVP}</span>
+                  <span className="relative">{t.rsvp.sendRSVP}</span>
                   <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 </Button>
               </form>

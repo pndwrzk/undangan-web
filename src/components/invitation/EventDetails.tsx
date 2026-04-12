@@ -6,6 +6,7 @@ import { Calendar, Clock, MapPin, ExternalLink, Bell, Sparkles, Heart } from "lu
 import TornEdge from "@/components/invitation/TornEdge";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Couple as CoupleType, Event as EventType } from "@/types";
+import { Z_INDEX } from "@/lib/z-index";
 
 export default function EventDetails({ events, couple }: { events?: EventType[], couple: CoupleType | null }) {
   const { t, language } = useLanguage();
@@ -115,9 +116,9 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
   return (
     <div id="event">
       {/* SECTION 1: COUNTDOWN */}
-      <section id="event-countdown" className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 md:px-12 lg:px-24 bg-[#fcfaf3] relative z-30 -mt-[2px] overflow-hidden">
+      <section id="event-countdown" style={{ zIndex: Z_INDEX.SECTION_BASE }} className="pt-8 md:pt-12 pb-6 md:pb-8 px-6 md:px-12 lg:px-24 bg-[#fcfaf3] relative -mt-[2px] overflow-hidden">
         <TornEdge position="top" color="fill-muted/5" />
-        <div className="max-w-6xl mx-auto relative z-10">
+        <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-6xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -163,11 +164,11 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-3xl pointer-events-none"
             />
 
-            <span className="font-serif italic text-[14px] md:text-sm text-white/90 max-w-lg text-center leading-relaxed relative z-10  mb-8 md:mb-10">
+            <span style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="font-serif italic text-[14px] md:text-sm text-white/90 max-w-lg text-center leading-relaxed relative mb-8 md:mb-10">
               {t.couple.requestRestu}
             </span>
 
-            <div className="flex justify-center gap-4 mb-8 md:mb-10 relative z-10">
+            <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="flex justify-center gap-4 mb-8 md:mb-10 relative">
               <TimerBox value={timeLeft.days} label={language === "id" ? "Hari" : "Days"} />
               <TimerBox value={timeLeft.hours} label={language === "id" ? "Jam" : "Hours"} />
               <TimerBox value={timeLeft.minutes} label={language === "id" ? "Menit" : "Mins"} />
@@ -178,7 +179,8 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               href={generateCalendarLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full max-w-xs py-4 bg-[#ebeadf] border border-transparent rounded-xl text-[#505b24] font-bold font-sans flex items-center justify-center gap-2 hover:bg-[#ebeadf]/90 transition-all shadow-md uppercase tracking-[0.1em] text-[10px] relative z-10"
+              style={{ zIndex: Z_INDEX.BASE_CONTENT }}
+              className="w-full max-w-xs py-4 bg-[#ebeadf] border border-transparent rounded-xl text-[#505b24] font-bold font-sans flex items-center justify-center gap-2 hover:bg-[#ebeadf]/90 transition-all shadow-md uppercase tracking-[0.1em] text-[10px] relative"
             >
               <Bell size={14} />
               {language === "id" ? "Simpan Tanggal" : "Save the Date"}
@@ -188,8 +190,8 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
       </section>
 
       {/* SECTION 2: EVENT PLANNING */}
-      <section id="event-planning" className="py-8 md:py-12 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative z-[31] -mt-[2px] overflow-hidden">
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section id="event-planning" style={{ zIndex: Z_INDEX.SECTION_CONTENT }} className="py-8 md:py-12 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
+        <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-6xl mx-auto relative">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
             {events.map((ev, idx) => (
               <motion.div

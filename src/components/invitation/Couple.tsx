@@ -4,6 +4,7 @@ import { Couple as CoupleType } from "@/types";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { Z_INDEX } from "@/lib/z-index";
 
 // Extracted outside Couple to avoid remount on every re-render (prevents flicker)
 function PersonSection({
@@ -31,7 +32,7 @@ function PersonSection({
       onContextMenu={onContextMenu}
     >
       {/* Background Image - Protected */}
-      <div className="absolute inset-0 z-0">
+      <div style={{ zIndex: Z_INDEX.BACKGROUND }} className="absolute inset-0">
         <Image
           src={image}
           alt={name}
@@ -41,9 +42,9 @@ function PersonSection({
           draggable={false}
         />
         {/* Gradient Overlay for Text Readability */}
-        <div className={`absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none`} />
+        <div style={{ zIndex: Z_INDEX.BACKGROUND_OVERLAY }} className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
         {/* Transparent Physical Overlay for Protection */}
-        <div className="absolute inset-0 z-20 bg-transparent pointer-events-auto" />
+        <div style={{ zIndex: Z_INDEX.TORN_EDGE }} className="absolute inset-0 bg-transparent pointer-events-auto" />
       </div>
 
       {/* Content container */}
@@ -51,7 +52,8 @@ function PersonSection({
         initial={{ opacity: 0, y: 30, x: align === "right" ? 30 : -30 }}
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-        className={`relative z-30 p-8 md:p-8 lg:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
+        style={{ zIndex: Z_INDEX.SECTION_CONTENT }}
+        className={`relative p-8 md:p-8 lg:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
       >
         <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-3 drop-shadow-sm">
           {label}
@@ -84,7 +86,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   };
 
   return (
-    <section id="couple" className="bg-background relative -mt-[2px] z-10">
+    <section id="couple" style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="bg-background relative -mt-[2px]">
       <div className="flex flex-col md:flex-row">
         {/* Bride Section First */}
         <PersonSection

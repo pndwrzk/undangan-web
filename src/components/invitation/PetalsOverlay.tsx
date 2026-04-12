@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Z_INDEX } from "@/lib/z-index";
 
 const PETAL_COUNT = 15;
 
@@ -21,7 +22,7 @@ export default function PetalsOverlay() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[60] overflow-hidden">
+    <div style={{ zIndex: Z_INDEX.PETALS_OVERLAY }} className="fixed inset-0 pointer-events-none overflow-hidden">
       {petals.map((petal) => (
         <motion.div
           key={petal.id}

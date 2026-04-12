@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import dynamic from "next/dynamic";
 import MusicPlayer from "@/components/invitation/MusicPlayer";
+import { Z_INDEX } from "@/lib/z-index";
 
 const Splash = dynamic(() => import("@/components/invitation/Splash"), { ssr: false });
 const Hero = dynamic(() => import("@/components/invitation/Hero"), { ssr: false });
@@ -88,10 +89,13 @@ export default function InvitationMain({
         <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative transition-all duration-1000 md:rounded-3xl ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
           {/* Paper Texture & Gradient Overlay */}
           <div
-            className="absolute inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-multiply"
-            style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/natural-paper.png')" }}
+            style={{ 
+              zIndex: Z_INDEX.DECORATIVE_OVERLAY,
+              backgroundImage: "url('https://www.transparenttextures.com/patterns/natural-paper.png')"
+            }}
+            className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply"
           />
-          <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-transparent via-background/40 to-muted/30" />
+          <div style={{ zIndex: Z_INDEX.BACKGROUND }} className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-background/40 to-muted/30" />
 
           {song && <MusicPlayer song={song} />}
 
@@ -112,7 +116,8 @@ export default function InvitationMain({
           {mounted && (
             <button
               onClick={() => authStatus === "authenticated" ? router.push("/admin/dashboard") : setIsLoginOpen(true)}
-              className="fixed right-[-20px] top-1/2 -translate-y-1/2 z-[110] bg-primary/10 hover:bg-primary/20 p-2 rounded-l-xl transition-all group overflow-hidden"
+              style={{ zIndex: Z_INDEX.ADMIN_BUTTON }}
+              className="fixed right-[-20px] top-1/2 -translate-y-1/2 bg-primary/10 hover:bg-primary/20 p-2 rounded-l-xl transition-all group overflow-hidden"
               title={authStatus === "authenticated" ? "Admin Dashboard" : "Admin Login"}
             >
               <div className="pl-4 pr-1">
@@ -127,7 +132,7 @@ export default function InvitationMain({
 
           <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-          <footer className="py-16 px-6 text-center bg-[#fcfaf3] relative z-80 -mt-[2px]">
+          <footer style={{ zIndex: Z_INDEX.FOOTER }} className="py-16 px-6 text-center bg-[#fcfaf3] relative -mt-[2px]">
             <div className="max-w-2xl mx-auto">
               <p className="text-muted-foreground font-serif italic text-sm md:text-base leading-relaxed mb-6">
                 {t.footer.closing}

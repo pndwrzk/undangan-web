@@ -9,6 +9,7 @@ import { MessageSquare, Heart, ChevronLeft, ChevronRight, Sparkles, Loader2 } fr
 import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { toast } from "sonner";
+import { Z_INDEX } from "@/lib/z-index";
 
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
@@ -165,7 +166,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   };
 
   return (
-    <section id="guestbook" className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative z-60 -mt-[2px]">
+    <section id="guestbook" style={{ zIndex: Z_INDEX.GUESTBOOK_SECTION }} className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -206,7 +206,7 @@ export const translations: Record<Language, TranslationDict> = {
     gift: {
       sectionLabel: "Wedding Gift",
       title: "Tanda Kasih",
-      description: "For those who wish to send a wedding gift, you can use the features below:",
+      description: "For those who wish to send a wedding gift, please kindly use the features below so we can receive your love and blessings with full gratitude.",
       accountNumber: "Account Number",
       accountHolder: "Account Holder",
       copyAccount: "Copy Account",

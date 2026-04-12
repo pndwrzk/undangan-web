@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Music, Pause, Play, ChevronDown } from "lucide-react";
 import { useMusic } from "@/components/providers/MusicProvider";
+import { Z_INDEX } from "@/lib/z-index";
 
 import { Song } from "@/types";
 
@@ -35,7 +36,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed bottom-24 md:bottom-32 right-4 md:right-6 z-[100] flex flex-col items-end gap-3">
+    <div style={{ zIndex: Z_INDEX.MUSIC_PLAYER }} className="fixed bottom-24 md:bottom-32 right-4 md:right-6 flex flex-col items-end gap-3">
       <AnimatePresence>
         {isExpanded && (
           <>
@@ -45,7 +46,8 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsExpanded(false)}
-              className="fixed inset-0 z-[-1] cursor-default"
+              className="fixed inset-0 cursor-default"
+              style={{ zIndex: -1 }}
             />
             
             <motion.div

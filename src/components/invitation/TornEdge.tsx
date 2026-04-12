@@ -1,5 +1,7 @@
 "use client";
 
+import { Z_INDEX } from "@/lib/z-index";
+
 interface TornEdgeProps {
   position?: 'top' | 'bottom';
   className?: string;
@@ -8,7 +10,7 @@ interface TornEdgeProps {
 
 export default function TornEdge({ position = 'top', className = '', color = 'fill-background' }: TornEdgeProps) {
   return (
-    <div className={`absolute left-0 w-full h-6 z-20 pointer-events-none ${position === 'top' ? 'top-[-1px]' : 'bottom-[-1px] rotate-180'} ${className}`}>
+    <div style={{ zIndex: Z_INDEX.TORN_EDGE }} className={`absolute left-0 w-full h-6 pointer-events-none ${position === 'top' ? 'top-[-1px]' : 'bottom-[-1px] rotate-180'} ${className}`}>
       <svg 
         viewBox="0 0 1200 120" 
         preserveAspectRatio="none" 

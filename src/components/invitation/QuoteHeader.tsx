@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import Image from "next/image";
 import { Couple as CoupleType } from "@/types";
+import { Z_INDEX } from "@/lib/z-index";
 
 export interface QuoteHeaderProps {
   couple: CoupleType | null;
@@ -54,7 +55,7 @@ export default function QuoteHeader({ couple }: QuoteHeaderProps) {
         </svg>
       </motion.div>
 
-      <div className="max-w-full w-full relative z-10 text-center px-6 md:px-8 lg:px-16">
+      <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-full w-full relative text-center px-6 md:px-8 lg:px-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
