@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import type { Couple } from "@/types";
@@ -34,9 +34,23 @@ export default function Hero({ couple }: { couple: Couple | null }) {
     offset: ["start start", "end start"],
   });
 
-  // Parallax (unchanged behaviour)
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [0.4, 0]);
+  // Check if device is mobile
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Parallax effects - only apply on desktop
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "15%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], isMobile ? [0.4, 0.4] : [0.4, 0]);
 
   return (
     <section

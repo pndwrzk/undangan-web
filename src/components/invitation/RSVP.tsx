@@ -54,7 +54,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
     resolver: zodResolver(formSchema),
     defaultValues: {
       attendance: "",
-      numberOfAttendees: "",
+      numberOfAttendees: "1",
     },
   });
 
@@ -82,7 +82,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
   if (isSubmitted) {
     return (
-      <section id="rsvp" style={{ zIndex: Z_INDEX.RSVP_SECTION }} className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
+      <section id="rsvp" style={{ zIndex: Z_INDEX.RSVP_SECTION }} className="py-16 md:py-24 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
 
 
 
@@ -120,7 +120,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
   }
 
   return (
-    <section id="rsvp" style={{ zIndex: Z_INDEX.RSVP_SECTION }} className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
+    <section id="rsvp" style={{ zIndex: Z_INDEX.RSVP_SECTION }} className="py-16 md:py-24 px-6 md:px-8 lg:px-16 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
 
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />

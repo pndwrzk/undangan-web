@@ -75,6 +75,9 @@ export interface TranslationDict {
   story: {
     title: string;
     intro: string;
+    paragraph1: string;
+    paragraph2: string;
+    paragraph3: string;
   };
   gallery: {
     title: string;
@@ -163,6 +166,9 @@ export const translations: Record<Language, TranslationDict> = {
     story: {
       title: "Cerita Kami",
       intro: "Catatan kecil dari perjalanan yang membawa kami pada titik ini",
+      paragraph1: `Kami tidak bertemu lewat rencana besar. Sederhana saja, berawal dari dua peran di proyek yang sama. Seorang product owner dan software engineer yang berjalan berdampingan.`,
+      paragraph2: `Di antara proses yang seharusnya biasa, ada_ “bug”_ yang tak pernah benar-benar fixed. Percakapan yang terus berlanjut. Diskusi yang tak pernah benar-benar menemui selesai. Sampai pada cara-cara baru untuk saling memahami.`,
+      paragraph3:  `Mungkin sejak awal, kami memang tidak pernah berniat untuk menutup proyek ini. —hingga akhirnya sampai pada proyek paling serius yang pernah kami pilih untuk terus jalani bersama.`,
     },
   },
   en: {
@@ -244,6 +250,10 @@ export const translations: Record<Language, TranslationDict> = {
     story: {
       title: "Our Story",
       intro: "A collection of moments that lead us to where we are today",
+      paragraph1: `We didn’t meet through a grand plan.It was simple—two roles working on the same project. A Product Owner and a Software Engineer, moving side by side.`,
+      paragraph2: `Amid what should have been ordinary, there was a “bug” that was never meant to be fixed. Conversations that kept flowing. Discussions that never truly needed an end, leading us to discover new ways of understanding each other.`,
+      paragraph3: `Maybe from the very beginning,
+we were never meant to close this project. —until it became the most meaningful way we chose to continue, together.`,
     },
   },
 };

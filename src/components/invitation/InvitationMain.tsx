@@ -12,7 +12,7 @@ import { Z_INDEX } from "@/lib/z-index";
 const Splash = dynamic(() => import("@/components/invitation/Splash"), { ssr: false });
 const Hero = dynamic(() => import("@/components/invitation/Hero"), { ssr: false });
 const Couple = dynamic(() => import("@/components/invitation/Couple"), { ssr: false });
-const Journey = dynamic(() => import("@/components/invitation/Journey"), { ssr: false });
+const Story = dynamic(() => import("@/components/invitation/Story"), { ssr: false });
 const EventDetails = dynamic(() => import("@/components/invitation/EventDetails"), { ssr: false });
 const RSVP = dynamic(() => import("@/components/invitation/RSVP"), { ssr: false });
 import type { QuoteHeaderProps } from "@/components/invitation/QuoteHeader";
@@ -102,7 +102,7 @@ export default function InvitationMain({
           <Hero couple={couple} />
           <QuoteHeader couple={couple} />
           <Couple couple={couple} />
-          <Journey imageUrl={couple?.storyImage} />
+          <Story />
 
           <EventDetails events={events} couple={couple} />
           <WeddingGift gifts={gifts} />
@@ -132,7 +132,7 @@ export default function InvitationMain({
 
           <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
-          <footer style={{ zIndex: Z_INDEX.FOOTER }} className="py-16 px-6 text-center bg-[#fcfaf3] relative -mt-[2px]">
+          <footer style={{ zIndex: Z_INDEX.FOOTER }} className="py-20 md:py-24 px-6 text-center bg-[#fcfaf3] relative -mt-[2px]">
             <div className="max-w-2xl mx-auto">
               <p className="text-muted-foreground font-serif italic text-sm md:text-base leading-relaxed mb-6">
                 {t.footer.closing}

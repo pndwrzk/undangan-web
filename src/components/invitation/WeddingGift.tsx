@@ -42,7 +42,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
     <section
       id="gift"
       style={{ zIndex: Z_INDEX.GIFT_SECTION }}
-      className="py-12 md:py-20 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]"
+      className="py-16 md:py-24 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]"
     >
       <div className="max-w-4xl mx-auto text-center">
 
@@ -52,17 +52,13 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="mb-16"
+          className="text-center mb-12"
         >
-          <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">
-            {t.gift.sectionLabel}
-          </span>
-
-          <p className="text-[14px] md:text-base italic text-muted-foreground font-serif max-w-lg mx-auto leading-snug">
+          <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
+          <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-relaxed max-w-2xl mx-auto mb-6">
             {t.gift.description}
           </p>
-
-          <div className="w-20 h-[1px] mt-[25px] bg-primary/30 mx-auto" />
+          <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
         </motion.div>
 
         {/* GRID */}
