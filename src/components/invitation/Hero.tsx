@@ -48,9 +48,9 @@ export default function Hero({ couple }: { couple: Couple | null }) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Parallax effects - smooth for all devices
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  // Parallax effects - smooth and subtle
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
 
   return (
     <section

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Heart, Sparkles } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Z_INDEX } from "@/lib/z-index";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
@@ -42,35 +42,96 @@ export default function Story() {
     <section
       id="story"
       style={{ zIndex: Z_INDEX.TORN_EDGE }}
-      className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative -mt-[2px] select-none will-change-transform"
+      className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative -mt-[2px] select-none will-change-transform overflow-hidden"
       onContextMenu={handleContextMenu}
     >
       {/* Decorative Background Elements */}
-      <div className="absolute top-10 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-10 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none z-0" />
       
-      {/* Floating Hearts */}
-      <motion.div
-        animate={{ 
-          y: [0, -20, 0],
-          rotate: [0, 10, 0],
-          opacity: [0.1, 0.2, 0.1]
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-[8%] text-primary/10 pointer-events-none hidden md:block"
-      >
-        <Heart size={40} fill="currentColor" />
-      </motion.div>
+      {/* Floating Hearts - Multiple positions with varied sizes */}
       <motion.div
         animate={{ 
           y: [0, 20, 0],
           rotate: [0, -10, 0],
-          opacity: [0.1, 0.2, 0.1]
+          opacity: [0.2, 0.4, 0.2]
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-1/3 right-[12%] text-primary/10 pointer-events-none hidden md:block"
+        className="absolute bottom-1/3 right-[12%] text-primary/30 pointer-events-none z-0"
       >
-        <Sparkles size={35} />
+        <Heart size={60} fill="currentColor" />
+      </motion.div>
+
+      <motion.div
+        animate={{ 
+          y: [0, -18, 0],
+          rotate: [0, 15, 0],
+          opacity: [0.15, 0.35, 0.15]
+        }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        className="absolute top-[40%] left-[12%] text-primary/30 pointer-events-none z-0"
+      >
+        <Heart size={45} fill="currentColor" />
+      </motion.div>
+
+      <motion.div
+        animate={{ 
+          y: [0, 12, 0],
+          rotate: [0, -12, 0],
+          opacity: [0.18, 0.38, 0.18]
+        }}
+        transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        className="absolute bottom-[15%] right-[8%] text-primary/30 pointer-events-none z-0"
+      >
+        <Heart size={52} fill="currentColor" />
+      </motion.div>
+
+      <motion.div
+        animate={{ 
+          y: [0, -15, 0],
+          rotate: [0, 12, 0],
+          opacity: [0.2, 0.4, 0.2]
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/4 left-[8%] text-primary/30 pointer-events-none z-0"
+      >
+        <Heart size={55} fill="currentColor" />
+      </motion.div>
+      
+      <motion.div
+        animate={{ 
+          y: [0, 15, 0],
+          rotate: [0, -8, 0],
+          opacity: [0.15, 0.35, 0.15]
+        }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-[15%] right-[15%] text-primary/30 pointer-events-none z-0"
+      >
+        <Heart size={48} fill="currentColor" />
+      </motion.div>
+
+      <motion.div
+        animate={{ 
+          y: [0, -10, 0],
+          rotate: [0, 8, 0],
+          opacity: [0.15, 0.32, 0.15]
+        }}
+        transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
+        className="absolute top-[60%] right-[20%] text-primary/30 pointer-events-none z-0"
+      >
+        <Heart size={42} fill="currentColor" />
+      </motion.div>
+
+      <motion.div
+        animate={{ 
+          y: [0, -12, 0],
+          rotate: [0, 10, 0],
+          opacity: [0.18, 0.36, 0.18]
+        }}
+        transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 3.5 }}
+        className="absolute bottom-[25%] left-[15%] text-primary/30 pointer-events-none z-0"
+      >
+        <Heart size={50} fill="currentColor" />
       </motion.div>
 
       <div className="max-w-6xl mx-auto" style={{ zIndex: Z_INDEX.BASE_CONTENT }}>

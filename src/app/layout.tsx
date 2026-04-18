@@ -33,9 +33,21 @@ const greatVibes = Great_Vibes({
   variable: "--font-accent",
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "The Wedding of Alvia & Pandiwa",
   description: "You are cordially invited to celebrate the wedding of Alvia & Pandiwa.",
+  openGraph: {
+    title: "The Wedding of Alvia & Pandiwa",
+    description: "You are cordially invited to celebrate the wedding of Alvia & Pandiwa.",
+    url: "https://sharper-reassign-variety.ngrok-free.dev",
+    images: [
+      {
+        url: "https://sharper-reassign-variety.ngrok-free.dev/images/foto_prewad.jpeg",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 import { MusicProvider } from "@/components/providers/MusicProvider";
@@ -52,11 +64,6 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-        <meta property="og:title" content="The Wedding of Alvia & Pandiwa" />
-        <meta property="og:description" content="You are cordially invited to celebrate the wedding of Alvia & Pandiwa." />
-        <meta property="og:image" content="http://finallyhomewithpandiwa.com/public/images/wedding_placeholders/og-image.jpg" />
-        <meta property="og:url" content="http://finallyhomewithpandiwa.com/" />
-        <meta property="og:type" content="website" />
       </head>
       <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} ${greatVibes.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
         <LanguageProvider>

@@ -107,7 +107,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             disabled={isLoading}
             className="w-full h-14 rounded-2xl bg-primary text-white font-serif text-xl shadow-lg hover:translate-y-[-2px] transition-all active:scale-95"
           >
-            {isLoading ? "Logging in..." : "Login to Dashboard"}
+            {isLoading ? "Logging in..." : "Login"}
           </Button>
         </form>
       </DialogContent>

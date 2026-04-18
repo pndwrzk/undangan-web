@@ -29,7 +29,10 @@ function PersonSection({
   return (
     <div
       className={`relative w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none ${className}`}
-      style={{ height: 'min(100vh, calc(100vw * 4/3))', minHeight: '500px' }}
+      style={{
+        height: '100vh',
+        minHeight: '100vh'
+      }}
       onContextMenu={onContextMenu}
     >
       {/* Background Image - Protected */}
@@ -38,9 +41,17 @@ function PersonSection({
           src={image}
           alt={name}
           fill
-          className="object-cover pointer-events-none brightness-[0.9] contrast-[1.05]"
+          className="object-cover pointer-events-none brightness-[0.9] contrast-[1.05] 
+                     scale-125 md:scale-100 
+                     origin-center
+                     transition-transform duration-300"
           unoptimized
           draggable={false}
+          style={{
+            objectPosition: 'center center',
+            width: '100%',
+            height: '100%'
+          }}
         />
         {/* Gradient Overlay for Text Readability */}
         <div style={{ zIndex: Z_INDEX.BACKGROUND_OVERLAY }} className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
@@ -68,6 +79,16 @@ function PersonSection({
           </p>
         )}
       </motion.div>
+
+      {/* CSS untuk desktop responsiveness */}
+      <style jsx>{`
+        @media (min-width: 768px) {
+          div {
+            height: min(100vh, calc(100vw * 4/3)) !important;
+            min-height: 500px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
@@ -87,7 +108,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
   };
 
   return (
-    <section id="couple" style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="bg-background relative -mt-[2px]">
+    <section id="couple" style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="bg-background relative">
       <div className="flex flex-col md:flex-row">
         {/* Bride Section First */}
         <PersonSection
@@ -100,7 +121,7 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           onContextMenu={handleContextMenu}
         />
 
-        {/* Groom Section Second - Added negative margin on mobile top to close gap */}
+        {/* Groom Section Second */}
         <PersonSection
           id="groom"
           name={groomName}
@@ -108,7 +129,6 @@ export default function Couple({ couple }: { couple: CoupleType | null }) {
           bio={groomBio}
           image={groomImage}
           align="left"
-          className="-mt-1 md:mt-0"
           onContextMenu={handleContextMenu}
         />
       </div>
