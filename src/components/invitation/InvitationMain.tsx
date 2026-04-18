@@ -86,7 +86,7 @@ export default function InvitationMain({
 
       {/* Main Container - Only render when mounted to prevent hydration errors from stale SSR */}
       {mounted ? (
-        <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative transition-all duration-1000 md:rounded-3xl overflow-hidden ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
+        <main className={`flex-1 w-full max-w-6xl mx-auto bg-background shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] relative transition-all duration-1000 md:rounded-3xl overflow-y-auto overflow-x-hidden scroll-smooth ${isOpen ? 'opacity-100' : 'opacity-0 scale-95 blur-sm'}`}>
           {/* Paper Texture & Gradient Overlay */}
           <div
             style={{ 

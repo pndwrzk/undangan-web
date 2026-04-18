@@ -28,7 +28,8 @@ function PersonSection({
 }) {
   return (
     <div
-      className={`relative h-dvh w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none ${className}`}
+      className={`relative w-full md:w-1/2 overflow-hidden flex flex-col justify-end select-none ${className}`}
+      style={{ height: 'min(100vh, calc(100vw * 4/3))', minHeight: '500px' }}
       onContextMenu={onContextMenu}
     >
       {/* Background Image - Protected */}

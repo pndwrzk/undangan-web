@@ -48,26 +48,25 @@ export default function Hero({ couple }: { couple: Couple | null }) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Parallax effects - only apply on desktop
-  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "15%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], isMobile ? [0.4, 0.4] : [0.4, 0]);
+  // Parallax effects - smooth for all devices
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
     <section
       ref={containerRef}
       id="hero"
-      className="relative h-dvh flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background"
+      className="relative w-full flex flex-col md:flex-row items-center justify-center overflow-hidden bg-background"
+      style={{ height: 'min(100vh, calc(100vw * 4/3))', minHeight: '500px' }}
     >
-      {/* Background with parallax - commented out */}
-     
+      {/* Background with parallax and overlay */}
         <motion.div
           style={{
             y,
-            opacity,
-            willChange: "transform, opacity",
+            scale,
             zIndex: Z_INDEX.BACKGROUND,
           }}
-          className="absolute inset-0 will-change-transform transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]"
+          className="absolute inset-0 will-change-transform transform-gpu"
         >
           <Image
             src={couple?.heroImage || "/hero-bg.png"}
@@ -76,10 +75,10 @@ export default function Hero({ couple }: { couple: Couple | null }) {
             priority
             quality={100}
             sizes="100vw"
-            className="object-cover"
+            className="object-cover opacity-50"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/18 to-background/55" />
         </motion.div>
-    
 
       {/* Language Switcher */}
       <div style={{ zIndex: Z_INDEX.TORN_EDGE }} className="absolute top-8 right-8">
@@ -93,49 +92,43 @@ export default function Hero({ couple }: { couple: Couple | null }) {
 
       <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="w-full max-w-4xl mx-auto relative flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
         <div className="flex-1 text-center">
-          {/* Animated heading commented out */}
-         
+          {/* Animated heading */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.3 }}
-              className="text-6xl md:text-8xl font-serif text-foreground leading-tight mb-12 md:mb-16"
+              transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+              className="text-6xl md:text-8xl font-serif text-foreground leading-tight mb-12 md:mb-16 drop-shadow-lg"
             >
               {brideName} <br />
               <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1, duration: 1, ease: "easeOut" }}
                 className="text-primary italic"
               >
                 &
               </motion.span>{" "}
               {groomName}
             </motion.h1>
-        
 
-          {/* Animated hashtag commented out */}
-        
+          {/* Animated hashtag */}
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="text-primary font-typewriter tracking-[0.2em] text-lg md:text-3xl mb-8"
+              transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+              className="text-primary font-typewriter tracking-[0.2em] text-lg md:text-3xl mb-8 drop-shadow-md"
             >
               {officialHashtag}
             </motion.p>
-       
 
-          {/* Animated divider commented out */}
-         
+          {/* Animated divider */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 1, delay: 1, ease: "easeOut" }}
               className="hidden md:block w-32 h-[1px] bg-primary"
             />
-        
         </div>
       </div>
 
