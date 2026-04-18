@@ -167,7 +167,7 @@ export const translations: Record<Language, TranslationDict> = {
       title: "Cerita Kami",
       intro: "Catatan kecil dari perjalanan yang membawa kami pada titik ini",
       paragraph1: `Kami tidak bertemu lewat rencana besar. Sederhana saja, berawal dari dua peran di proyek yang sama. Seorang product owner dan software engineer yang berjalan berdampingan.`,
-      paragraph2: `Di antara proses yang seharusnya biasa, ada_ “bug”_ yang tak pernah benar-benar fixed. Percakapan yang terus berlanjut. Diskusi yang tak pernah benar-benar menemui selesai. Sampai pada cara-cara baru untuk saling memahami.`,
+      paragraph2: `Di antara proses yang seharusnya biasa, ada “bug” yang tak pernah benar-benar fixed. Percakapan yang terus berlanjut. Diskusi yang tak pernah benar-benar menemui selesai. Sampai pada cara-cara baru untuk saling memahami.`,
       paragraph3:  `Mungkin sejak awal, kami memang tidak pernah berniat untuk menutup proyek ini. —hingga akhirnya sampai pada proyek paling serius yang pernah kami pilih untuk terus jalani bersama.`,
     },
   },
