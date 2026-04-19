@@ -236,7 +236,7 @@ export const translations: Record<Language, TranslationDict> = {
       loading: "Loading wishes..",
       empty: "No wishes yet. Be the first!",
       restrictedTitle: "Access Restricted",
-      restrictedDesc: "Please use your unique invitation link to send wishes to the couple.",
+      restrictedDesc: "Please use your unique invitation link to put your wishes and prayers.",
     },
     gallery: {
       title: "Captured Moments",
@@ -250,10 +250,9 @@ export const translations: Record<Language, TranslationDict> = {
     story: {
       title: "Our Story",
       intro: "A collection of moments that lead us to where we are today",
-      paragraph1: `We didn’t meet through a grand plan.It was simple—two roles working on the same project. A Product Owner and a Software Engineer, moving side by side.`,
+      paragraph1: `We didn’t meet through a grand plan. It was simple, two roles working on the same project. A product owner  and software engineer, moving side by side.`,
       paragraph2: `Amid what should have been ordinary, there was a “bug” that was never meant to be fixed. Conversations that kept flowing. Discussions that never truly needed an end, leading us to discover new ways of understanding each other.`,
-      paragraph3: `Maybe from the very beginning,
-we were never meant to close this project. —until it became the most meaningful way we chose to continue, together.`,
+      paragraph3: `Maybe from the very beginning, we were never meant to close this project. —Until it became the most meaningful way we chose to continue, together.`,
     },
   },
 };

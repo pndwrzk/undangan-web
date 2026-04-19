@@ -181,12 +181,12 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             className="bg-white p-8 md:p-16 rounded-[2rem] md:rounded-[4rem] shadow-xl border border-primary/10 text-center"
           >
             <h3 className="text-lg md:text-xl font-serif mb-3 text-primary italic">
-              {language === "id" ? "Tautan Pribadi Diperlukan" : "Personal Link Required"}
+              {language === "id" ? "Tautan Terbatas" : "Access Restricted"}
             </h3>
             <p className="text-sm md:text-sm text-muted-foreground font-serif leading-snug">
               {language === "id"
-                ? "Kami tidak dapat mengenali Anda. Silakan gunakan tautan unik yang dibagikan kepada Anda untuk mengakses portal RSVP."
-                : "We are unable to recognize you. Please use your unique link to access the RSVP portal."
+                ? "Silakan gunakan tautan undangan unik yang dikirimkan untuk melakukan konfirmasi kehadiran."
+                : "Please use your unique invitation link to access and confirm your attendance."
               }
             </p>
           </motion.div>
