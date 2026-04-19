@@ -14,6 +14,52 @@ import { apiRequest } from "@/lib/api-client";
 
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
+const EmptyState = ({ language, t }: { language: string, t: any }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="flex flex-col items-center justify-center py-20 text-center space-y-4"
+  >
+    <div className="relative mb-6">
+      <motion.div
+        animate={{
+          y: [0, -12, 0],
+          rotate: [0, 2, -2, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center relative z-10"
+      >
+        <Mail size={40} className="text-primary/40" />
+      </motion.div>
+      <motion.div
+        animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"
+      />
+      <motion.div
+        animate={{ x: [0, 5, -5, 0], y: [0, 3, -3, 0] }}
+        transition={{ duration: 12, repeat: Infinity }}
+        className="absolute -top-1 -right-1 text-primary/30"
+      >
+        <Sparkles size={22} />
+      </motion.div>
+    </div>
+    <div className="space-y-2">
+      <p className="font-serif italic text-md md:text-lg text-primary/80">
+        {language === "id" ? "Sampaikan Doa Tulus Anda" : "Share Your Sincere Wishes"}
+      </p>
+      <p className="text-muted-foreground font-serif italic text-sm">
+        {t.empty}
+      </p>
+    </div>
+    <div className="w-12 h-[1px] bg-primary/10" />
+  </motion.div>
+);
+
 export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   const { t, language } = useLanguage();
   const [messages, setMessages] = useState<GuestbookType[]>([]);
@@ -166,52 +212,6 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
     return pages;
   };
 
-  const EmptyState = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-20 text-center space-y-4"
-    >
-      <div className="relative mb-4">
-        <motion.div
-          animate={{
-            y: [0, -10, 0],
-            rotate: [0, 5, -5, 0],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center relative z-10"
-        >
-          <Mail size={40} className="text-primary/40" />
-        </motion.div>
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"
-        />
-        <motion.div
-          animate={{ x: [0, 10, -10, 0], y: [0, 5, -5, 0] }}
-          transition={{ duration: 5, repeat: Infinity }}
-          className="absolute -top-2 -right-2 text-primary/30"
-        >
-          <Stars size={24} />
-        </motion.div>
-      </div>
-      <div className="space-y-2">
-        <p className="font-serif italic text-md md:text-lg text-primary/80">
-          {language === "id" ? "Sampaikan Doa Tulus Anda" : "Share Your Sincere Wishes"}
-        </p>
-        <p className="text-muted-foreground font-serif italic text-sm">
-          {t.guestbook.empty}
-        </p>
-      </div>
-      <div className="w-12 h-[1px] bg-primary/10" />
-    </motion.div>
-  );
-
   return (
     <section id="guestbook" style={{ zIndex: Z_INDEX.GUESTBOOK_SECTION }} className="py-16 md:py-24 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]">
       <div className="max-w-4xl mx-auto">
@@ -341,7 +341,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                       </div>
                     ))}
                     {messages.length === 0 && (
-                      <EmptyState />
+                      <EmptyState language={language} t={t.guestbook} />
                     )}
                   </motion.div>
                 </AnimatePresence>
