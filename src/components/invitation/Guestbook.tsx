@@ -18,7 +18,7 @@ const EmptyState = ({ language, t }: { language: string, t: any }) => (
   <motion.div 
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    className="flex flex-col items-center justify-center py-20 text-center space-y-4"
+    className="flex flex-col items-center justify-center py-12 text-center space-y-4"
   >
     <div className="relative mb-6">
       <motion.div
@@ -278,7 +278,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     required
-                    className="bg-background border-none shadow-sm rounded-xl min-h-[150px] py-4"
+                    className="bg-background border-none shadow-sm rounded-xl py-4"
                   />
                 </div>
                 <Button
