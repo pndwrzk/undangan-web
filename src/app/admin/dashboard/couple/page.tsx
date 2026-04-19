@@ -96,10 +96,13 @@ export default function CouplePage() {
         const updated = await res.json();
         setCouple(updated);
         toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} image updated!`);
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.error || "Upload failed");
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to upload image");
+      toast.error("Network error during upload");
     } finally {
       setIsUpdatingImage(null);
     }
@@ -438,7 +441,7 @@ export default function CouplePage() {
            ].map((item, i) => (
              <div key={i} className="group relative">
                <div className="bg-white rounded-[2.5rem] p-1 shadow-lg border border-primary/5 overflow-hidden h-full flex flex-col">
-                  <div className="relative h-64 md:h-80 m-4 rounded-[2rem] overflow-hidden bg-[#fcfaf3] border-2 border-primary/5 transition-colors group-hover:border-primary/20">
+                  <label htmlFor={`${item.type}-upload`} className="relative block h-64 md:h-80 m-4 rounded-[2rem] overflow-hidden bg-[#fcfaf3] border-2 border-primary/5 transition-colors group-hover:border-primary/20 cursor-pointer">
                     {isUpdatingImage === item.type && (
                       <div className="absolute inset-0 bg-black/40 backdrop-blur-xs z-30 flex items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
@@ -448,22 +451,18 @@ export default function CouplePage() {
                     
                     {/* Desktop hover overlay */}
                     <div className="absolute inset-0 hidden md:flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 z-20">
-                      <label 
-                        htmlFor={`${item.type}-upload`}
-                        className="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform cursor-pointer"
-                        title={`Change ${item.title}`}
-                      >
+                      <div className="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform">
                         <ImageIcon size={20} />
-                      </label>
+                      </div>
                       <button 
-                        onClick={() => setConfirmReset({ type: item.type as any, open: true })}
-                        className="bg-white p-3 rounded-full text-red-500 hover:scale-110 transition-transform"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmReset({ type: item.type as any, open: true }); }}
+                        className="bg-white p-3 rounded-full text-red-500 hover:scale-110 transition-transform pointer-events-auto"
                         title={`Reset ${item.title}`}
                       >
                         <Trash2 size={20} />
                       </button>
                     </div>
-                  </div>
+                  </label>
                   <div className="px-8 pb-4 flex-1 flex flex-col">
                     <h4 className="text-xl font-serif text-slate-800 mb-2">{item.title}</h4>
                     <p className="text-xs text-muted-foreground font-serif italic flex-1">{item.desc}</p>
@@ -477,16 +476,16 @@ export default function CouplePage() {
                       <Trash2 size={14} />
                     </button>
                   </div>
-               </div>
-               <input 
-                 type="file" 
-                 id={`${item.type}-upload`}
-                 ref={item.ref} 
-                 className="sr-only" 
-                 accept="image/*" 
-                 onClick={(e) => (e.currentTarget.value = '')}
-                 onChange={(e) => e.target.files?.[0] && handleImageUpload(item.type as any, e.target.files[0])} 
-               />
+                </div>
+                <input 
+                  type="file" 
+                  id={`${item.type}-upload`}
+                  ref={item.ref} 
+                  className="sr-only" 
+                  accept="image/*" 
+                  onClick={(e) => (e.currentTarget.value = '')}
+                  onChange={(e) => e.target.files?.[0] && handleImageUpload(item.type as any, e.target.files[0])} 
+                />
              </div>
            ))}
         </div>
