@@ -1,17 +1,74 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Home, Heart, Calendar, MessageSquare } from "lucide-react";
 import { Z_INDEX } from "@/lib/z-index";
+import { useState, useEffect } from "react";
 
 const navItems = [
-  { id: "hero", icon: <Home className="w-5 h-5" />, label: "Home" },
-  { id: "couple", icon: <Heart className="w-5 h-5" />, label: "Couple" },
-  { id: "event", icon: <Calendar className="w-5 h-5" />, label: "Event" },
-  { id: "rsvp", icon: <MessageSquare className="w-5 h-5" />, label: "RSVP" },
+  { id: "hero", icon: <Home className="w-4 h-4" />, label: "Home" },
+  { id: "couple", icon: <Heart className="w-4 h-4" />, label: "Couple" },
+  { id: "event", icon: <Calendar className="w-4 h-4" />, label: "Event" },
+  { id: "rsvp", icon: <MessageSquare className="w-4 h-4" />, label: "RSVP" },
 ];
 
 export default function BottomNav() {
+  const [activeTab, setActiveTab] = useState("hero");
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const handleActivity = () => {
+      setIsVisible(true);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsVisible(false);
+      }, 3000);
+    };
+
+    // Initial timer
+    timeoutId = setTimeout(() => {
+      setIsVisible(false);
+    }, 3000);
+
+    window.addEventListener("scroll", handleActivity);
+    window.addEventListener("click", handleActivity);
+    window.addEventListener("touchstart", handleActivity);
+
+    return () => {
+      window.removeEventListener("scroll", handleActivity);
+      window.removeEventListener("click", handleActivity);
+      window.removeEventListener("touchstart", handleActivity);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const observers = navItems.map((item) => {
+      const element = document.getElementById(item.id);
+      if (!element) return null;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+              setActiveTab(item.id);
+            }
+          });
+        },
+        { threshold: [0.3, 0.5, 0.7], rootMargin: "-20% 0px -20% 0px" }
+      );
+
+      observer.observe(element);
+      return observer;
+    });
+
+    return () => {
+      observers.forEach((obs) => obs?.disconnect());
+    };
+  }, []);
+
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -22,26 +79,60 @@ export default function BottomNav() {
   return (
     <motion.div
       initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ delay: 2, duration: 1 }}
+      animate={{ y: isVisible ? 0 : 120 }}
+      transition={{ 
+        duration: 1,
+        ease: "easeInOut",
+        delay: isVisible ? 0 : 0.3
+      }}
       style={{ zIndex: Z_INDEX.BOTTOM_NAV }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 md:hidden pointer-events-auto"
+      className="fixed bottom-0 left-0 right-0 md:hidden pointer-events-auto"
     >
-      <nav className="bg-white/80 backdrop-blur-lg border border-primary/10 rounded-full px-6 py-3 flex items-center gap-8 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)]">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => scrollTo(item.id)}
-            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors focus:outline-none group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-primary/5 transition-all">
-              {item.icon}
-            </div>
-            <span className="text-[10px] font-typewriter uppercase tracking-tighter">
-              {item.label}
-            </span>
-          </button>
-        ))}
+      {/* Delicate Gold Top Border Accent */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+      
+      <nav className="bg-[#FDFCF0] border-t border-primary/10 rounded-t-[2rem] px-6 py-2 pb-5 flex items-center justify-around shadow-[0_-10px_40px_-10px_rgba(85,107,47,0.15)]">
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id;
+          
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                scrollTo(item.id);
+              }}
+              className="relative flex flex-col items-center gap-1 focus:outline-none py-1.5 min-w-[64px]"
+            >
+              <div 
+                className={`p-1 rounded-full transition-all duration-500 relative ${
+                  isActive ? "text-primary scale-110" : "text-muted-foreground/40 group-hover:text-primary/40"
+                }`}
+              >
+                {item.icon}
+              </div>
+              
+              <span 
+                className={`text-[9px] font-typewriter uppercase tracking-[0.15em] transition-all duration-500 ${
+                  isActive ? "text-primary font-bold" : "text-muted-foreground/40"
+                }`}
+              >
+                {item.label}
+              </span>
+
+              {/* Sophisticated Sliding Underline */}
+              {isActive && (
+                <motion.div
+                  layoutId="activeUnderline"
+                  className="absolute bottom-1 w-8 h-[1.5px] bg-accent rounded-full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </button>
+          );
+        })}
       </nav>
     </motion.div>
   );

@@ -150,7 +150,7 @@ export default function InvitationMain({
 
               <div className="w-24 h-[1px] bg-primary/20 mx-auto mb-10" />
 
-              <p className="font-typewriter text-[10px] md:text-[11px] uppercase tracking-widest text-muted-foreground/40  pb-14 md:pb-0">
+              <p className="font-typewriter text-[10px] md:text-[11px] uppercase tracking-widest text-muted-foreground/40 pb-20 md:pb-0">
                 &copy; {footerYear} &bull; Made At Home
               </p>
             </div>

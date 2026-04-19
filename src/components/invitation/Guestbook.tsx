@@ -278,7 +278,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     required
-                    className="bg-background border-none shadow-sm rounded-xl py-4"
+                    className="bg-background border-none shadow-sm rounded-xl py-4 min-h-[180px] md:min-h-[220px] resize-none"
                   />
                 </div>
                 <Button
