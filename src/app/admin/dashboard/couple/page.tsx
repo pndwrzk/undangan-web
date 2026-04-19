@@ -264,13 +264,13 @@ export default function CouplePage() {
                   {/* Photo Actions Overlay - desktop hover only */}
                   <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/30">
                     <div className="flex gap-3">
-                      <button 
-                         onClick={() => groomInputRef.current?.click()}
-                         className="p-4 bg-white rounded-full text-primary shadow-xl hover:scale-110 active:scale-95 transition-all"
+                      <label 
+                         htmlFor="groom-upload"
+                         className="p-4 bg-white rounded-full text-primary shadow-xl hover:scale-110 active:scale-95 transition-all cursor-pointer"
                          title="Change Photo"
                       >
                          <Camera size={24} />
-                      </button>
+                      </label>
                       <button 
                          onClick={() => setConfirmReset({ type: 'groom', open: true })}
                          className="p-4 bg-white rounded-full text-red-500 shadow-xl hover:scale-110 active:scale-95 transition-all"
@@ -287,9 +287,9 @@ export default function CouplePage() {
                 </div>
                 {/* Mobile-only action buttons */}
                 <div className="flex md:hidden gap-2 mt-3 px-2">
-                  <button onClick={() => groomInputRef.current?.click()} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary/10 text-primary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                  <label htmlFor="groom-upload" className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary/10 text-primary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all cursor-pointer">
                     <Camera size={14} /> Change Photo
-                  </button>
+                  </label>
                   <button onClick={() => setConfirmReset({ type: 'groom', open: true })} className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-500 rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
                     <Trash2 size={14} />
                   </button>
@@ -309,7 +309,15 @@ export default function CouplePage() {
               </div>
             </div>
           </div>
-          <input type="file" ref={groomInputRef} className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && handleImageUpload('groom', e.target.files[0])} />
+          <input 
+            type="file" 
+            id="groom-upload"
+            ref={groomInputRef} 
+            className="sr-only" 
+            accept="image/*" 
+            onClick={(e) => (e.currentTarget.value = '')}
+            onChange={(e) => e.target.files?.[0] && handleImageUpload('groom', e.target.files[0])} 
+          />
         </div>
 
         {/* Bride Profile */}
@@ -329,13 +337,13 @@ export default function CouplePage() {
                   {/* Photo Actions Overlay - desktop hover only */}
                   <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/30">
                     <div className="flex gap-3">
-                      <button 
-                         onClick={() => brideInputRef.current?.click()}
-                         className="p-4 bg-white rounded-full text-secondary shadow-xl hover:scale-110 active:scale-95 transition-all"
+                      <label 
+                         htmlFor="bride-upload"
+                         className="p-4 bg-white rounded-full text-secondary shadow-xl hover:scale-110 active:scale-95 transition-all cursor-pointer"
                          title="Change Photo"
                       >
                          <Camera size={24} />
-                      </button>
+                      </label>
                       <button 
                          onClick={() => setConfirmReset({ type: 'bride', open: true })}
                          className="p-4 bg-white rounded-full text-red-500 shadow-xl hover:scale-110 active:scale-95 transition-all"
@@ -352,9 +360,9 @@ export default function CouplePage() {
                 </div>
                 {/* Mobile-only action buttons */}
                 <div className="flex md:hidden gap-2 mt-3 px-2">
-                  <button onClick={() => brideInputRef.current?.click()} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-secondary/10 text-secondary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                  <label htmlFor="bride-upload" className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-secondary/10 text-secondary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all cursor-pointer">
                     <Camera size={14} /> Change Photo
-                  </button>
+                  </label>
                   <button onClick={() => setConfirmReset({ type: 'bride', open: true })} className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-500 rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
                     <Trash2 size={14} />
                   </button>
@@ -374,7 +382,15 @@ export default function CouplePage() {
               </div>
             </div>
           </div>
-          <input type="file" ref={brideInputRef} className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && handleImageUpload('bride', e.target.files[0])} />
+          <input 
+            type="file" 
+            id="bride-upload"
+            ref={brideInputRef} 
+            className="sr-only" 
+            accept="image/*" 
+            onClick={(e) => (e.currentTarget.value = '')}
+            onChange={(e) => e.target.files?.[0] && handleImageUpload('bride', e.target.files[0])} 
+          />
         </div>
       </div>
 
@@ -432,13 +448,13 @@ export default function CouplePage() {
                     
                     {/* Desktop hover overlay */}
                     <div className="absolute inset-0 hidden md:flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 z-20">
-                      <button 
-                        onClick={() => item.ref.current?.click()}
-                        className="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform"
+                      <label 
+                        htmlFor={`${item.type}-upload`}
+                        className="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform cursor-pointer"
                         title={`Change ${item.title}`}
                       >
                         <ImageIcon size={20} />
-                      </button>
+                      </label>
                       <button 
                         onClick={() => setConfirmReset({ type: item.type as any, open: true })}
                         className="bg-white p-3 rounded-full text-red-500 hover:scale-110 transition-transform"
@@ -454,15 +470,23 @@ export default function CouplePage() {
                   </div>
                   {/* Mobile action buttons */}
                   <div className="flex md:hidden gap-2 px-8 pb-6">
-                    <button onClick={() => item.ref.current?.click()} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary/10 text-primary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all">
+                    <label htmlFor={`${item.type}-upload`} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary/10 text-primary rounded-2xl text-xs font-typewriter uppercase tracking-widest active:scale-95 transition-all cursor-pointer">
                       <ImageIcon size={14} /> Change
-                    </button>
+                    </label>
                     <button onClick={() => setConfirmReset({ type: item.type as any, open: true })} className="flex items-center justify-center gap-2 px-3 py-2.5 bg-red-50 text-red-500 rounded-2xl active:scale-95 transition-all">
                       <Trash2 size={14} />
                     </button>
                   </div>
                </div>
-               <input type="file" ref={item.ref} className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && handleImageUpload(item.type as any, e.target.files[0])} />
+               <input 
+                 type="file" 
+                 id={`${item.type}-upload`}
+                 ref={item.ref} 
+                 className="sr-only" 
+                 accept="image/*" 
+                 onClick={(e) => (e.currentTarget.value = '')}
+                 onChange={(e) => e.target.files?.[0] && handleImageUpload(item.type as any, e.target.files[0])} 
+               />
              </div>
            ))}
         </div>
