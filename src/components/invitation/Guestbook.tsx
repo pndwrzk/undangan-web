@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { MessageSquare, Heart, ChevronLeft, ChevronRight, Sparkles, Loader2 } from "lucide-react";
+import { MessageSquare, Heart, ChevronLeft, ChevronRight, Sparkles, Loader2, Mail, Stars } from "lucide-react";
 import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { toast } from "sonner";
@@ -166,6 +166,52 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
     return pages;
   };
 
+  const EmptyState = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center justify-center py-20 text-center space-y-4"
+    >
+      <div className="relative mb-4">
+        <motion.div
+          animate={{
+            y: [0, -10, 0],
+            rotate: [0, 5, -5, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center relative z-10"
+        >
+          <Mail size={40} className="text-primary/40" />
+        </motion.div>
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"
+        />
+        <motion.div
+          animate={{ x: [0, 10, -10, 0], y: [0, 5, -5, 0] }}
+          transition={{ duration: 5, repeat: Infinity }}
+          className="absolute -top-2 -right-2 text-primary/30"
+        >
+          <Stars size={24} />
+        </motion.div>
+      </div>
+      <div className="space-y-2">
+        <p className="font-serif italic text-md md:text-lg text-primary/80">
+          {language === "id" ? "Sampaikan Doa Tulus Anda" : "Share Your Sincere Wishes"}
+        </p>
+        <p className="text-muted-foreground font-serif italic text-sm">
+          {t.guestbook.empty}
+        </p>
+      </div>
+      <div className="w-12 h-[1px] bg-primary/10" />
+    </motion.div>
+  );
+
   return (
     <section id="guestbook" style={{ zIndex: Z_INDEX.GUESTBOOK_SECTION }} className="py-16 md:py-24 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]">
       <div className="max-w-4xl mx-auto">
@@ -248,7 +294,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
 
           {/* List */}
           <div className="md:col-span-2 flex flex-col gap-8">
-            <div className={`space-y-6 ${loading ? 'min-h-screen' : 'min-h-[500px]'}`}>
+            <div className="relative">
               {loading ? (
                 <div className="text-center py-12 text-muted-foreground font-serif italic">{t.guestbook.loading}</div>
               ) : (
@@ -295,7 +341,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                       </div>
                     ))}
                     {messages.length === 0 && (
-                      <div className="text-center py-12 text-muted-foreground font-serif italic">{t.guestbook.empty}</div>
+                      <EmptyState />
                     )}
                   </motion.div>
                 </AnimatePresence>
