@@ -39,10 +39,10 @@ export const metadata = {
   openGraph: {
     title: "The Wedding of Alvia & Pandiwa",
     description: "You are cordially invited to celebrate the wedding of Alvia & Pandiwa.",
-    url: "https://sharper-reassign-variety.ngrok-free.dev",
+    url: "http://finallyhomewithpandiwa.com",
     images: [
       {
-        url: "https://sharper-reassign-variety.ngrok-free.dev/images/foto_prewad.jpeg",
+        url: "http://finallyhomewithpandiwa.com/images/foto_prewad.jpeg",
         width: 1200,
         height: 630,
       },
