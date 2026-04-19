@@ -304,19 +304,19 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                         name="numberOfAttendees"
                         render={({ field }) => {
                           const currentValue = parseInt(field.value || "1");
-                          
+
                           const increment = () => {
                             const newValue = currentValue + 1;
                             field.onChange(newValue.toString());
                           };
-                          
+
                           const decrement = () => {
                             if (currentValue > 1) {
                               const newValue = currentValue - 1;
                               field.onChange(newValue.toString());
                             }
                           };
-                          
+
                           return (
                             <FormItem className="space-y-3 w-full">
                               <div className="text-center">
@@ -333,7 +333,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                                       min="1"
                                       placeholder={language === "id" ? "Masukkan jumlah" : "Enter number"}
                                       style={{ height: '55px' }}
-                                     className="w-full text-center rounded-xl border-primary/20 text-primary
+                                      className="w-full text-center rounded-xl border-primary/20 text-primary
              text-xl md:text-2xl font-serif
              [appearance:textfield] 
              [&::-webkit-outer-spin-button]:appearance-none 
@@ -341,7 +341,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                                       {...field}
                                     />
                                   </div>
-                                  
+
                                   {/* Buttons - 10% on mobile, smaller on desktop */}
                                   <div className="flex-[1] md:flex-[1] flex flex-col gap-1">
                                     <button
