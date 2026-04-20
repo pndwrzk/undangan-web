@@ -51,6 +51,8 @@ export interface TranslationDict {
     copyAccount: string;
     accountCopied: string;
     warningNote: string;
+    swipeDown: string;
+    swipeUp: string;
   };
   guestbook: {
     sectionLabel: string;
@@ -137,6 +139,8 @@ export const translations: Record<Language, TranslationDict> = {
       copyAccount: "Salin Rekening",
       accountCopied: "Rekening Berhasil Disalin!",
       warningNote: "Tanpa mengurangi rasa hormat, mohon maaf kami tidak menerima tamu di rumah.",
+      swipeDown: "Geser ke bawah untuk melihat",
+      swipeUp: "Geser ke atas untuk menutup",
     },
     guestbook: {
       sectionLabel: "Kirim Doa",
@@ -221,6 +225,8 @@ export const translations: Record<Language, TranslationDict> = {
       copyAccount: "Copy Account",
       accountCopied: "Account Number Copied!",
       warningNote: "With all due respect, we apologize as we are not accepting guests at home.",
+      swipeDown: "Swipe down to reveal",
+      swipeUp: "Swipe up to close",
     },
     guestbook: {
       sectionLabel: "Send Wishes",

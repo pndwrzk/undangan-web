@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Copy, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { Gift as GiftType } from "@/types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -11,6 +11,7 @@ import { Z_INDEX } from "@/lib/z-index";
 export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState<string | null>(null);
+  const [isRevealed, setIsRevealed] = useState(false);
 
   if (!gifts || gifts.length === 0) return null;
 
@@ -52,7 +53,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.gift.sectionLabel}</span>
           <p className="text-muted-foreground font-serif italic text-[14px] md:text-base leading-relaxed max-w-2xl mx-auto mb-6">
@@ -61,57 +62,151 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
         </motion.div>
 
-        {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {gifts.map((acc, index) => {
-            const bankInfo = getBankInfo(acc.bankName);
 
-            return (
+        {/* REVEAL CONTAINER */}
+        {/* REVEAL CONTAINER */}
+        <div className="relative max-w-2xl mx-auto flex flex-col items-center w-full">
+          {/* Visual Rail / Pull Track (Only in cover state) */}
+          <AnimatePresence>
+            {!isRevealed && (
               <motion.div
-                key={acc.id || acc.accountNumber}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="bg-background p-5 rounded-2xl shadow-lg border border-primary/5 hover:border-primary/20 transition-all"
-              >
-                {/* Top Row: Name + Logo */}
-                <div className="flex items-start justify-between gap-3 mb-6">
-                  <p className="text-lg font-typewriter font-semibold text-slate-800">
-                    {acc.accountName}
-                  </p>
-                  <div className="h-6 w-20 flex items-center justify-end flex-shrink-0">
-                    {bankInfo ? (
-                      <img
-                        src={bankInfo.logo}
-                        alt={acc.bankName}
-                        className="max-h-6 w-auto object-contain"
-                      />
-                    ) : (
-                      <p className="text-xs font-semibold text-primary">{acc.bankName}</p>
-                    )}
-                  </div>
-                </div>
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                className="absolute top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/30 via-primary/10 to-transparent left-1/2 -translate-x-1/2 z-0 pointer-events-none"
+              />
+            )}
+          </AnimatePresence>
 
-                {/* Bottom Row: Account Number + Copy */}
-                <div className="flex items-center gap-2">
-                  <p className="text-base font-typewriter tracking-widest tabular-nums text-slate-800">
-                    {acc.accountNumber}
-                  </p>
-                  <button
-                    onClick={() => handleCopy(acc.accountNumber)}
-                    className="p-1.5 rounded-md hover:bg-primary/10 transition-all active:scale-95 flex-shrink-0"
-                  >
-                    {copied === acc.accountNumber ? (
-                      <Check size={16} className="text-green-600" />
-                    ) : (
-                      <Copy size={16} className="text-primary" />
-                    )}
-                  </button>
+          {/* GRID (Hidden until revealed) */}
+          <motion.div
+            animate={{
+              opacity: isRevealed ? 1 : 0,
+              scale: isRevealed ? 1 : 0.98,
+              filter: isRevealed ? "blur(0px)" : "blur(12px)",
+              pointerEvents: isRevealed ? "auto" : "none"
+            }}
+            transition={{ duration: 0.8 }}
+            className={`w-full grid grid-cols-1 ${gifts.length > 1 ? 'md:grid-cols-2' : 'md:grid-cols-1 max-w-md mx-auto'} gap-6 relative z-10`}
+          >
+            {gifts.map((acc, index) => {
+              const bankInfo = getBankInfo(acc.bankName);
+
+              return (
+                <motion.div
+                  key={acc.id || acc.accountNumber}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-background p-4 rounded-xl shadow-md border border-primary/5 hover:border-primary/20 transition-all text-left"
+                >
+                  {/* Top Row: Name + Logo */}
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <p className="text-base font-typewriter font-semibold text-slate-800 leading-tight">
+                      {acc.accountName}
+                    </p>
+                    <div className="h-5 w-16 flex items-center justify-end flex-shrink-0">
+                      {bankInfo ? (
+                        <img
+                          src={bankInfo.logo}
+                          alt={acc.bankName}
+                          className="max-h-5 w-auto object-contain opacity-80 grayscale"
+                        />
+                      ) : (
+                        <p className="text-[10px] font-semibold text-primary/60">{acc.bankName}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Bottom Row: Account Number + Copy */}
+                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-primary/5">
+                    <p className="text-sm font-typewriter tracking-[0.1em] tabular-nums text-slate-600">
+                      {acc.accountNumber}
+                    </p>
+                    <button
+                      onClick={() => handleCopy(acc.accountNumber)}
+                      className="p-1.5 rounded-md hover:bg-primary/10 transition-all active:scale-95 flex-shrink-0"
+                    >
+                      {copied === acc.accountNumber ? (
+                        <Check size={14} className="text-green-600" />
+                      ) : (
+                        <Copy size={14} className="text-primary/60" />
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          {/* DYNAMIC SWIPE CARD (Stands by at the bottom, does not disappear) */}
+          
+          {/* Card Initial State (Covering Grid) */}
+          {!isRevealed && (
+            <motion.div
+              layoutId="dynamic-swipe-card"
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 200 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 80) setIsRevealed(true);
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white border-2 border-primary/10 rounded-2xl py-3 px-10 shadow-xl cursor-grab active:cursor-grabbing absolute inset-0 m-auto h-fit z-30 w-full max-w-xl group"
+            >
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors animate-bounce mt-4">
+                  <ChevronDown className="text-primary/60 w-5 h-5" />
                 </div>
-              </motion.div>
-            );
-          })}
+                <div className="text-center">
+                  <p className="font-serif italic text-base text-primary/80 mb-1">
+                    {t.gift.sectionLabel}
+                  </p>
+                  <p className="font-typewriter text-[9px] tracking-[0.2em] text-muted-foreground uppercase opacity-60">
+                    {t.gift.swipeDown}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Card Revealed State (Standby Below Grid) */}
+          {isRevealed && (
+            <motion.div
+              layoutId="dynamic-swipe-card"
+              drag="y"
+              dragConstraints={{ top: -200, bottom: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.y < -80) setIsRevealed(false);
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white border-2 border-primary/10 rounded-2xl py-3 px-10 shadow-xl cursor-grab active:cursor-grabbing relative mt-12 z-30 w-full max-w-xl group"
+            >
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute -top-12 bottom-full w-[1px] bg-gradient-to-t from-primary/30 to-transparent left-1/2 -translate-x-1/2 pointer-events-none" 
+              />
+              
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors animate-bounce mt-4">
+                  <ChevronUp className="text-primary/60 w-5 h-5" />
+                </div>
+                <div className="text-center">
+                  <p className="font-serif italic text-base text-primary/80 mb-1">
+                    {t.gift.sectionLabel}
+                  </p>
+                  <p className="font-typewriter text-[9px] tracking-[0.2em] text-muted-foreground uppercase opacity-60">
+                    {t.gift.swipeUp}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* FOOTNOTE */}
