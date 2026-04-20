@@ -147,10 +147,12 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
             <motion.div
               layoutId="dynamic-swipe-card"
               drag="y"
+              dragDirectionLock
               dragConstraints={{ top: 0, bottom: 200 }}
               dragElastic={0.2}
               onDragEnd={(_, info) => {
-                if (info.offset.y > 80) setIsRevealed(true);
+                const isIntentional = info.offset.y > 40 || info.velocity.y > 200;
+                if (isIntentional) setIsRevealed(true);
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -177,10 +179,12 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
             <motion.div
               layoutId="dynamic-swipe-card"
               drag="y"
+              dragDirectionLock
               dragConstraints={{ top: -200, bottom: 0 }}
               dragElastic={0.2}
               onDragEnd={(_, info) => {
-                if (info.offset.y < -80) setIsRevealed(false);
+                const isIntentional = info.offset.y < -40 || info.velocity.y < -200;
+                if (isIntentional) setIsRevealed(false);
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
