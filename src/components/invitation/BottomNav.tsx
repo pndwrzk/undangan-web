@@ -17,37 +17,43 @@ export default function BottomNav() {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout | null = null;
 
     const handleActivity = () => {
       setIsVisible(true);
-      clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         setIsVisible(false);
-      }, 3000);
+      }, 2000);
     };
 
     // Initial timer
     timeoutId = setTimeout(() => {
       setIsVisible(false);
-    }, 3000);
+    }, 2000);
 
-    window.addEventListener("scroll", handleActivity);
-    window.addEventListener("click", handleActivity);
-    window.addEventListener("touchstart", handleActivity);
+    const scrollHandler = handleActivity;
+    const clickHandler = handleActivity;
+    const touchHandler = handleActivity;
+
+    window.addEventListener("scroll", scrollHandler, { passive: true });
+    window.addEventListener("click", clickHandler);
+    window.addEventListener("touchstart", touchHandler, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", handleActivity);
-      window.removeEventListener("click", handleActivity);
-      window.removeEventListener("touchstart", handleActivity);
-      clearTimeout(timeoutId);
+      window.removeEventListener("scroll", scrollHandler);
+      window.removeEventListener("click", clickHandler);
+      window.removeEventListener("touchstart", touchHandler);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
   useEffect(() => {
-    const observers = navItems.map((item) => {
+    const observers: (IntersectionObserver | null)[] = [];
+
+    navItems.forEach((item) => {
       const element = document.getElementById(item.id);
-      if (!element) return null;
+      if (!element) return;
 
       const observer = new IntersectionObserver(
         (entries) => {
@@ -61,11 +67,13 @@ export default function BottomNav() {
       );
 
       observer.observe(element);
-      return observer;
+      observers.push(observer);
     });
 
     return () => {
-      observers.forEach((obs) => obs?.disconnect());
+      observers.forEach((obs) => {
+        if (obs) obs.disconnect();
+      });
     };
   }, []);
 
@@ -81,12 +89,12 @@ export default function BottomNav() {
       initial={{ y: 100 }}
       animate={{ y: isVisible ? 0 : 120 }}
       transition={{ 
-        duration: 1,
+        duration: 0.8,
         ease: "easeInOut",
-        delay: isVisible ? 0 : 0.3
+        delay: isVisible ? 0 : 0.2
       }}
       style={{ zIndex: Z_INDEX.BOTTOM_NAV }}
-      className="fixed bottom-0 left-0 right-0 md:hidden pointer-events-auto"
+      className={`fixed bottom-0 left-0 right-0 md:hidden ${isVisible ? "pointer-events-auto" : "pointer-events-none"}`}
     >
       {/* Delicate Gold Top Border Accent */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
