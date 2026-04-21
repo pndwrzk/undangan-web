@@ -29,6 +29,7 @@ export interface TranslationDict {
     addToCalendar: string;
     viewMap: string;
     decorativeTitle: string;
+    eventPlanning: string;
   };
   rsvp: {
     title: string;
@@ -117,6 +118,7 @@ export const translations: Record<Language, TranslationDict> = {
       addToCalendar: "Tambah ke Kalender",
       viewMap: "Buka Lokasi",
       decorativeTitle: "Momen Bahagia",
+      eventPlanning: "Dengan mengharap ridho Allah SWT,\nkami memohon restu dan kehadiran Anda pada hari bahagia kami:",
     },
     rsvp: {
       title: "Konfirmasi Kehadiran",
@@ -170,7 +172,7 @@ export const translations: Record<Language, TranslationDict> = {
     story: {
       title: "Cerita Kami",
       intro: "Catatan kecil dari perjalanan yang membawa kami pada titik ini",
-      paragraph1: `Kami tidak bertemu lewat rencana besar. Sederhana saja, berawal dari dua peran di proyek yang sama. Seorang product owner dan software engineer yang berjalan berdampingan.`,
+      paragraph1: `Kami tidak bertemu lewat rencana besar. Sederhana saja, berawal dari dua peran di proyek yang sama, berjalan berdampingan.`,
       paragraph2: `Di antara proses yang seharusnya biasa, ada “bug” yang tak pernah benar-benar fixed. Percakapan yang terus berlanjut. Diskusi yang tak pernah benar-benar menemui selesai. Sampai pada cara-cara baru untuk saling memahami.`,
       paragraph3:  `Mungkin sejak awal, kami memang tidak pernah berniat untuk menutup proyek ini. —hingga akhirnya sampai pada proyek paling serius yang pernah kami pilih untuk terus jalani bersama.`,
     },
@@ -203,6 +205,7 @@ export const translations: Record<Language, TranslationDict> = {
       addToCalendar: "Add to Calendar",
       viewMap: "Open Location",
       decorativeTitle: "The Celebration",
+      eventPlanning:  "With the blessing of Allah SWT,\nwe humbly request your blessings and presence on our happy day:",
     },
     rsvp: {
       title: "RSVP Confirmation",
@@ -256,7 +259,7 @@ export const translations: Record<Language, TranslationDict> = {
     story: {
       title: "Our Story",
       intro: "A collection of moments that lead us to where we are today",
-      paragraph1: `We didn’t meet through a grand plan. It was simple, two roles working on the same project. A product owner  and software engineer, moving side by side.`,
+      paragraph1: `We didn’t meet through a grand plan. It was simple, two roles working on the same project, moving side by side.`,
       paragraph2: `Amid what should have been ordinary, there was a “bug” that was never meant to be fixed. Conversations that kept flowing. Discussions that never truly needed an end, leading us to discover new ways of understanding each other.`,
       paragraph3: `Maybe from the very beginning, we were never meant to close this project. —Until it became the most meaningful way we chose to continue, together.`,
     },

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { Calendar, Clock, MapPin, ExternalLink, Bell, Sparkles, Heart } from "lucide-react";
 import TornEdge from "@/components/invitation/TornEdge";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -10,6 +10,14 @@ import { Z_INDEX } from "@/lib/z-index";
 
 export default function EventDetails({ events, couple }: { events?: EventType[], couple: CoupleType | null }) {
   const { t, language } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number }>({
     days: 0,
     hours: 0,
@@ -116,7 +124,24 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
   return (
     <div id="event">
       {/* SECTION 1: COUNTDOWN */}
-      <section id="event-countdown" style={{ zIndex: Z_INDEX.SECTION_BASE }} className="py-16 md:py-20 px-6 md:px-12 lg:px-24 bg-[#fcfaf3] relative -mt-[2px] overflow-hidden">
+      <section
+        id="event-countdown"
+        ref={sectionRef}
+        style={{ zIndex: Z_INDEX.SECTION_BASE }}
+        className="py-8 md:py-12 bg-[#fcfaf3] relative -mt-[2px] overflow-hidden"
+      >
+        <motion.div
+          style={{
+            y: backgroundY,
+            backgroundImage: "url('/images/parallex_bg.jpeg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.4,
+            height: "140%", // Taller than container
+            top: "-20%",    // Offset to center
+          }}
+          className="absolute inset-x-0 z-0 pointer-events-none"
+        />
         <TornEdge position="top" color="fill-muted/5" />
         <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-6xl mx-auto relative">
           <motion.div
@@ -124,73 +149,32 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-8 md:mb-12"
+            className="text-center"
           >
             <span className="font-arabic text-[20px] md:text-3xl text-primary mb-6 md:mb-8 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
               {t.event.sectionLabel}
             </span>
-            <h2 className="text-[14px] md:text-base font-serif mb-4 md:mb-6 text-muted-foreground italic leading-snug max-w-2xl mx-auto px-6 opacity-90">
+            <h2 className="md:text-[14px] text-[12px] text-primary/70 md:text-sm font-typewriter mb-4 md:mb-6 text-muted-foreground leading-snug max-w-2xl mx-auto px-6 opacity-90">
               "{t.event.title.split(' (')[0]}"
               <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-3 md:mt-4 not-italic opacity-40">
                 {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}
               </span>
             </h2>
-            <div className="w-12 md:w-16 h-[1px] bg-primary/10 mx-auto mb-6 md:mb-8" />
+            <div className="w-12 md:w-16 h-[1px] bg-primary/10 mx-auto" />
           </motion.div>
+
+
 
           {/* Unified Countdown Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col items-center justify-center bg-[#505b24] p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-xl w-full relative overflow-hidden"
-          >
-            {/* Decorative Elements */}
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 90, 0],
-                opacity: [0.05, 0.1, 0.05]
-              }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-3xl pointer-events-none"
-            />
-            <motion.div
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.05, 0.08, 0.05]
-              }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-3xl pointer-events-none"
-            />
 
-            <span style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="font-serif italic text-[14px] md:text-sm text-white/90 max-w-lg text-center leading-relaxed relative mb-8 md:mb-10">
-              {t.couple.requestRestu}
-            </span>
-
-            <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="flex justify-center gap-4 mb-8 md:mb-10 relative">
-              <TimerBox value={timeLeft.days} label={language === "id" ? "Hari" : "Days"} />
-              <TimerBox value={timeLeft.hours} label={language === "id" ? "Jam" : "Hours"} />
-              <TimerBox value={timeLeft.minutes} label={language === "id" ? "Menit" : "Mins"} />
-              <TimerBox value={timeLeft.seconds} label={language === "id" ? "Detik" : "Secs"} />
-            </div>
-
-            <a
-              href={generateCalendarLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ zIndex: Z_INDEX.BASE_CONTENT }}
-              className="w-full max-w-xs py-4 bg-[#ebeadf] border border-transparent rounded-xl text-[#505b24] font-bold font-sans flex items-center justify-center gap-2 hover:bg-[#ebeadf]/90 transition-all shadow-md uppercase tracking-[0.1em] text-[10px] relative"
-            >
-              <Bell size={14} />
-              {language === "id" ? "Simpan Tanggal" : "Save the Date"}
-            </a>
-          </motion.div>
         </div>
       </section>
 
       {/* SECTION 2: EVENT PLANNING */}
-      <section id="event-planning" style={{ zIndex: Z_INDEX.SECTION_CONTENT }} className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#faf5eb] relative -mt-[2px] overflow-hidden">
+      <section id="event-planning" style={{ zIndex: Z_INDEX.SECTION_CONTENT }} className="py-16  md:py-24 px-6 md:px-12 lg:px-24 bg-[#fcfaf3] relative -mt-[2px] overflow-hidden">
+        <span style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="block mx-auto font-serif italic text-base md:text-md text-primary/90 max-w-lg md:text-[16px] text-[14px] text-center leading-relaxed relative mb-8 md:mb-12">
+          {t.event.eventPlanning}
+        </span>
         <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-6xl mx-auto relative">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
             {events.map((ev, idx) => (
@@ -204,7 +188,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               >
                 <div className="flex items-center justify-between mb-4 md:mb-6">
                   <div className="p-2.5 md:p-3 rounded-xl bg-primary/10 text-primary">
-                     <Calendar size={20} className="md:w-6 md:h-6" /> 
+                    <Calendar size={20} className="md:w-6 md:h-6" />
                   </div>
                   <span className="font-typewriter text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 bg-accent/10 rounded-full">{ev.title}</span>
                 </div>
@@ -228,6 +212,8 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
                   </div>
                 </div>
 
+
+
                 {ev.mapUrl && (
                   <a
                     href={ev.mapUrl}
@@ -242,8 +228,61 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               </motion.div>
             ))}
           </div>
+
         </div>
+
+
       </section>
+
+      <div className="py-16 px-[30px]   md:px-[80px] bg-[#f6f3e8]">  <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="flex flex-col items-center justify-center bg-[#505b24] p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-xl w-full relative overflow-hidden"
+      >
+        {/* Decorative Elements */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.05, 0.1, 0.05]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-10 -right-10 w-40 h-30 bg-white/30 rounded-full blur-3xl pointer-events-none"
+        />
+        <div className="text-[#ebeadf] md:text-[16px] text-[14px] font-semibold"> {language === "id" ? "SAVE THE DATE!" : "SAVE THE DATE!"}</div>
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.05, 0.08, 0.05]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-3xl pointer-events-none"
+        />
+
+        <span style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="block mx-auto font-serif italic text-sm md:text-lg text-white/90 max-w-lg text-center leading-relaxed relative mb-8 md:mb-10">
+
+        </span>
+
+        <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="flex justify-center gap-4 mb-8 md:mb-10 relative">
+          <TimerBox value={timeLeft.days} label={language === "id" ? "Hari" : "Days"} />
+          <TimerBox value={timeLeft.hours} label={language === "id" ? "Jam" : "Hours"} />
+          <TimerBox value={timeLeft.minutes} label={language === "id" ? "Menit" : "Mins"} />
+          <TimerBox value={timeLeft.seconds} label={language === "id" ? "Detik" : "Secs"} />
+        </div>
+
+        <a
+          href={generateCalendarLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ zIndex: Z_INDEX.BASE_CONTENT }}
+          className="w-full max-w-xs py-4 bg-[#ebeadf] border border-transparent rounded-xl text-[#505b24] font-bold font-sans flex items-center justify-center gap-2 hover:bg-[#ebeadf]/90 transition-all shadow-md uppercase tracking-[0.1em] text-[10px] relative"
+        >
+          <Bell size={14} />
+          {language === "id" ? "Remind Me" : "Remind Me"}
+        </a>
+      </motion.div></div>
     </div>
+
   );
 }

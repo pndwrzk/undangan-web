@@ -141,7 +141,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           </motion.div>
 
           {/* DYNAMIC SWIPE CARD (Stands by at the bottom, does not disappear) */}
-          
+
           {/* Card Initial State (Covering Grid) */}
           {!isRevealed && (
             <motion.div
@@ -163,9 +163,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                   <ChevronDown className="text-primary/60 w-5 h-5" />
                 </div>
                 <div className="text-center">
-                  <p className="font-serif italic text-base text-primary/80 mb-1">
-                    {t.gift.sectionLabel}
-                  </p>
+
                   <p className="font-typewriter text-[9px] tracking-[0.2em] text-muted-foreground uppercase opacity-60">
                     {t.gift.swipeDown}
                   </p>
@@ -190,20 +188,18 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
               whileTap={{ scale: 0.98 }}
               className="bg-white border-2 border-primary/10 rounded-2xl py-3 px-10 shadow-xl cursor-grab active:cursor-grabbing relative mt-12 z-30 w-full max-w-xl group"
             >
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="absolute -top-12 bottom-full w-[1px] bg-gradient-to-t from-primary/30 to-transparent left-1/2 -translate-x-1/2 pointer-events-none" 
+                className="absolute -top-12 bottom-full w-[1px] bg-gradient-to-t from-primary/30 to-transparent left-1/2 -translate-x-1/2 pointer-events-none"
               />
-              
+
               <div className="flex flex-col items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors animate-bounce mt-4">
                   <ChevronUp className="text-primary/60 w-5 h-5" />
                 </div>
                 <div className="text-center">
-                  <p className="font-serif italic text-base text-primary/80 mb-1">
-                    {t.gift.sectionLabel}
-                  </p>
+
                   <p className="font-typewriter text-[9px] tracking-[0.2em] text-muted-foreground uppercase opacity-60">
                     {t.gift.swipeUp}
                   </p>
