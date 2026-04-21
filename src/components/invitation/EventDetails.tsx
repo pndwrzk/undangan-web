@@ -154,9 +154,9 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
             <span className="font-arabic text-[20px] md:text-3xl text-primary mb-6 md:mb-8 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
               {t.event.sectionLabel}
             </span>
-            <h2 className="md:text-[14px] text-[12px] text-primary/70 md:text-sm font-typewriter mb-4 md:mb-6 text-muted-foreground leading-snug max-w-2xl mx-auto px-6 opacity-90">
+            <h2 className="md:text-[15px] text-[13px] text-primary/70 md:text-sm font-typewriter mb-4 md:mb-6 text-muted-foreground leading-snug max-w-2xl mx-auto px-6 opacity-90">
               "{t.event.title.split(' (')[0]}"
-              <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-3 md:mt-4 not-italic opacity-40">
+              <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-3 md:mt-4 not-italic opacity-60">
                 {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}
               </span>
             </h2>
@@ -234,7 +234,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
 
       </section>
 
-      <div className="py-16 px-[30px]   md:px-[80px] bg-[#f6f3e8]">  <motion.div
+      <div className="py-16 px-[25px]   md:px-[100px] bg-[#f6f3e8]">  <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

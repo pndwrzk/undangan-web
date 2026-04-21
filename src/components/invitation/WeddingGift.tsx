@@ -156,7 +156,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-white border-2 border-primary/10 rounded-2xl py-3 px-10 shadow-xl cursor-grab active:cursor-grabbing absolute inset-0 m-auto h-fit z-30 w-full max-w-xl group"
+              className="bg-white border-2 border-primary/10 rounded-2xl py-5 px-10 shadow-xl cursor-grab active:cursor-grabbing absolute inset-0 m-auto h-fit z-30 w-full max-w-xl group"
             >
               <div className="flex flex-col items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors animate-bounce mt-4">
@@ -186,7 +186,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-white border-2 border-primary/10 rounded-2xl py-3 px-10 shadow-xl cursor-grab active:cursor-grabbing relative mt-12 z-30 w-full max-w-xl group"
+              className="bg-white border-2 border-primary/10 rounded-2xl py-5 px-10 shadow-xl cursor-grab active:cursor-grabbing relative mt-12 z-30 w-full max-w-xl group"
             >
               <motion.div
                 initial={{ opacity: 0 }}

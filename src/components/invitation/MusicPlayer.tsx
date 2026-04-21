@@ -76,10 +76,11 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
                   type="range"
                   min="0"
                   max={duration && !isNaN(duration) && isFinite(duration) ? duration : 0}
+                  step="0.1"
                   value={currentTime}
                   onInput={handleInput}
                   onChange={handleSeek}
-                  className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-primary bg-primary/10"
                   style={{
                     background: `linear-gradient(to right, var(--color-primary) ${progress}%, color-mix(in srgb, var(--color-primary), transparent 90%) ${progress}%)`
                   }}
