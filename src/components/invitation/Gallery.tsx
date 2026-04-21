@@ -84,8 +84,9 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
           <DialogContent
             showCloseButton={false}
             className="max-w-[95vw] md:max-w-4xl p-0 overflow-visible bg-transparent border-none shadow-none ring-0"
+            onClick={() => setSelectedPhoto(null)}
           >
-            <div className="relative flex items-center justify-center w-full h-full">
+            <div className="relative flex items-center justify-center w-full h-full" onClick={(e) => e.stopPropagation()}>
               {selectedPhoto && (
                 <div className="relative group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
