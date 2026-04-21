@@ -35,10 +35,10 @@ const greatVibes = Great_Vibes({
 
 export const metadata = {
   title: "The Wedding of Alvia & Pandiwa",
-  description: "Our forever begins, be there as our story turns into a life time.",
+  description: "Our forever begins, be there as our story turns into a lifetime.",
   openGraph: {
     title: "The Wedding of Alvia & Pandiwa",
-    description: "Our forever begins, be there as our story turns into a life time.",
+    description: "Our forever begins, be there as our story turns into a lifetime.",
     url: "http://finallyhomewithpandiwa.com",
     images: [
       {
