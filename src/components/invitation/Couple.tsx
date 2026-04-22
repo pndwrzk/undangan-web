@@ -65,9 +65,9 @@ function PersonSection({
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
         style={{ zIndex: Z_INDEX.SECTION_CONTENT }}
-        className={`relative p-8 md:p-8 lg:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl`}
+        className={`relative p-8 md:p-8 lg:p-16 ${align === "right" ? "text-right self-end" : "text-left self-start"} max-w-xl md:mb-3 mb-5`}
       >
-        <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 md:mb-5 mb-6 drop-shadow-sm">
+        <p className="font-typewriter text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-3 drop-shadow-sm">
           {label}
         </p>
         <h3 className="text-xl md:text-2xl font-serif text-white mb-0.5 drop-shadow-md">
