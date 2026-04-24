@@ -85,6 +85,7 @@ function SplashContent({
               fill
               className="object-cover opacity-30 grayscale saturate-50"
               priority
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
           </m.div>

@@ -76,6 +76,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
             quality={100}
             sizes="100vw"
             className="object-cover opacity-50"
+            unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/18 to-background/55" />
         </m.div>
