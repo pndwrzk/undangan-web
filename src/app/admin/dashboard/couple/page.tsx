@@ -269,6 +269,7 @@ export default function CouplePage() {
                     fill
                     className="object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" 
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
                   />
                   
                   {/* Photo Actions Overlay - desktop hover only */}
@@ -348,6 +349,7 @@ export default function CouplePage() {
                     fill
                     className="object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" 
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
                   />
                   
                   {/* Photo Actions Overlay - desktop hover only */}
@@ -466,6 +468,7 @@ export default function CouplePage() {
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700" 
                       sizes="(max-width: 768px) 100vw, 33vw"
+                      unoptimized
                     />
                     
                     {/* Desktop hover overlay */}
