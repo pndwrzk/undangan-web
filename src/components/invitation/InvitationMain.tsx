@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { usePrefetch } from "@/hooks/usePrefetch";
 import dynamic from "next/dynamic";
 import MusicPlayer from "@/components/invitation/MusicPlayer";
 import { Z_INDEX } from "@/lib/z-index";
@@ -55,6 +56,12 @@ export default function InvitationMain({
   const { language, setLanguage, t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  // Prefetch admin routes for faster navigation
+  usePrefetch([
+    '/admin/dashboard',
+    '/admin/login',
+  ]);
 
   useEffect(() => {
     setMounted(true);

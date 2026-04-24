@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -47,7 +47,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-md bg-white p-12 rounded-[3rem] shadow-2xl border border-primary/5 relative"
@@ -90,7 +90,7 @@ export default function LoginPage() {
             Login to Dashboard
           </Button>
         </form>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

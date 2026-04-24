@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import {
   Form,
   FormControl,
@@ -87,7 +87,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
 
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", damping: 20 }}
@@ -114,7 +114,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
               </Button>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </section>
     );
   }
@@ -128,23 +128,23 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
 
 
       {/* Floating Particles */}
-      {/* <motion.div
+      {/* <m.div
         animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/4 left-[10%] text-primary/10 pointer-events-none"
       >
         <Heart size={44} />
-        <Heart size={33} />  <Heart size={22} />  <Heart size={11} />  <Heart size={1} />  </motion.div>
-      <motion.div
+        <Heart size={33} />  <Heart size={22} />  <Heart size={11} />  <Heart size={1} />  </m.div>
+      <m.div
         animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute bottom-1/4 right-[10%] text-primary/10 pointer-events-none"
       >
         <Heart size={60} />
-      </motion.div> */}
+      </m.div> */}
 
       <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-4xl mx-auto relative">
-        {/* <motion.div
+        {/* <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -157,9 +157,9 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
           <p className="text-muted-foreground font-serif italic max-w-2xl md:max-w-3xl mx-auto text-base md:text-base leading-snug">
             {t.rsvp.subtitle}
           </p>
-        </motion.div> */}
+        </m.div> */}
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -171,10 +171,10 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
             {t.rsvp.subtitle}
           </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
-        </motion.div>
+        </m.div>
 
         {!guest ? (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -189,9 +189,9 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 : "Please use your unique invitation link to access and confirm your attendance."
               }
             </p>
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -230,13 +230,13 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                           >
                             <AnimatePresence>
                               {field.value === "yes" && (
-                                <motion.div
+                                <m.div
                                   initial={{ opacity: 0, scale: 0 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   className="absolute top-2 right-3"
                                 >
                                   <CheckCircle2 className="text-primary w-4 h-4" />
-                                </motion.div>
+                                </m.div>
                               )}
                             </AnimatePresence>
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-500 ${field.value === "yes" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
@@ -262,13 +262,13 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                           >
                             <AnimatePresence>
                               {field.value === "no" && (
-                                <motion.div
+                                <m.div
                                   initial={{ opacity: 0, scale: 0 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   className="absolute top-2 right-3"
                                 >
                                   <CheckCircle2 className="text-primary w-4 h-4" />
-                                </motion.div>
+                                </m.div>
                               )}
                             </AnimatePresence>
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-500 ${field.value === "no" ? "bg-primary text-white scale-110 shadow-md" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
@@ -293,7 +293,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 {/* Conditional Number of Attendees Field */}
                 <AnimatePresence>
                   {form.watch("attendance") === "yes" && (
-                    <motion.div
+                    <m.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
@@ -367,7 +367,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                           );
                         }}
                       />
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
 
@@ -377,7 +377,7 @@ export default function RSVP({ couple, guest }: { couple: CoupleType | null, gue
                 </Button>
               </form>
             </Form>
-          </motion.div>
+          </m.div>
         )}
       </div>
     </section>

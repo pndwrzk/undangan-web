@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Users, CheckCircle, XCircle, Heart } from "lucide-react";
 
 export default function OverviewPage() {
@@ -69,7 +69,7 @@ export default function OverviewPage() {
           { label: 'Declined', val: stats.declined, icon: <XCircle />, color: 'bg-red-50 text-red-600' },
           { label: 'Total Guests', val: stats.guests, icon: <Users />, color: 'bg-amber-50 text-amber-600' },
         ].map((s, i) => (
-          <motion.div
+          <m.div
             key={i}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ export default function OverviewPage() {
             <div className={`p-3 rounded-2xl w-fit mb-4 ${s.color}`}>{s.icon}</div>
             <p className="text-sm font-typewriter uppercase tracking-widest text-muted-foreground mb-1">{s.label}</p>
             <p className="text-4xl font-serif font-bold">{s.val}</p>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
@@ -98,7 +98,7 @@ export default function OverviewPage() {
                 strokeWidth="12"
               />
               {/* Confirmed Segment */}
-              <motion.circle
+              <m.circle
                 cx="50"
                 cy="50"
                 r="40"
@@ -113,7 +113,7 @@ export default function OverviewPage() {
               />
               {/* Declined Segment */}
               {declinedPct > 0 && (
-                <motion.circle
+                <m.circle
                   cx="50"
                   cy="50"
                   r="40"
@@ -145,7 +145,7 @@ export default function OverviewPage() {
                 </div>
                 <p className="text-3xl font-serif font-bold">{stats.confirmed}</p>
                 <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                  <motion.div 
+                  <m.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${confirmedPct}%` }}
                     className="h-full bg-primary" 
@@ -161,7 +161,7 @@ export default function OverviewPage() {
                 </div>
                 <p className="text-3xl font-serif font-bold">{stats.declined}</p>
                 <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                  <motion.div 
+                  <m.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${declinedPct}%` }}
                     className="h-full bg-red-500" 
@@ -196,7 +196,7 @@ export default function OverviewPage() {
                       <p className="text-3xl font-serif font-bold text-primary">{avgGuests}</p>
                     </div>
                     <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                      <motion.div 
+                      <m.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.min((parseFloat(avgGuests) / 5) * 100, 100)}%` }}
                         className="h-full bg-primary"
@@ -244,7 +244,7 @@ export default function OverviewPage() {
                 {dates.length > 0 ? (
                   <div className="space-y-3">
                     {dates.map((date, i) => (
-                      <motion.div
+                      <m.div
                         key={date}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -256,14 +256,14 @@ export default function OverviewPage() {
                           <p className="text-sm font-serif font-bold">{dateGroups[date]}</p>
                         </div>
                         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                          <motion.div
+                          <m.div
                             initial={{ width: 0 }}
                             animate={{ width: `${(dateGroups[date] / maxCount) * 100}%` }}
                             className="h-full bg-gradient-to-r from-primary to-primary/50"
                             transition={{ duration: 1, ease: "easeOut", delay: i * 0.1 }}
                           />
                         </div>
-                      </motion.div>
+                      </m.div>
                     ))}
                   </div>
                 ) : (
@@ -304,7 +304,7 @@ export default function OverviewPage() {
               color: 'from-amber-500 to-amber-600'
             },
           ].map((metric, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -317,7 +317,7 @@ export default function OverviewPage() {
                 <p className="text-4xl font-serif font-bold mb-1">{metric.value}</p>
                 <p className="text-xs text-muted-foreground font-serif italic">{metric.description}</p>
               </div>
-            </motion.div>
+            </m.div>
           ));
         })()}
       </div>
@@ -344,7 +344,7 @@ export default function OverviewPage() {
             return (
               <div className="space-y-4">
                 {topWishes.map((wish: any, i: number) => (
-                  <motion.div
+                  <m.div
                     key={wish.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -372,7 +372,7 @@ export default function OverviewPage() {
                       <p className="text-xs text-muted-foreground font-serif line-clamp-2 mb-2">{wish.message}</p>
                       
                       <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                        <motion.div
+                        <m.div
                           initial={{ width: 0 }}
                           animate={{ width: `${((wish.likes || 0) / maxLikes) * 100}%` }}
                           className="h-full bg-gradient-to-r from-red-500 to-red-400"
@@ -380,7 +380,7 @@ export default function OverviewPage() {
                         />
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             );

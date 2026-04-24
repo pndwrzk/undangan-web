@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Music, Pause, Play, ChevronDown, Download } from "lucide-react";
 import { useMusic } from "@/components/providers/MusicProvider";
 import { useAudioPreload, isAudioCached } from "@/hooks/useAudioPreload";
@@ -53,7 +53,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
         {isExpanded && (
           <>
             {/* Click Outside Overlay */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -62,7 +62,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
               style={{ zIndex: -1 }}
             />
             
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20, scale: 0.9, originX: 1, originY: 1 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -124,14 +124,14 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
                   {isPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} fill="currentColor" className="ml-1" />}
                 </button>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>
       
       <div className="flex items-center gap-3">
         {isPlaying && !isExpanded && (
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex gap-1 h-3 items-end mb-1"
@@ -143,7 +143,7 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
                 style={{ animationDelay: `${i * 0.2}s` }}
               />
             ))}
-          </motion.div>
+          </m.div>
         )}
         
         <button
@@ -155,12 +155,12 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
           }`}
         >
           {isPlaying ? (
-            <motion.div
+            <m.div
               animate={{ rotate: 360 }}
               transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
             >
               <Music size={22} />
-            </motion.div>
+            </m.div>
           ) : (
             <Music size={22} className={!isExpanded ? "animate-pulse" : ""} />
           )}

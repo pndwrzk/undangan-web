@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Z_INDEX } from "@/lib/z-index";
 
@@ -24,7 +24,7 @@ export default function PetalsOverlay() {
   return (
     <div style={{ zIndex: Z_INDEX.PETALS_OVERLAY }} className="fixed inset-0 pointer-events-none overflow-hidden">
       {petals.map((petal) => (
-        <motion.div
+        <m.div
           key={petal.id}
           initial={{ 
             top: "-10%", 
@@ -52,7 +52,7 @@ export default function PetalsOverlay() {
             <path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z" className="opacity-40" />
             <path d="M22 12C22 12 17 15 12 15C7 15 2 12 2 12C2 12 7 9 12 9C17 9 22 12 22 12Z" className="opacity-20" />
           </svg>
-        </motion.div>
+        </m.div>
       ))}
     </div>
   );

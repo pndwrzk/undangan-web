@@ -2,7 +2,7 @@
 
 import { Couple as CoupleType } from "@/types";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Z_INDEX } from "@/lib/z-index";
 
@@ -60,7 +60,7 @@ function PersonSection({
       </div>
 
       {/* Content container */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 30, x: align === "right" ? 30 : -30 }}
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
@@ -78,7 +78,7 @@ function PersonSection({
             {bio}
           </p>
         )}
-      </motion.div>
+      </m.div>
 
       {/* CSS untuk desktop responsiveness */}
       <style jsx>{`

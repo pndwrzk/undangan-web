@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Clock, MapPin, ExternalLink, Bell, Sparkles, Heart } from "lucide-react";
 import TornEdge from "@/components/invitation/TornEdge";
@@ -130,7 +130,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
         style={{ zIndex: Z_INDEX.SECTION_BASE }}
         className="py-8 md:py-12 bg-[#fcfaf3] relative -mt-[2px] overflow-hidden"
       >
-        <motion.div
+        <m.div
           style={{
             y: backgroundY,
             backgroundImage: "url('/images/parallex_bg.jpeg')",
@@ -144,7 +144,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
         />
         <TornEdge position="top" color="fill-muted/5" />
         <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-6xl mx-auto relative">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -161,7 +161,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
               </span>
             </h2>
             <div className="w-12 md:w-16 h-[1px] bg-primary/10 mx-auto" />
-          </motion.div>
+          </m.div>
 
 
 
@@ -178,7 +178,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
         <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="max-w-6xl mx-auto relative">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
             {events.map((ev, idx) => (
-              <motion.div
+              <m.div
                 key={ev.id || idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -225,7 +225,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
                     {t.event.viewMap}
                   </a>
                 )}
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
@@ -234,14 +234,14 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
 
       </section>
 
-      <div className="py-16 px-[25px]   md:px-[100px] bg-[#f6f3e8]">  <motion.div
+      <div className="py-16 px-[25px]   md:px-[100px] bg-[#f6f3e8]">  <m.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="flex flex-col items-center justify-center bg-[#505b24] p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-xl w-full relative overflow-hidden"
       >
         {/* Decorative Elements */}
-        <motion.div
+        <m.div
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 90, 0],
@@ -251,7 +251,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
           className="absolute -top-10 -right-10 w-40 h-30 bg-white/30 rounded-full blur-3xl pointer-events-none"
         />
         <div className="text-[#ebeadf] md:text-[16px] text-[14px] font-semibold"> {language === "id" ? "SAVE THE DATE!" : "SAVE THE DATE!"}</div>
-        <motion.div
+        <m.div
           animate={{
             scale: [1, 1.1, 1],
             opacity: [0.05, 0.08, 0.05]
@@ -281,7 +281,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
           <Bell size={14} />
           {language === "id" ? "Remind Me" : "Remind Me"}
         </a>
-      </motion.div></div>
+      </m.div></div>
     </div>
 
   );

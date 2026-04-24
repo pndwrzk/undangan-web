@@ -52,6 +52,7 @@ export const metadata = {
 
 import { MusicProvider } from "@/components/providers/MusicProvider";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import GlobalAudio from "@/components/audio/GlobalAudio";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -76,14 +77,16 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       </head>
       <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} ${greatVibes.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
-        <LanguageProvider>
-          <AuthProvider>
-            <MusicProvider>
-              <GlobalAudio />
-              {children}
-            </MusicProvider>
-          </AuthProvider>
-        </LanguageProvider>
+        <MotionProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <MusicProvider>
+                <GlobalAudio />
+                {children}
+              </MusicProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </MotionProvider>
         <Toaster />
       </body>
     </html>

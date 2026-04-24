@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
@@ -49,7 +49,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
       <div className="max-w-4xl mx-auto text-center">
 
         {/* HEADER */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -61,7 +61,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
             {t.gift.description}
           </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
-        </motion.div>
+        </m.div>
 
 
         {/* REVEAL CONTAINER */}
@@ -70,7 +70,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           {/* Visual Rail / Pull Track (Only in cover state) */}
           <AnimatePresence>
             {!isRevealed && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.3 } }}
@@ -80,7 +80,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           </AnimatePresence>
 
           {/* GRID (Hidden until revealed) */}
-          <motion.div
+          <m.div
             animate={{
               opacity: isRevealed ? 1 : 0,
               scale: isRevealed ? 1 : 0.98,
@@ -94,7 +94,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
               const bankInfo = getBankInfo(acc.bankName);
 
               return (
-                <motion.div
+                <m.div
                   key={acc.id || acc.accountNumber}
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -138,16 +138,16 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                       )}
                     </button>
                   </div>
-                </motion.div>
+                </m.div>
               );
             })}
-          </motion.div>
+          </m.div>
 
           {/* DYNAMIC SWIPE CARD (Stands by at the bottom, does not disappear) */}
 
           {/* Card Initial State (Covering Grid) */}
           {!isRevealed && (
-            <motion.div
+            <m.div
               layoutId="dynamic-swipe-card"
               drag="y"
               dragDirectionLock
@@ -172,12 +172,12 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           )}
 
           {/* Card Revealed State (Standby Below Grid) */}
           {isRevealed && (
-            <motion.div
+            <m.div
               layoutId="dynamic-swipe-card"
               drag="y"
               dragDirectionLock
@@ -191,7 +191,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
               whileTap={{ scale: 0.98 }}
               className="bg-white border-2 border-primary/10 rounded-2xl py-5 px-10 shadow-xl cursor-grab active:cursor-grabbing relative mt-12 z-30 w-full max-w-xl group"
             >
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="absolute -top-12 bottom-full w-[1px] bg-gradient-to-t from-primary/30 to-transparent left-1/2 -translate-x-1/2 pointer-events-none"
@@ -208,12 +208,12 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           )}
         </div>
 
         {/* FOOTNOTE */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -223,7 +223,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
           <p className="text-[13px] md:text-sm text-muted-foreground font-typewriter leading-snug">
             {t.gift.warningNote}
           </p>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

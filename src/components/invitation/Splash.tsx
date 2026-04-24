@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -64,7 +64,7 @@ function SplashContent({
   return (
     <AnimatePresence>
       {!isOpen && (
-        <motion.div
+        <m.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.15, filter: "blur(20px)" }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -72,7 +72,7 @@ function SplashContent({
           className="fixed inset-0 flex flex-col items-center justify-center bg-background overflow-hidden"
         >
           {/* Background Image with Overlay */}
-          <motion.div
+          <m.div
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
@@ -87,10 +87,10 @@ function SplashContent({
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
-          </motion.div>
+          </m.div>
 
           <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="relative text-center px-6 max-w-lg w-full">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
@@ -100,15 +100,15 @@ function SplashContent({
               <h1 className="text-5xl md:text-7xl font-serif text-foreground mb-4">
                 {brideName} <br /> <span className="italic text-primary">&</span> <br /> {groomName}
               </h1>
-              <motion.div
+              <m.div
                 initial={{ width: 0 }}
                 animate={{ width: 64 }}
                 transition={{ delay: 1, duration: 1.5 }}
                 className="h-[1px] bg-primary/20 mx-auto mt-6"
               />
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 1 }}
@@ -120,7 +120,7 @@ function SplashContent({
 
               <AnimatePresence mode="wait">
                 {!showSearch ? (
-                  <motion.div
+                  <m.div
                     key="guest-info"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -144,9 +144,9 @@ function SplashContent({
                         {t.splash.findInvitation}
                       </button>
                     )}
-                  </motion.div>
+                  </m.div>
                 ) : (
-                  <motion.div
+                  <m.div
                     key="search-form"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -191,12 +191,12 @@ function SplashContent({
                         </button>
                       </div>
                     </form>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 1 }}
@@ -211,21 +211,21 @@ function SplashContent({
                 </span>
                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Button>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Ornamental Elements */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.1 }}
             transition={{ delay: 1.5, duration: 2 }}
             className="absolute top-0 left-0 w-full h-full pointer-events-none"
           >
             {/* Lead to SplashContent div end */}
-          </motion.div>
+          </m.div>
 
           {/* Language Switcher - Not Fixed, part of Splash */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 1 }}
@@ -238,8 +238,8 @@ function SplashContent({
             >
               {language === "id" ? "EN" : "ID"}
             </button>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Heart } from "lucide-react";
 import { Z_INDEX } from "@/lib/z-index";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -50,7 +50,7 @@ export default function Story() {
       <div className="absolute bottom-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none z-0" />
       
       {/* Floating Hearts - Multiple positions with varied sizes */}
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, 20, 0],
           rotate: [0, -10, 0],
@@ -60,9 +60,9 @@ export default function Story() {
         className="absolute bottom-1/3 right-[12%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={60} fill="currentColor" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, -18, 0],
           rotate: [0, 15, 0],
@@ -72,9 +72,9 @@ export default function Story() {
         className="absolute top-[40%] left-[12%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={45} fill="currentColor" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, 12, 0],
           rotate: [0, -12, 0],
@@ -84,9 +84,9 @@ export default function Story() {
         className="absolute bottom-[15%] right-[8%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={52} fill="currentColor" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, -15, 0],
           rotate: [0, 12, 0],
@@ -96,9 +96,9 @@ export default function Story() {
         className="absolute top-1/4 left-[8%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={55} fill="currentColor" />
-      </motion.div>
+      </m.div>
       
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, 15, 0],
           rotate: [0, -8, 0],
@@ -108,9 +108,9 @@ export default function Story() {
         className="absolute top-[15%] right-[15%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={48} fill="currentColor" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, -10, 0],
           rotate: [0, 8, 0],
@@ -120,9 +120,9 @@ export default function Story() {
         className="absolute top-[60%] right-[20%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={42} fill="currentColor" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         animate={{ 
           y: [0, -12, 0],
           rotate: [0, 10, 0],
@@ -132,11 +132,11 @@ export default function Story() {
         className="absolute bottom-[25%] left-[15%] text-primary/30 pointer-events-none z-0"
       >
         <Heart size={50} fill="currentColor" />
-      </motion.div>
+      </m.div>
 
       <div className="max-w-6xl mx-auto" style={{ zIndex: Z_INDEX.BASE_CONTENT }}>
         {/* Section Title */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -145,10 +145,10 @@ export default function Story() {
         >
           <span className="font-typewriter text-[14px] md:text-xs uppercase tracking-[0.3em] text-primary mb-6 block">{t.story.title}</span>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
-        </motion.div>
+        </m.div>
 
         {/* Story Text - Above Images */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -164,12 +164,12 @@ export default function Story() {
           <p className="text-[11px] md:text-xs text-muted-foreground font-typewriter tracking-[0.1em] md:tracking-widest leading-relaxed text-center mt-4">
             {t.story.paragraph3}
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Grid Layout: 2 columns side by side */}
         <div className="grid grid-cols-2 gap-4 md:gap-8 mb-8 md:mb-12 max-w-3xl mx-auto">
           {/* Left Image */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -187,10 +187,10 @@ export default function Story() {
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </motion.div>
+          </m.div>
 
           {/* Right Rotating Images */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -213,7 +213,7 @@ export default function Story() {
             ))}
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

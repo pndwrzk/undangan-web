@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -60,7 +60,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
       style={{ height: 'min(100vh, calc(100vw * 4/3))', minHeight: '500px' }}
     >
       {/* Background with parallax and overlay */}
-        <motion.div
+        <m.div
           style={{
             y,
             scale,
@@ -78,7 +78,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
             className="object-cover opacity-50"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/18 to-background/55" />
-        </motion.div>
+        </m.div>
 
       {/* Language Switcher */}
       <div style={{ zIndex: Z_INDEX.TORN_EDGE }} className="absolute top-8 right-8">
@@ -93,7 +93,7 @@ export default function Hero({ couple }: { couple: Couple | null }) {
       <div style={{ zIndex: Z_INDEX.BASE_CONTENT }} className="w-full max-w-4xl mx-auto relative flex flex-col items-center justify-center gap-12 px-6 md:px-8 lg:px-16">
         <div className="flex-1 text-center">
           {/* Animated heading */}
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -101,29 +101,29 @@ export default function Hero({ couple }: { couple: Couple | null }) {
               className="text-6xl md:text-8xl font-serif text-foreground leading-tight mb-12 md:mb-16 drop-shadow-lg"
             >
               {brideName} <br />
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1, duration: 1, ease: "easeOut" }}
                 className="text-primary italic"
               >
                 &
-              </motion.span>{" "}
+              </m.span>{" "}
               {groomName}
-            </motion.h1>
+            </m.h1>
 
           {/* Animated hashtag */}
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
               className="text-primary font-typewriter tracking-[0.2em] text-lg md:text-3xl mb-8 drop-shadow-md"
             >
               {officialHashtag}
-            </motion.p>
+            </m.p>
 
           {/* Animated divider */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ duration: 1, delay: 1, ease: "easeOut" }}

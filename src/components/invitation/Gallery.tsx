@@ -1,7 +1,7 @@
 "use client";
 
 import type { Gallery } from "@/types";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -29,7 +29,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
       <div className="max-w-6xl mx-auto">
 
         {/* Animated gallery header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -43,13 +43,13 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
             {t.gallery.description}
           </p>
           <div className="w-20 h-[1px] bg-primary/30 mx-auto" />
-        </motion.div>
+        </m.div>
 
 
         {/* Animated gallery grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
           {gallery.map((photo, index) => (
-            <motion.div
+            <m.div
               key={photo.id || index}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -72,7 +72,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                   </span>
                 )}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
@@ -121,7 +121,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
           </DialogContent>
         </Dialog>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -133,10 +133,10 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
             {t.gallery.quote}
           </p>
           <div className="w-4 md:w-8 h-[1px] bg-primary/20 shrink-0" />
-        </motion.div>
+        </m.div>
       </div>
 
-      {/* <motion.div
+      {/* <m.div
         animate={{
           y: [0, -15, 0],
           rotate: [-12, -8, -12],
@@ -148,7 +148,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
         }}
         className="absolute top-16 left-8 w-20 h-20 border-4 border-primary/10 rounded-full hidden md:block"
       />
-      <motion.div
+      <m.div
         animate={{
           y: [0, 20, 0],
           rotate: [45, 50, 45],

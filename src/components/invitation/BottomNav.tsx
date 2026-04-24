@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Home, Heart, Calendar, MessageSquare } from "lucide-react";
 import { Z_INDEX } from "@/lib/z-index";
 import { useState, useEffect } from "react";
@@ -85,7 +85,7 @@ export default function BottomNav() {
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ y: 100 }}
       animate={{ y: isVisible ? 0 : 120 }}
       transition={{ 
@@ -130,7 +130,7 @@ export default function BottomNav() {
 
               {/* Sophisticated Sliding Underline */}
               {isActive && (
-                <motion.div
+                <m.div
                   layoutId="activeUnderline"
                   className="absolute bottom-1 w-8 h-[1.5px] bg-accent rounded-full"
                   initial={{ opacity: 0 }}
@@ -142,6 +142,6 @@ export default function BottomNav() {
           );
         })}
       </nav>
-    </motion.div>
+    </m.div>
   );
 }

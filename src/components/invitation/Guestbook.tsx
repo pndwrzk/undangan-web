@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -15,13 +15,13 @@ import { apiRequest } from "@/lib/api-client";
 import { Guest as GuestType, Guestbook as GuestbookType } from "@/types";
 
 const EmptyState = ({ language, t }: { language: string, t: any }) => (
-  <motion.div 
+  <m.div 
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     className="flex flex-col items-center justify-center py-12 text-center space-y-4"
   >
     <div className="relative mb-6">
-      <motion.div
+      <m.div
         animate={{
           y: [0, -12, 0],
           rotate: [0, 2, -2, 0],
@@ -34,19 +34,19 @@ const EmptyState = ({ language, t }: { language: string, t: any }) => (
         className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center relative z-10"
       >
         <Mail size={40} className="text-primary/40" />
-      </motion.div>
-      <motion.div
+      </m.div>
+      <m.div
         animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"
       />
-      <motion.div
+      <m.div
         animate={{ x: [0, 5, -5, 0], y: [0, 3, -3, 0] }}
         transition={{ duration: 12, repeat: Infinity }}
         className="absolute -top-1 -right-1 text-primary/30"
       >
         <Sparkles size={22} />
-      </motion.div>
+      </m.div>
     </div>
     <div className="space-y-2">
       <p className="font-serif italic text-md md:text-lg text-primary/80">
@@ -57,7 +57,7 @@ const EmptyState = ({ language, t }: { language: string, t: any }) => (
       </p>
     </div>
     <div className="w-12 h-[1px] bg-primary/10" />
-  </motion.div>
+  </m.div>
 );
 
 export default function Guestbook({ guest }: { guest?: GuestType | null }) {
@@ -215,7 +215,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
   return (
     <section id="guestbook" style={{ zIndex: Z_INDEX.GUESTBOOK_SECTION }} className="py-16 md:py-24 px-6 md:px-8 lg:px-16 bg-[#fcfaf3] relative -mt-[2px]">
       <div className="max-w-4xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -232,7 +232,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
               <div className="w-8 h-[1px] bg-primary/20" />
             </div>
           </div>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* Form */}
@@ -299,7 +299,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                 <div className="text-center py-12 text-muted-foreground font-serif italic">{t.guestbook.loading}</div>
               ) : (
                 <AnimatePresence mode="wait">
-                  <motion.div
+                  <m.div
                     key={currentPage}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -343,7 +343,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                     {messages.length === 0 && (
                       <EmptyState language={language} t={t.guestbook} />
                     )}
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
               )}
             </div>
