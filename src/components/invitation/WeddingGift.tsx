@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 import { Gift as GiftType } from "@/types";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { getBankInfo } from "@/constants/banks";
@@ -106,11 +107,13 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                     <p className="text-base font-typewriter font-semibold text-slate-800 leading-tight">
                       {acc.accountName}
                     </p>
-                    <div className="h-5 w-16 flex items-center justify-end flex-shrink-0">
+                    <div className="h-5 w-16 flex items-center justify-end flex-shrink-0 relative">
                       {bankInfo ? (
-                        <img
+                        <Image
                           src={bankInfo.logo}
                           alt={acc.bankName}
+                          width={64}
+                          height={20}
                           className="max-h-5 w-auto object-contain opacity-80 grayscale"
                         />
                       ) : (

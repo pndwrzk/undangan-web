@@ -8,6 +8,7 @@ import { useLanguage } from "@/components/providers/LanguageProvider";
 import dynamic from "next/dynamic";
 import MusicPlayer from "@/components/invitation/MusicPlayer";
 import { Z_INDEX } from "@/lib/z-index";
+import { registerServiceWorker } from "@/lib/register-sw";
 
 const Splash = dynamic(() => import("@/components/invitation/Splash"), { ssr: false });
 const Hero = dynamic(() => import("@/components/invitation/Hero"), { ssr: false });
@@ -60,6 +61,9 @@ export default function InvitationMain({
     if (song) {
       setActiveSong(song);
     }
+    
+    // Register service worker for image caching
+    registerServiceWorker();
   }, [song, setActiveSong]);
 
   const handleToggleLanguage = () => {

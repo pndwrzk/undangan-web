@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Plus, Trash2, Image as ImageIcon, X, GripHorizontal, Pencil } from "lucide-react";
@@ -259,11 +260,12 @@ export default function GalleryPage() {
                           style={provided.draggableProps.style}
                         >
                           <div className="aspect-[4/5] relative">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img 
+                            <Image 
                               src={img.imageUrl} 
                               alt={img.caption || img.title || "Gallery image"} 
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0"
+                              fill
+                              className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                             
                             <div 
@@ -299,8 +301,14 @@ export default function GalleryPage() {
                                   
                                   <DialogBody>
                                     <div className="bg-muted/30 p-4 rounded-2xl border border-primary/5">
-                                      <div className="aspect-video w-full rounded-xl overflow-hidden mb-3">
-                                        <img src={img.imageUrl} alt={img.caption || img.title} className="w-full h-full object-cover" />
+                                      <div className="aspect-video w-full rounded-xl overflow-hidden mb-3 relative">
+                                        <Image 
+                                          src={img.imageUrl} 
+                                          alt={img.caption || img.title || "Gallery image"} 
+                                          fill
+                                          className="object-cover" 
+                                          sizes="400px"
+                                        />
                                       </div>
                                       <p className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground mb-1">Photo to delete:</p>
                                       <p className="font-serif text-lg truncate">{img.caption || img.title || "Untitled"}</p>

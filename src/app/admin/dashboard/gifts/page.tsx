@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Copy, Gift, Plus, Pencil, Trash2 } from "lucide-react";
@@ -184,8 +185,15 @@ export default function GiftsPage() {
                           {INDONESIAN_BANKS.map((bank) => (
                             <SelectItem key={bank.name} value={bank.name}>
                               <div className="flex items-center gap-2">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={bank.logo} alt={bank.name} className="w-5 h-auto max-h-4 object-contain" />
+                                <div className="relative w-5 h-4">
+                                  <Image 
+                                    src={bank.logo} 
+                                    alt={bank.name} 
+                                    fill
+                                    className="object-contain" 
+                                    sizes="20px"
+                                  />
+                                </div>
                                 <span>{bank.name}</span>
                               </div>
                             </SelectItem>
@@ -248,8 +256,15 @@ export default function GiftsPage() {
                       <span className="h-[1px] w-6 bg-primary/30"></span>
                       <div className="flex items-center gap-2">
                         {getBankInfo(g.bankName) ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={getBankInfo(g.bankName)?.logo} alt={g.bankName} className="h-4 w-auto object-contain" />
+                          <div className="relative h-4 w-16">
+                            <Image 
+                              src={getBankInfo(g.bankName)?.logo || ''} 
+                              alt={g.bankName} 
+                              fill
+                              className="object-contain" 
+                              sizes="64px"
+                            />
+                          </div>
                         ) : (
                           <p className="font-typewriter text-[10px] uppercase tracking-[0.3em] text-primary">{g.bankName}</p>
                         )}

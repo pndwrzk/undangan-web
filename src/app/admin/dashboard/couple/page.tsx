@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Pencil, Heart, Calendar, Hash, Image as ImageIcon, Trash2, Camera, User, Sparkles } from "lucide-react";
@@ -262,7 +263,13 @@ export default function CouplePage() {
                       <div className="animate-spin rounded-full h-10 w-10 border-4 border-white/20 border-t-white"></div>
                     </div>
                   )}
-                  <img src={couple?.groomImage || "/placeholder-groom.jpg"} alt="Groom" className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" />
+                  <Image 
+                    src={couple?.groomImage || "/placeholder-groom.jpg"} 
+                    alt="Groom" 
+                    fill
+                    className="object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" 
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                   
                   {/* Photo Actions Overlay - desktop hover only */}
                   <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/30">
@@ -335,7 +342,13 @@ export default function CouplePage() {
                       <div className="animate-spin rounded-full h-10 w-10 border-4 border-white/20 border-t-white"></div>
                     </div>
                   )}
-                  <img src={couple?.brideImage || "/placeholder-bride.jpg"} alt="Bride" className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" />
+                  <Image 
+                    src={couple?.brideImage || "/placeholder-bride.jpg"} 
+                    alt="Bride" 
+                    fill
+                    className="object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105" 
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                   
                   {/* Photo Actions Overlay - desktop hover only */}
                   <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/30">
@@ -447,7 +460,13 @@ export default function CouplePage() {
                         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
                       </div>
                     )}
-                    <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <Image 
+                      src={item.img} 
+                      alt={item.title} 
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                     
                     {/* Desktop hover overlay */}
                     <div className="absolute inset-0 hidden md:flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 z-20">

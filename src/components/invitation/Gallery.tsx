@@ -88,12 +88,16 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
             <div className="relative flex items-center justify-center w-full h-full" onClick={() => setSelectedPhoto(null)}>
               {selectedPhoto && (
                 <div className="relative group" onClick={(e) => e.stopPropagation()}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={selectedPhoto.imageUrl}
-                    alt={selectedPhoto.caption || "Gallery Photo"}
-                    className="max-w-full max-h-[85vh] md:max-h-[90vh] object-contain rounded-lg shadow-2xl"
-                  />
+                  <div className="relative max-w-full max-h-[85vh] md:max-h-[90vh]">
+                    <Image
+                      src={selectedPhoto.imageUrl}
+                      alt={selectedPhoto.caption || "Gallery Photo"}
+                      width={1200}
+                      height={1200}
+                      className="max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+                      priority
+                    />
+                  </div>
 
                   {/* Close button inside photo corner */}
                   <button

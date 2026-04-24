@@ -64,6 +64,16 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+        
+        {/* Preload critical images */}
+        <link rel="preload" as="image" href="/images/foto_prewad.jpeg" />
+        <link rel="preload" as="image" href="/images/foto_box.jpeg" />
+        <link rel="preload" as="image" href="/images/foto_kecil.jpeg" />
+        <link rel="preload" as="image" href="/hero.jpg" />
+        
+        {/* DNS prefetch for external resources */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       </head>
       <body className={`${playfair.variable} ${montserrat.variable} ${specialElite.variable} ${amiri.variable} ${greatVibes.variable} min-h-full font-sans bg-background text-foreground selection:bg-primary/30 antialiased`}>
         <LanguageProvider>
