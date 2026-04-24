@@ -13,8 +13,16 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState<string | null>(null);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [showSwipeHint, setShowSwipeHint] = useState(false);
 
   if (!gifts || gifts.length === 0) return null;
+
+  const handleCardClick = () => {
+    if (!isRevealed) {
+      setShowSwipeHint(true);
+      setTimeout(() => setShowSwipeHint(false), 2000);
+    }
+  };
 
   const handleCopy = async (num: string) => {
     try {
@@ -157,6 +165,7 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                 const isIntentional = info.offset.y > 40 || info.velocity.y > 200;
                 if (isIntentional) setIsRevealed(true);
               }}
+              onClick={handleCardClick}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="bg-white border-2 border-primary/10 rounded-2xl py-5 px-10 shadow-xl cursor-grab active:cursor-grabbing absolute inset-0 m-auto h-fit -translate-y-10 md:-translate-y-0 z-30 w-full max-w-xl group"
@@ -166,12 +175,25 @@ export default function WeddingGift({ gifts }: { gifts?: GiftType[] }) {
                   <ChevronDown className="text-primary/60 w-5 h-5" />
                 </div>
                 <div className="text-center">
-
                   <p className="font-typewriter text-[9px] tracking-[0.2em] text-muted-foreground uppercase opacity-60">
                     {t.gift.swipeDown}
                   </p>
                 </div>
               </div>
+              
+              {/* Swipe Hint Toast */}
+              <AnimatePresence>
+                {showSwipeHint && (
+                  <m.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-2 rounded-full shadow-lg whitespace-nowrap"
+                  >
+                    <p className="text-xs font-typewriter">{t.gift.swipeHint}</p>
+                  </m.div>
+                )}
+              </AnimatePresence>
             </m.div>
           )}
 

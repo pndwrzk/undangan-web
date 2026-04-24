@@ -154,7 +154,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
             <span className="font-arabic text-[20px] md:text-3xl text-primary mb-6 md:mb-8 block leading-[1.6] md:leading-[1.8] drop-shadow-sm px-4" dir="rtl">
               {t.event.sectionLabel}
             </span>
-            <h2 className="md:text-[15px] text-[13px] text-primary/70 md:text-sm font-typewriter mb-4 md:mb-6 text-muted-foreground leading-snug max-w-2xl mx-auto px-6 opacity-90">
+            <h2 className="md:text-[15px] text-[13px] text-primary/70 md:text-sm font-typewriter mb-4 md:mb-6 text-muted-foreground leading-snug max-w-2xl mx-auto px-6 opacity-90 font-semibold">
               "{t.event.title.split(' (')[0]}"
               <span className="block text-[9px] md:text-[10px] font-typewriter uppercase tracking-[0.3em] mt-3 md:mt-4 not-italic opacity-60">
                 {t.event.title.includes('(') ? `(${t.event.title.split(' (')[1]}` : ''}

@@ -54,6 +54,7 @@ export interface TranslationDict {
     warningNote: string;
     swipeDown: string;
     swipeUp: string;
+    swipeHint: string;
   };
   guestbook: {
     sectionLabel: string;
@@ -143,6 +144,7 @@ export const translations: Record<Language, TranslationDict> = {
       warningNote: "Tanpa mengurangi rasa hormat, mohon maaf kami tidak menerima tamu di rumah.",
       swipeDown: "Geser ke bawah untuk melihat",
       swipeUp: "Geser ke atas untuk menutup",
+      swipeHint: "Psst... ini bukan tombol, geser aja ke bawah! 👇",
     },
     guestbook: {
       sectionLabel: "Kirim Doa",
@@ -230,6 +232,7 @@ export const translations: Record<Language, TranslationDict> = {
       warningNote: "With all due respect, we apologize as we are not accepting guests at home.",
       swipeDown: "Swipe down to reveal",
       swipeUp: "Swipe up to close",
+      swipeHint: "Psst... it's not a button, just swipe down! 👇",
     },
     guestbook: {
       sectionLabel: "Send Wishes",
