@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     "http://103.171.85.219:3000",
     "https://footer-fifth-napkin.ngrok-free.dev",
     "https://sharper-reassign-variety.ngrok-free.dev",
+    "http://103.193.179.119",
+    "103.193.179.119",
   ],
 };
 
