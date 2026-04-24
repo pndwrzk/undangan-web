@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Copy, Gift, Plus, Pencil, Trash2 } from "lucide-react";
+import { apiRequest } from "@/lib/api-client";
 import {
   Dialog,
   DialogContent,
@@ -70,7 +71,7 @@ export default function GiftsPage() {
     if (editingId) payload.id = editingId;
 
     try {
-      const res = await fetch("/api/admin/gifts", {
+      const res = await apiRequest("/api/admin/gifts", {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -97,7 +98,7 @@ export default function GiftsPage() {
 
   const handleDeleteGift = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/gifts?id=${id}`, { method: "DELETE" });
+      const res = await apiRequest(`/api/admin/gifts?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         setGifts(gifts.filter(g => g.id !== id));
         toast.success("Gift account deleted successfully!");
