@@ -17,10 +17,22 @@ export default withAuth(
     // Add cache headers for static assets
     const pathname = req.nextUrl.pathname;
     
+    // Cache audio files for 1 year
+    if (
+      pathname.startsWith('/uploads/') ||
+      pathname.startsWith('/api/music/serve/') ||
+      pathname.match(/\.(mp3|wav|ogg|m4a|aac|flac)$/i)
+    ) {
+      response.headers.set(
+        'Cache-Control',
+        'public, max-age=31536000, immutable'
+      );
+      response.headers.set('Accept-Ranges', 'bytes'); // Enable range requests for audio
+    }
+    
     // Cache images for 1 year
     if (
       pathname.startsWith('/images/') ||
-      pathname.startsWith('/uploads/') ||
       pathname.match(/\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$/i)
     ) {
       response.headers.set(

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Music, Pause, Play, ChevronDown } from "lucide-react";
+import { Music, Pause, Play, ChevronDown, Download } from "lucide-react";
 import { useMusic } from "@/components/providers/MusicProvider";
+import { useAudioPreload, isAudioCached } from "@/hooks/useAudioPreload";
 import { Z_INDEX } from "@/lib/z-index";
 
 import { Song } from "@/types";
@@ -13,6 +14,17 @@ interface MusicPlayerProps {
 export default function MusicPlayer({ song }: MusicPlayerProps) {
   const { isPlaying, togglePlay, currentTime, duration, seek, setIsSeeking, setCurrentTime } = useMusic();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isCached, setIsCached] = useState(false);
+  
+  const audioUrl = song?.url ? `/api/music/serve/${song.url.split('/').pop()}` : null;
+  const { isLoaded, isLoading, progress: loadProgress } = useAudioPreload(audioUrl);
+
+  // Check if audio is cached
+  useEffect(() => {
+    if (audioUrl) {
+      isAudioCached(audioUrl).then(setIsCached);
+    }
+  }, [audioUrl]);
   
   if (!song) return null;
 
@@ -58,7 +70,19 @@ export default function MusicPlayer({ song }: MusicPlayerProps) {
             >
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
-                  <p className="font-typewriter text-[9px] uppercase tracking-widest text-primary mb-1">Now Playing</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="font-typewriter text-[9px] uppercase tracking-widest text-primary">Now Playing</p>
+                    {isCached && (
+                      <span className="text-[8px] font-typewriter uppercase tracking-widest px-1.5 py-0.5 bg-green-100 text-green-600 rounded">
+                        Cached
+                      </span>
+                    )}
+                    {isLoading && (
+                      <span className="text-[8px] font-typewriter uppercase tracking-widest px-1.5 py-0.5 bg-blue-100 text-blue-600 rounded">
+                        Loading {loadProgress}%
+                      </span>
+                    )}
+                  </div>
                   <h4 className="font-serif text-base font-bold text-slate-800 leading-tight">{song.title}</h4>
                   <p className="font-serif text-xs text-muted-foreground">{song.artist}</p>
                 </div>
