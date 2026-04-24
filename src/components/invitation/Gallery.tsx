@@ -96,6 +96,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                       height={1200}
                       className="max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                       priority
+                      unoptimized
                     />
                   </div>
 

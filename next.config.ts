@@ -37,6 +37,8 @@ const nextConfig: NextConfig = {
         pathname: '/patterns/**',
       },
     ],
+    // Disable optimization for /uploads path - serve directly
+    unoptimized: false,
   },
   
   // Enable static exports optimization
