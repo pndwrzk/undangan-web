@@ -6,6 +6,8 @@ import { useMusic } from "@/components/providers/MusicProvider";
 export default function GlobalAudio() {
   const { isPlaying, activeSong, togglePlay, setCurrentTime, duration, setDuration, seekTime, isSeeking, setIsSeeking, setSeekTime } = useMusic();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const wasPlayingBeforeHiddenRef = useRef(false); // Track if music was playing before tab hidden
+  const userStoppedRef = useRef(false); // Track if user manually stopped the music
 
   const getAudioUrl = (url: string) => {
     if (url.startsWith("/uploads/songs/")) {
@@ -61,8 +63,21 @@ export default function GlobalAudio() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden && isPlaying) {
-        togglePlay(false);
+      if (document.hidden) {
+        // Tab is hidden - pause music if playing
+        if (isPlaying) {
+          wasPlayingBeforeHiddenRef.current = true;
+          togglePlay(false);
+        }
+      } else {
+        // Tab is visible again - resume music only if:
+        // 1. Music was playing before tab was hidden
+        // 2. User didn't manually stop the music
+        if (wasPlayingBeforeHiddenRef.current && !userStoppedRef.current) {
+          togglePlay(true);
+        }
+        // Reset the flag after returning to tab
+        wasPlayingBeforeHiddenRef.current = false;
       }
     };
 
@@ -70,6 +85,17 @@ export default function GlobalAudio() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
+  }, [isPlaying, togglePlay]);
+
+  // Track when user manually stops the music
+  useEffect(() => {
+    if (!isPlaying && !document.hidden) {
+      // User manually stopped the music (not due to tab change)
+      userStoppedRef.current = true;
+    } else if (isPlaying) {
+      // User started playing music - reset the flag
+      userStoppedRef.current = false;
+    }
   }, [isPlaying]);
 
   if (!activeSong) return null;
