@@ -22,7 +22,6 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState<Gallery | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPreloading, setIsPreloading] = useState(false);
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
   // Reset slide direction after animation
@@ -43,7 +42,6 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   };
 
   const handlePhotoClick = async (photo: Gallery, index: number) => {
-    setIsPreloading(true);
     try {
       await preloadImage(photo.imageUrl);
       setCurrentIndex(index);
@@ -53,8 +51,6 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
       // Still open modal even if preload fails
       setCurrentIndex(index);
       setSelectedPhoto(photo);
-    } finally {
-      setIsPreloading(false);
     }
   };
 
@@ -136,10 +132,8 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden rounded-2xl shadow-lg group ${
-                isPreloading ? 'cursor-wait' : 'cursor-pointer'
-              } ${classPattern[index % classPattern.length]}`}
-              onClick={() => !isPreloading && handlePhotoClick(photo, index)}
+              className={`relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer ${classPattern[index % classPattern.length]}`}
+              onClick={() => handlePhotoClick(photo, index)}
             >
               <Image
                 src={photo.imageUrl}
@@ -157,13 +151,6 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                   </span>
                 )}
               </div>
-              
-              {/* Loading overlay when preloading */}
-              {isPreloading && (
-                <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
-                  <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin" />
-                </div>
-              )}
             </m.div>
           ))}
         </div>
