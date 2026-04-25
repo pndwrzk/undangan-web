@@ -25,13 +25,35 @@ export async function POST(request: Request) {
       );
     }
 
-    const systemPrompt = isID
-      ? `Kamu adalah tamu di pernikahan yang lagi nulis ucapan di buku tamu digital. Tulis ucapan yang BERBEDA-BEDA setiap kali, natural, santai kayak ngobrol sama teman. Boleh doa, harapan, selamat, atau ekspresi kebahagiaan — bebas variasi. Pakai campuran bahasa gaul (bahasa jaksel) dan boleh bahasa Indonesia formal sesekali. Boleh emoji. WAJIB sebut nama ${groom} dan ${bride}. JANGAN mulai dengan kata yang sama terus. Maksimal 50 kata, tanpa tanda petik.`
-      : `You are a wedding guest writing in a digital guestbook. Write something DIFFERENT every time — natural, casual, like texting a close friend. Can be a prayer, a wish, congrats, excitement, or love — mix it up! Use casual language. Emojis are welcome. MUST mention ${groom} and ${bride}. DON'T always start the same way. Max 50 words, no quotes.`;
+   const systemPrompt = isID
+  ? `Kamu adalah seseorang yang baru menerima undangan pernikahan digital dan ingin meninggalkan ucapan di halaman ucapan & doa.
 
-    const userPrompt = isID
-      ? `Tulis satu ucapan pernikahan untuk ${groom} dan ${bride}. Buat yang beda dari biasanya!`
-      : `Write one wedding wish for ${groom} and ${bride}. Make it unique!`;
+Tulis SATU pesan ucapan yang selalu BERBEDA setiap kali diminta. Hindari kalimat template atau klise yang terlalu umum. Buat terasa personal, hangat, santai seperti ngobrol dengan teman.
+
+Isi boleh berupa doa, harapan, selamat, kebahagiaan, dukungan, atau cerita singkat/reaksi menerima undangan.
+
+Gunakan campuran bahasa Indonesia santai + sedikit formal (gaya Jaksel boleh). Emoji boleh seperlunya.
+
+WAJIB menyebut nama ${groom} dan ${bride}.  
+JANGAN selalu memulai kalimat dengan kata yang sama.  
+Output hanya 1 paragraf, tanpa tanda petik.  
+Maksimal 50 kata.`
+  : `You are someone who has just received a digital wedding invitation and wants to leave a message in the wishes & prayers section.
+
+Write ONE message that is DIFFERENT every time. Avoid generic template phrases. Make it feel personal, warm, and natural like texting a close friend.
+
+It can include a prayer, wish, congratulations, happiness, support, or a small reaction to receiving the invitation.
+
+Casual tone. Emojis optional.
+
+MUST mention ${groom} and ${bride}.  
+DO NOT always start the same way.  
+Output only one paragraph, no quotation marks.  
+Maximum 50 words.`;
+
+const userPrompt = isID
+  ? `Tulis 1 ucapan pernikahan unik untuk ${groom} dan ${bride}. Jangan pakai kalimat pasaran.`
+  : `Write 1 unique wedding wish for ${groom} and ${bride}. Avoid generic phrases.`;
 
     const groq = new Groq({ apiKey: groqKey });
 
@@ -43,7 +65,7 @@ export async function POST(request: Request) {
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      model: "llama-3.1-8b-instant",
+      model: "meta-llama/llama-4-scout-17b-16e-instruct",
       temperature,
       max_completion_tokens: 150,
       top_p: 0.95,
