@@ -48,6 +48,20 @@ export const authOptions = {
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
+  // Use NEXTAUTH_URL from env, or auto-detect in production
+  ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
+  // Ensure cookies work across the domain
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);
