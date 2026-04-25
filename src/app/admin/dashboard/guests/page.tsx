@@ -209,15 +209,15 @@ Dari banyak perjalanan yang kami lalui, akhirnya sampai pada satu momen berarti 
 
 Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia kami, yang insyaAllah akan dilangsungkan pada:
 
-🗓️ Minggu, 31 Mei 2026
-📍 Pedan Ballroom, Hotel Sahid Jaya Solo
+Minggu, 31 Mei 2026
+Pedan Ballroom, Hotel Sahid Jaya Solo
 
 Berikut adalah tautan undangan digital yang dapat diakses:
 ${link}
 
 Kehadiran dan doa restu Anda sangat berarti bagi kami.
 
-Terimakasih banyak 🙌🏻
+Terimakasih banyak
 
 Alvia & Pandiwa`;
     const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
