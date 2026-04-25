@@ -39,14 +39,23 @@ export const metadata = {
   openGraph: {
     title: "The Wedding of Alvia & Pandiwa",
     description: "Our forever begins, be there as our story turns into a lifetime.",
-    url: "http://finallyhomewithpandiwa.com",
+    url: "https://finallyhomewithpandiwa.com",
     images: [
       {
-        url: "http://finallyhomewithpandiwa.com/images/foto_prewad.jpeg",
+        url: "https://finallyhomewithpandiwa.com/images/foto_prewad.jpeg",
         width: 1200,
         height: 630,
+        alt: "The Wedding of Alvia & Pandiwa",
       },
     ],
+    type: "website",
+    siteName: "The Wedding of Alvia & Pandiwa",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Wedding of Alvia & Pandiwa",
+    description: "Our forever begins, be there as our story turns into a lifetime.",
+    images: ["https://finallyhomewithpandiwa.com/images/foto_prewad.jpeg"],
   },
 };
 

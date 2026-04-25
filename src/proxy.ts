@@ -80,7 +80,5 @@ export const config = {
   matcher: [
     "/admin/:path*", 
     "/api/admin/:path*",
-    // Add static assets for cache headers
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };
