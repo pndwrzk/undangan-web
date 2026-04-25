@@ -75,11 +75,8 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
         
-        {/* Preload critical images */}
-        <link rel="preload" as="image" href="/images/foto_prewad.jpeg" />
-        <link rel="preload" as="image" href="/images/foto_box.jpeg" />
-        <link rel="preload" as="image" href="/images/foto_kecil.jpeg" />
-        <link rel="preload" as="image" href="/hero.jpg" />
+        {/* Preload only hero image - most critical for LCP */}
+        <link rel="preload" as="image" href="/hero.jpg" fetchPriority="high" />
         
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />

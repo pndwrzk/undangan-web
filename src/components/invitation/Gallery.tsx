@@ -62,8 +62,10 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                 src={photo.imageUrl}
                 alt={photo.caption || "Gallery Photo"}
                 fill
+                loading="lazy"
+                quality={75}
+                sizes="(max-width: 768px) 50vw, 25vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                unoptimized
               />
               <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-end justify-center pb-8 px-4">
                 {photo.caption && (
@@ -94,9 +96,9 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                       alt={selectedPhoto.caption || "Gallery Photo"}
                       width={1200}
                       height={1200}
+                      quality={90}
                       className="max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                       priority
-                      unoptimized
                     />
                   </div>
 

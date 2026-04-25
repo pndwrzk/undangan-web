@@ -83,9 +83,10 @@ function SplashContent({
               src={couple?.heroImage || "/hero-bg.png"}
               alt="Background"
               fill
+              quality={70}
+              sizes="100vw"
               className="object-cover opacity-30 grayscale saturate-50"
               priority
-              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
           </m.div>

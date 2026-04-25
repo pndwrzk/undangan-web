@@ -180,10 +180,11 @@ export default function Story() {
               src={topRightImage}
               alt="Our Story - Left"
               fill
+              quality={80}
+              sizes="(max-width: 768px) 50vw, 33vw"
+              loading="lazy"
               className="object-cover brightness-[0.95] contrast-[1.02] pointer-events-none transition-transform duration-700 group-hover:scale-105"
-              unoptimized
               draggable={false}
-              priority
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -203,12 +204,13 @@ export default function Story() {
                 src={image}
                 alt={`Our Story - Rotating ${index + 1}`}
                 fill
+                quality={80}
+                sizes="(max-width: 768px) 50vw, 33vw"
+                loading={index === 0 ? "lazy" : "lazy"}
                 className={`object-cover brightness-[0.95] contrast-[1.02] pointer-events-none transition-all duration-1000 ${
                   index === currentImageIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                 }`}
-                unoptimized
                 draggable={false}
-                priority={index === 0}
               />
             ))}
             {/* Gradient Overlay */}

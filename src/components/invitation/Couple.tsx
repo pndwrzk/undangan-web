@@ -41,11 +41,12 @@ function PersonSection({
           src={image}
           alt={name}
           fill
+          quality={85}
+          sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover pointer-events-none brightness-[0.9] contrast-[1.05] 
                      scale-125 md:scale-100 
                      origin-center
                      transition-transform duration-300"
-          unoptimized
           draggable={false}
           style={{
             objectPosition: 'center center',

@@ -28,11 +28,11 @@ export default function Journey({ imageUrl }: JourneyProps) {
           alt="Our Story"
           width={2000}   // bebas, hanya untuk ratio
           height={1200}  // bebas, hanya untuk ratio
+          quality={85}
+          sizes="100vw"
+          loading="lazy"
           className="w-full h-auto object-cover brightness-[0.95] contrast-[1.02] pointer-events-none"
-          unoptimized
           draggable={false}
-          priority
-          loading="eager"
         />
 
         {/* overlay */}

@@ -11,14 +11,16 @@ import MusicPlayer from "@/components/invitation/MusicPlayer";
 import { Z_INDEX } from "@/lib/z-index";
 import { registerServiceWorker } from "@/lib/register-sw";
 
-const Splash = dynamic(() => import("@/components/invitation/Splash"), { ssr: false });
-const Hero = dynamic(() => import("@/components/invitation/Hero"), { ssr: false });
-const Couple = dynamic(() => import("@/components/invitation/Couple"), { ssr: false });
+// Critical components - render on server for better LCP
+import Splash from "@/components/invitation/Splash";
+import Hero from "@/components/invitation/Hero";
+import QuoteHeader from "@/components/invitation/QuoteHeader";
+import Couple from "@/components/invitation/Couple";
+
+// Below-the-fold components - lazy load
 const Story = dynamic(() => import("@/components/invitation/Story"), { ssr: false });
 const EventDetails = dynamic(() => import("@/components/invitation/EventDetails"), { ssr: false });
 const RSVP = dynamic(() => import("@/components/invitation/RSVP"), { ssr: false });
-import type { QuoteHeaderProps } from "@/components/invitation/QuoteHeader";
-const QuoteHeader = dynamic<QuoteHeaderProps>(() => import("@/components/invitation/QuoteHeader"), { ssr: false });
 const Gallery = dynamic(() => import("@/components/invitation/Gallery"), { ssr: false });
 const WeddingGift = dynamic(() => import("@/components/invitation/WeddingGift"), { ssr: false });
 const Guestbook = dynamic(() => import("@/components/invitation/Guestbook"), { ssr: false });
