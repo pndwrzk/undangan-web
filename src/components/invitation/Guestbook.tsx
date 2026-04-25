@@ -256,7 +256,7 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
                       required
                       className="bg-background border-none shadow-sm rounded-xl py-6 pr-32"
                     />
-                    {guest?.name && newName !== guest.name && (
+                    {guest?.name && !newName && (
                       <button
                         type="button"
                         onClick={() => setNewName(guest.name)}
