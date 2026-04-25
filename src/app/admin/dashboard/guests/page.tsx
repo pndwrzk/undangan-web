@@ -201,7 +201,25 @@ export default function GuestsPage() {
 
   const sendWhatsApp = (name: string, code: string | null, id: string, phone: string) => {
     const link = generateLink(code, id);
-    const message = `Halo ${name},\n\nTanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i ke acara pernikahan kami.\n\nBerikut adalah link undangan digital kami:\n${link}\n\nMerupakan suatu kehormatan bagi kami jika Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima kasih.`;
+    const message = `Assalammualaikum wr. wb.
+
+Halo Bapak/Ibu/Saudara/i ${name},
+
+Dari banyak perjalanan yang kami lalui, akhirnya sampai pada satu momen berarti yang ingin kami bagikan bersama Anda.
+
+Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia kami, yang insyaAllah akan dilangsungkan pada:
+
+🗓️ Minggu, 31 Mei 2026
+📍 Pedan Ballroom, Hotel Sahid Jaya Solo
+
+Berikut adalah tautan undangan digital yang dapat diakses:
+${link}
+
+Kehadiran dan doa restu Anda sangat berarti bagi kami.
+
+Terimakasih banyak 🙌🏻
+
+Alvia & Pandiwa`;
     const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   };
