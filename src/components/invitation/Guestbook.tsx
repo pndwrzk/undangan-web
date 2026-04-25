@@ -5,7 +5,7 @@ import { m, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { MessageSquare, Heart, ChevronLeft, ChevronRight, Sparkles, Loader2, Mail, Stars } from "lucide-react";
+import { MessageSquare, Heart, ChevronLeft, ChevronRight, Sparkles, Loader2, Mail } from "lucide-react";
 import { submitWish, toggleLikeGuestbookMessage } from "@/lib/actions";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { toast } from "sonner";
@@ -248,13 +248,24 @@ export default function Guestbook({ guest }: { guest?: GuestType | null }) {
               <form onSubmit={handleSubmit} className="space-y-4 sticky top-8">
                 <div className="space-y-3">
                   <label className="text-[10px] font-typewriter uppercase tracking-widest text-muted-foreground ml-2 mb-1">{t.guestbook.yourName}</label>
-                  <Input
-                    placeholder={t.guestbook.placeholderName}
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    required
-                    className="bg-background border-none shadow-sm rounded-xl py-6"
-                  />
+                  <div className="relative">
+                    <Input
+                      placeholder={t.guestbook.placeholderName}
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      required
+                      className="bg-background border-none shadow-sm rounded-xl py-6 pr-32"
+                    />
+                    {guest?.name && newName !== guest.name && (
+                      <button
+                        type="button"
+                        onClick={() => setNewName(guest.name)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-sans text-primary hover:text-primary/70 transition-colors underline underline-offset-2"
+                      >
+                        {t.guestbook.useMyName}
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between mb-1">

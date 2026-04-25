@@ -67,6 +67,7 @@ export interface TranslationDict {
     placeholderMessage: string;
     sendButton: string;
     generateAI: string;
+    useMyName: string;
     loading: string;
     empty: string;
     restrictedTitle: string;
@@ -142,8 +143,8 @@ export const translations: Record<Language, TranslationDict> = {
       copyAccount: "Salin Rekening",
       accountCopied: "Rekening Berhasil Disalin!",
       warningNote: "Tanpa mengurangi rasa hormat, mohon maaf kami tidak menerima tamu di rumah.",
-      swipeDown: "Geser ke bawah untuk melihat",
-      swipeUp: "Geser ke atas untuk menutup",
+      swipeDown: "Tarik panah ke bawah untuk melihat",
+      swipeUp: "Tarik panah ke atas untuk menutup",
       swipeHint: "Psst... ini bukan tombol, geser aja ke bawah! 👇",
     },
     guestbook: {
@@ -157,6 +158,7 @@ export const translations: Record<Language, TranslationDict> = {
       placeholderMessage: "Tuliskan doa dan ucapan manis Anda di sini..",
       sendButton: "Kirim Doa & Ucapan",
       generateAI: "Buat dengan AI",
+      useMyName: "Nama Saya",
       loading: "Memuat ucapan..",
       empty: "Belum ada ucapan. Jadilah yang pertama!",
       restrictedTitle: "Tautan Terbatas",
@@ -230,8 +232,8 @@ export const translations: Record<Language, TranslationDict> = {
       copyAccount: "Copy Account",
       accountCopied: "Account Number Copied!",
       warningNote: "With all due respect, we apologize as we are not accepting guests at home.",
-      swipeDown: "Swipe down to reveal",
-      swipeUp: "Swipe up to close",
+      swipeDown: "Pull the arrow down to view",
+      swipeUp: "Pull the arrow up to close",
       swipeHint: "Psst... it's not a button, just swipe down! 👇",
     },
     guestbook: {
@@ -245,6 +247,7 @@ export const translations: Record<Language, TranslationDict> = {
       placeholderMessage: "Write your sincere wishes and sweet greetings here..",
       sendButton: "Send Wishes",
       generateAI: "Generate with AI",
+      useMyName: "My Name",
       loading: "Loading wishes..",
       empty: "No wishes yet. Be the first!",
       restrictedTitle: "Access Restricted",

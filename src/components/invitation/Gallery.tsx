@@ -3,7 +3,7 @@
 import type { Gallery } from "@/types";
 import { m } from "framer-motion";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -21,14 +21,87 @@ const classPattern = [
 export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState<Gallery | null>(null);
-  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPreloading, setIsPreloading] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
-  // Reset loading state when selected photo changes
+  // Reset slide direction after animation
   useEffect(() => {
-    if (selectedPhoto) {
-      setIsImageLoading(true);
+    if (slideDirection) {
+      const timer = setTimeout(() => setSlideDirection(null), 300);
+      return () => clearTimeout(timer);
     }
-  }, [selectedPhoto]);
+  }, [slideDirection]);
+
+  const preloadImage = (imageUrl: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const img = new window.Image();
+      img.onload = () => resolve();
+      img.onerror = reject;
+      img.src = imageUrl;
+    });
+  };
+
+  const handlePhotoClick = async (photo: Gallery, index: number) => {
+    setIsPreloading(true);
+    try {
+      await preloadImage(photo.imageUrl);
+      setCurrentIndex(index);
+      setSelectedPhoto(photo);
+    } catch (error) {
+      console.error('Failed to load image:', error);
+      // Still open modal even if preload fails
+      setCurrentIndex(index);
+      setSelectedPhoto(photo);
+    } finally {
+      setIsPreloading(false);
+    }
+  };
+
+  const handleNext = async () => {
+    const nextIndex = (currentIndex + 1) % gallery.length;
+    const nextPhoto = gallery[nextIndex];
+    
+    setSlideDirection('left');
+    
+    // Preload next image in background
+    preloadImage(nextPhoto.imageUrl).catch(() => {});
+    
+    setCurrentIndex(nextIndex);
+    setSelectedPhoto(nextPhoto);
+  };
+
+  const handlePrevious = async () => {
+    const prevIndex = currentIndex === 0 ? gallery.length - 1 : currentIndex - 1;
+    const prevPhoto = gallery[prevIndex];
+    
+    setSlideDirection('right');
+    
+    // Preload previous image in background
+    preloadImage(prevPhoto.imageUrl).catch(() => {});
+    
+    setCurrentIndex(prevIndex);
+    setSelectedPhoto(prevPhoto);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedPhoto) return;
+      
+      if (e.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (e.key === 'ArrowRight') {
+        handleNext();
+      } else if (e.key === 'Escape') {
+        setSelectedPhoto(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPhoto, currentIndex, gallery]);
 
   if (!Array.isArray(gallery) || gallery.length === 0) return null;
 
@@ -63,8 +136,10 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer ${classPattern[index % classPattern.length]}`}
-              onClick={() => setSelectedPhoto(photo)}
+              className={`relative overflow-hidden rounded-2xl shadow-lg group ${
+                isPreloading ? 'cursor-wait' : 'cursor-pointer'
+              } ${classPattern[index % classPattern.length]}`}
+              onClick={() => !isPreloading && handlePhotoClick(photo, index)}
             >
               <Image
                 src={photo.imageUrl}
@@ -82,6 +157,13 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                   </span>
                 )}
               </div>
+              
+              {/* Loading overlay when preloading */}
+              {isPreloading && (
+                <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
+                  <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                </div>
+              )}
             </m.div>
           ))}
         </div>
@@ -92,7 +174,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
           onOpenChange={(open) => {
             if (!open) {
               setSelectedPhoto(null);
-              setIsImageLoading(true);
+              setSlideDirection(null);
             }
           }}
         >
@@ -103,49 +185,90 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
             <div className="relative flex items-center justify-center w-full h-full min-h-[50vh]" onClick={() => setSelectedPhoto(null)}>
               {selectedPhoto && (
                 <div className="relative group" onClick={(e) => e.stopPropagation()}>
-                  {/* Loading skeleton */}
-                  {isImageLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-[80vw] h-[70vh] md:w-[60vw] md:h-[80vh] bg-white/10 backdrop-blur-sm rounded-lg animate-pulse flex items-center justify-center">
-                        <div className="flex flex-col items-center gap-3">
-                          <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                          <p className="text-white/70 text-sm font-serif italic">Loading image...</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="relative max-w-full max-h-[85vh] md:max-h-[90vh]">
+                  <m.div
+                    key={selectedPhoto.id || currentIndex}
+                    initial={{ 
+                      opacity: 0,
+                      x: slideDirection === 'left' ? 100 : slideDirection === 'right' ? -100 : 0,
+                      scale: 0.95
+                    }}
+                    animate={{ 
+                      opacity: 1,
+                      x: 0,
+                      scale: 1
+                    }}
+                    exit={{ 
+                      opacity: 0,
+                      x: slideDirection === 'left' ? -100 : slideDirection === 'right' ? 100 : 0,
+                      scale: 0.95
+                    }}
+                    transition={{ 
+                      duration: 0.3,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="relative max-w-full max-h-[85vh] md:max-h-[90vh]"
+                  >
                     <Image
                       src={selectedPhoto.imageUrl}
                       alt={selectedPhoto.caption || "Gallery Photo"}
                       width={1200}
                       height={1200}
                       quality={90}
-                      className={`max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl transition-opacity duration-300 ${
-                        isImageLoading ? 'opacity-0' : 'opacity-100'
-                      }`}
+                      className="max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                       priority
-                      onLoad={() => setIsImageLoading(false)}
-                      onError={() => setIsImageLoading(false)}
                     />
-                  </div>
+                  </m.div>
+
+                  {/* Navigation Buttons */}
+                  {gallery.length > 1 && (
+                    <>
+                      {/* Previous Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePrevious();
+                        }}
+                        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/80 backdrop-blur-sm text-primary rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-50 border border-primary/10"
+                        title="Previous (←)"
+                      >
+                        <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+                      </button>
+
+                      {/* Next Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNext();
+                        }}
+                        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/80 backdrop-blur-sm text-primary rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-50 border border-primary/10"
+                        title="Next (→)"
+                      >
+                        <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+                      </button>
+                    </>
+                  )}
 
                   {/* Close button inside photo corner */}
                   <button
                     onClick={() => setSelectedPhoto(null)}
                     className="absolute top-4 right-4 w-8 h-8 bg-white/80 backdrop-blur-sm text-primary rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-50 border border-primary/10"
-                    title="Close"
+                    title="Close (Esc)"
                   >
                     <X className="w-4 h-4" />
                   </button>
 
-                  {selectedPhoto.caption && !isImageLoading && (
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-white text-center shadow-2xl">
-                      <p className="font-serif italic text-sm md:text-base  drop-shadow-sm">
+                  {selectedPhoto.caption && (
+                    <m.div
+                      key={`caption-${selectedPhoto.id || currentIndex}`}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2, duration: 0.3 }}
+                      className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-white text-center shadow-2xl max-w-[90%]"
+                    >
+                      <p className="font-serif italic text-sm md:text-base drop-shadow-sm">
                         {selectedPhoto.caption}
                       </p>
-                    </div>
+                    </m.div>
                   )}
                 </div>
               )}
