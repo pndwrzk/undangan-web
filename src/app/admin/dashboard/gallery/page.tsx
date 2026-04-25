@@ -243,7 +243,7 @@ export default function GalleryPage() {
           </div>
         ) : (
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="gallery-list" direction="horizontal">
+            <Droppable droppableId="gallery-list">
               {(provided) => (
                 <div 
                   {...provided.droppableProps} 
@@ -256,8 +256,16 @@ export default function GalleryPage() {
                         <div 
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className={`bg-white rounded-[2rem] shadow-sm border border-primary/5 overflow-hidden group relative ${snapshot.isDragging ? 'shadow-2xl ring-2 ring-primary scale-105 z-50' : ''}`}
-                          style={provided.draggableProps.style}
+                          className={`bg-white rounded-[2rem] shadow-sm border border-primary/5 overflow-hidden group relative transition-all duration-200 ${snapshot.isDragging ? 'shadow-2xl ring-2 ring-primary scale-105 z-50 rotate-2' : ''}`}
+                          style={{
+                            ...provided.draggableProps.style,
+                            // Fix for grid layout drag
+                            ...(snapshot.isDragging && {
+                              position: 'fixed',
+                              top: 'auto',
+                              left: 'auto',
+                            })
+                          }}
                         >
                           <div className="aspect-[4/5] relative">
                             <Image 
