@@ -5,7 +5,7 @@ import { m } from "framer-motion";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { useLanguage } from "@/components/providers/LanguageProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Z_INDEX } from "@/lib/z-index";
 
@@ -21,6 +21,14 @@ const classPattern = [
 export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState<Gallery | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
+  // Reset loading state when selected photo changes
+  useEffect(() => {
+    if (selectedPhoto) {
+      setIsImageLoading(true);
+    }
+  }, [selectedPhoto]);
 
   if (!Array.isArray(gallery) || gallery.length === 0) return null;
 
@@ -81,15 +89,32 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
         {/* Lightbox */}
         <Dialog
           open={!!selectedPhoto}
-          onOpenChange={(open) => !open && setSelectedPhoto(null)}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedPhoto(null);
+              setIsImageLoading(true);
+            }
+          }}
         >
           <DialogContent
             showCloseButton={false}
             className="max-w-[95vw] md:max-w-4xl p-0 overflow-visible bg-transparent border-none shadow-none ring-0"
           >
-            <div className="relative flex items-center justify-center w-full h-full" onClick={() => setSelectedPhoto(null)}>
+            <div className="relative flex items-center justify-center w-full h-full min-h-[50vh]" onClick={() => setSelectedPhoto(null)}>
               {selectedPhoto && (
                 <div className="relative group" onClick={(e) => e.stopPropagation()}>
+                  {/* Loading skeleton */}
+                  {isImageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-[80vw] h-[70vh] md:w-[60vw] md:h-[80vh] bg-white/10 backdrop-blur-sm rounded-lg animate-pulse flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                          <p className="text-white/70 text-sm font-serif italic">Loading image...</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="relative max-w-full max-h-[85vh] md:max-h-[90vh]">
                     <Image
                       src={selectedPhoto.imageUrl}
@@ -97,8 +122,12 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                       width={1200}
                       height={1200}
                       quality={90}
-                      className="max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+                      className={`max-w-full max-h-[85vh] md:max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl transition-opacity duration-300 ${
+                        isImageLoading ? 'opacity-0' : 'opacity-100'
+                      }`}
                       priority
+                      onLoad={() => setIsImageLoading(false)}
+                      onError={() => setIsImageLoading(false)}
                     />
                   </div>
 
@@ -111,7 +140,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
                     <X className="w-4 h-4" />
                   </button>
 
-                  {selectedPhoto.caption && (
+                  {selectedPhoto.caption && !isImageLoading && (
                     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-white text-center shadow-2xl">
                       <p className="font-serif italic text-sm md:text-base  drop-shadow-sm">
                         {selectedPhoto.caption}
