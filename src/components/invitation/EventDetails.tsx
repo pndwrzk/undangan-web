@@ -190,7 +190,7 @@ export default function EventDetails({ events, couple }: { events?: EventType[],
                   <div className="p-2.5 md:p-3 rounded-xl bg-primary/10 text-primary">
                     <Calendar size={20} className="md:w-6 md:h-6" />
                   </div>
-                  <span className="font-typewriter text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 bg-accent/10 rounded-full">{ev.title}</span>
+                  <span className="font-typewriter text-[14px] md:text-[16px] uppercase tracking-widest px-2.5 py-0.5 bg-accent/10 rounded-full">{ev.title}</span>
                 </div>
 
                 <h3 className="text-xl md:text-2xl font-serif mb-3 md:mb-4">{ev.subtitle || ev.title}</h3>
