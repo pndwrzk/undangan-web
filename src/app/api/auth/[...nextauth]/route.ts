@@ -30,6 +30,7 @@ export const authOptions = {
   ],
   pages: {
     signIn: "/admin/login",
+    signOut: "/admin/login",
   },
   callbacks: {
     async session({ session, token }: any) {

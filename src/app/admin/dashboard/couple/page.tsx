@@ -32,8 +32,8 @@ export default function CouplePage() {
   const groomInputRef = useRef<HTMLInputElement>(null);
   const brideInputRef = useRef<HTMLInputElement>(null);
   const heroInputRef = useRef<HTMLInputElement>(null);
-  const quoteInputRef = useRef<HTMLInputElement>(null);
-  const storyInputRef = useRef<HTMLInputElement>(null);
+  // const quoteInputRef = useRef<HTMLInputElement>(null);
+  // const storyInputRef = useRef<HTMLInputElement>(null);
   
   const [isUpdatingImage, setIsUpdatingImage] = useState<string | null>(null);
   const [confirmReset, setConfirmReset] = useState<{ type: 'groom' | 'bride' | 'hero' | 'quote' | 'story' | null, open: boolean }>({ type: null, open: false });
@@ -451,8 +451,8 @@ export default function CouplePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
            {[
              { title: 'Hero Background', type: 'hero', img: couple?.heroImage || "/hero-bg.png", ref: heroInputRef, desc: 'Displayed on the opening screen and main banner.' },
-             { title: 'Quote Background', type: 'quote', img: couple?.quoteImage || "/quote-bg.png", ref: quoteInputRef, desc: 'Background for the main wedding quote section.' },
-             { title: 'Story Cover', type: 'story', img: couple?.storyImage || "/story-bg.jpg", ref: storyInputRef, desc: 'The full-cover image for your "Our Journey" section.' }
+             // { title: 'Quote Background', type: 'quote', img: couple?.quoteImage || "/quote-bg.png", ref: quoteInputRef, desc: 'Background for the main wedding quote section.' },
+             // { title: 'Story Cover', type: 'story', img: couple?.storyImage || "/story-bg.jpg", ref: storyInputRef, desc: 'The full-cover image for your "Our Journey" section.' }
            ].map((item, i) => (
              <div key={i} className="group relative">
                <div className="bg-white rounded-[2.5rem] p-1 shadow-lg border border-primary/5 overflow-hidden h-full flex flex-col">

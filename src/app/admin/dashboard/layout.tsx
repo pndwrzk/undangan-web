@@ -176,7 +176,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Button variant="outline" onClick={() => setIsLogoutDialogOpen(false)} className="flex-1 rounded-full py-6 font-typewriter uppercase text-xs tracking-widest">
               Stay Logged In
             </Button>
-            <Button onClick={() => signOut()} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white font-typewriter uppercase text-xs tracking-widest transition-all">
+            <Button onClick={() => signOut({ callbackUrl: '/admin/login' })} variant="destructive" className="flex-1 rounded-full py-6 bg-red-500 hover:bg-red-600 text-white font-typewriter uppercase text-xs tracking-widest transition-all">
               Yes, Logout
             </Button>
           </DialogFooter>
