@@ -23,6 +23,7 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   const [selectedPhoto, setSelectedPhoto] = useState<Gallery | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
+  const [isImageReady, setIsImageReady] = useState(false);
 
   // Reset slide direction after animation
   useEffect(() => {
@@ -42,14 +43,17 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
   };
 
   const handlePhotoClick = async (photo: Gallery, index: number) => {
+    setIsImageReady(false);
     try {
       await preloadImage(photo.imageUrl);
       setCurrentIndex(index);
+      setIsImageReady(true);
       setSelectedPhoto(photo);
     } catch (error) {
       console.error('Failed to load image:', error);
       // Still open modal even if preload fails
       setCurrentIndex(index);
+      setIsImageReady(true);
       setSelectedPhoto(photo);
     }
   };
@@ -59,9 +63,14 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
     const nextPhoto = gallery[nextIndex];
     
     setSlideDirection('left');
+    setIsImageReady(false);
     
-    // Preload next image in background
-    preloadImage(nextPhoto.imageUrl).catch(() => {});
+    try {
+      await preloadImage(nextPhoto.imageUrl);
+      setIsImageReady(true);
+    } catch (error) {
+      setIsImageReady(true);
+    }
     
     setCurrentIndex(nextIndex);
     setSelectedPhoto(nextPhoto);
@@ -72,9 +81,14 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
     const prevPhoto = gallery[prevIndex];
     
     setSlideDirection('right');
+    setIsImageReady(false);
     
-    // Preload previous image in background
-    preloadImage(prevPhoto.imageUrl).catch(() => {});
+    try {
+      await preloadImage(prevPhoto.imageUrl);
+      setIsImageReady(true);
+    } catch (error) {
+      setIsImageReady(true);
+    }
     
     setCurrentIndex(prevIndex);
     setSelectedPhoto(prevPhoto);
@@ -157,11 +171,12 @@ export default function Gallery({ gallery = [] }: { gallery?: Gallery[] }) {
 
         {/* Lightbox */}
         <Dialog
-          open={!!selectedPhoto}
+          open={!!selectedPhoto && isImageReady}
           onOpenChange={(open) => {
             if (!open) {
               setSelectedPhoto(null);
               setSlideDirection(null);
+              setIsImageReady(false);
             }
           }}
         >
