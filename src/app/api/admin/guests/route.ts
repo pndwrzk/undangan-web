@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { Guest as GuestType } from "@/types";
 import { generateGuestCode } from "@/lib/utils";
 import { validateCsrfForRoute } from "@/lib/csrf-validation";

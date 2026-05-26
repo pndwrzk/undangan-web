@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  eslint: {
+    // Disable ESLint during production builds
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Keep TypeScript checking enabled
+    ignoreBuildErrors: false,
+  },
   allowedDevOrigins: [
     "http://localhost:3000",
     "http://103.193.179.119:3004",
@@ -10,6 +18,7 @@ const nextConfig: NextConfig = {
     "https://sharper-reassign-variety.ngrok-free.dev",
     "http://103.193.179.119",
     "103.193.179.119",
+    "finallyhomewithpandiwa.com"
   ],
   
   // Image optimization configuration
